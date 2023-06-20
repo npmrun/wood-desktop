@@ -1,0 +1,10 @@
+{
+    "extends": "@rush/tsconfig/tsconfig.main.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./*"]
+        }
+    },
+    "include": ["**/*.ts", "../common/**/*.ts", "../main-*/**/*.ts"]
+}

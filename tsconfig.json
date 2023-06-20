@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "ESNext",
+        "target": "ES2018",
+        "noImplicitAny": false,
+        "declaration": true,
+        "sourceMap": true,
+        "moduleResolution": "Node",
+        "resolveJsonModule": true,
+        "lib": ["ES2018"],
+        "allowSyntheticDefaultImports": true
+    },
+    "include": ["packages/ea", "packages/common","packages/main*/**/*"],
+    "exclude": ["node_modules", "**/dist", "**/__tests__/**/*", "**/test/**", "**/tests/**"]
+}
