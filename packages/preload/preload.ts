@@ -3,7 +3,7 @@ import { callMethod, callMethodLong, callMethodSync } from "./call"
 import path, { normalize } from "path"
 import url from "url"
 import * as file from "./file"
-import setting from "@rush/share/setting"
+import setting from "@buildin/share/setting"
 
 let webviewPreloadPath = path.join(__dirname, "webview.js")
 let preloadPath = path.join(__dirname, "preload.js")

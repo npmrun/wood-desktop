@@ -9,7 +9,7 @@ import { execSync } from "child_process"
 const electronLanguages = ["en", "fr", "zh_CN", "de"]
 
 const resolvePath = (...argus: string[]) => {
-    return path.resolve(rootPath, ...argus)
+    return path.resolve(rootPath, "./buildin", ...argus)
 }
 
 const TARGET_PLATFORMS_configs = {

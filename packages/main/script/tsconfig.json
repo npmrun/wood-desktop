@@ -1,0 +1,16 @@
+{
+    "extends": "@rush/tsconfig/tsconfig.main.json",
+    "compilerOptions": {
+        "outDir": "../../dist/scripts",
+        "module": "CommonJS",
+        "rootDir": "src",
+        "declaration": false,
+        "sourceMap": false,
+        "esModuleInterop": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"]
+        }
+    },
+    "include": ["src/**/*.ts"]
+}

@@ -6,7 +6,7 @@ import { NaiveUiResolver } from "unplugin-vue-components/resolvers"
 import AutoImport from "unplugin-auto-import/vite"
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons"
 import vueI18n from "@intlify/unplugin-vue-i18n/vite"
-import { createHtmlPlugin } from "vite-plugin-html"
+import html from 'vite-plugin-htmlx'
 import Pages from "vite-plugin-pages"
 import Layouts from "vite-plugin-vue-layouts"
 import Inspector from "vite-plugin-vue-inspector"
@@ -17,7 +17,8 @@ import Icons from "unplugin-icons/vite"
 
 import PrincessResolver from "princess-ui/PrincessResolver"
 // @ts-ignore
-import setting from "../setting" //https://github.com/vitejs/vite/issues/5370
+// import setting from "../setting" //https://github.com/vitejs/vite/issues/5370
+const setting = require("@buildin/share/setting_js.js") as typeof import("@buildin/share/setting").default
 
 import _ from "lodash-es"
 import path from "path"
@@ -27,9 +28,14 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
     const env = <ImportMetaEnv>loadEnv(mode, __dirname)
     let isProd = mode === "production"
     let isDev = mode === "development"
+    let isElectron = process.env.PLATFORM === "ELECTRON"
+
     return defineConfig({
         root: __dirname,
         base: "./",
+        define: {
+            "isElectron": `${isElectron}`,
+        },
         server: {
             port: <number>(process.env.PORT ?? 3000),
         },
@@ -68,9 +74,9 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
                 compiler: "vue3",
             }),
             isDev &&
-                ViteRestart({
-                    reload: ["../common/languages/**/*.json", "vite.config.[jt]s", "windi.config.[jt]s"],
-                }),
+            ViteRestart({
+                reload: ["../common/languages/**/*.json", "vite.config.[jt]s", "windi.config.[jt]s"],
+            }),
             monacoEditorPlugin({
                 publicPath: "monacoeditorwork",
                 customDistPath() {
@@ -96,48 +102,48 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
                 compositionOnly: false,
                 include: path.resolve(__dirname, "../common/languages/**"),
             }),
-            Pages({
-                dirs: [{ dir: path.resolve(__dirname, "src/pages"), baseRoute: "" }],
-                exclude: ["**/_components/*.vue", "**/_ui/*.vue", "**/*copy.vue"],
-                onRoutesGenerated(routes) {
-                    routes.push({
-                        path: "",
-                        redirect: "/bookmark",
-                    })
-                    return routes
-                },
-            }),
-            Layouts({
-                layoutsDirs: path.resolve(__dirname, "src/layouts"),
-                defaultLayout: "base",
-            }),
-            Components({
-                dirs: [path.resolve(__dirname, "src/componentsAuto"), path.resolve(__dirname, "src/pagesUIAuto")],
-                extensions: ["vue"],
-                dts: "components.d.ts",
-                resolvers: [NaiveUiResolver(), PrincessResolver()],
-            }),
-            AutoImport({
-                include: [/\.[tj]sx?$/, /\.vue\??/],
-                exclude: [/^_/],
-                imports: ["vue", "vue-router", "pinia", "@vueuse/core", "vue-i18n"],
-                dts: "auto-import.d.ts",
-                dirs: ["src/hooksAuto"],
-            }),
-            createSvgIconsPlugin({
-                // 指定需要缓存的图标文件夹
-                iconDirs: [path.resolve(__dirname, "src/assets/icons")],
-                // 指定symbolId格式
-                symbolId: "icon-[dir]-[name]",
-            }),
-            createHtmlPlugin({
+            // Pages({
+            //     dirs: [{ dir: path.resolve(__dirname, "src/pages"), baseRoute: "" }],
+            //     exclude: ["**/_components/*.vue", "**/_ui/*.vue", "**/*copy.vue"],
+            //     onRoutesGenerated(routes) {
+            //         routes.push({
+            //             path: "",
+            //             redirect: "/bookmark",
+            //         })
+            //         return routes
+            //     },
+            // }),
+            // Layouts({
+            //     layoutsDirs: path.resolve(__dirname, "src/layouts"),
+            //     defaultLayout: "base",
+            // }),
+            // Components({
+            //     dirs: [path.resolve(__dirname, "src/componentsAuto"), path.resolve(__dirname, "src/pagesUIAuto")],
+            //     extensions: ["vue"],
+            //     dts: "components.d.ts",
+            //     resolvers: [NaiveUiResolver(), PrincessResolver()],
+            // }),
+            // AutoImport({
+            //     include: [/\.[tj]sx?$/, /\.vue\??/],
+            //     exclude: [/^_/],
+            //     imports: ["vue", "vue-router", "pinia", "@vueuse/core", "vue-i18n"],
+            //     dts: "auto-import.d.ts",
+            //     dirs: ["src/hooksAuto"],
+            // }),
+            // createSvgIconsPlugin({
+            //     // 指定需要缓存的图标文件夹
+            //     iconDirs: [path.resolve(__dirname, "src/assets/icons")],
+            //     // 指定symbolId格式
+            //     symbolId: "icon-[dir]-[name]",
+            // }),
+            html({
                 minify: isProd,
-                pages: [
+                page: [
                     {
                         entry: "src/main.ts",
                         filename: "index.html",
                         template: "index.html",
-                        injectOptions: {
+                        inject: {
                             data: {
                                 title: setting.app_title,
                                 scheme_file: setting.app_scheme + "-file",
@@ -147,7 +153,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
                     {
                         filename: "about.html",
                         template: "about.html",
-                        injectOptions: {
+                        inject: {
                             data: {
                                 title: setting.app_title,
                                 scheme_file: setting.app_scheme + "-file",
@@ -157,7 +163,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
                     {
                         filename: "iframe.html",
                         template: "iframe.html",
-                        injectOptions: {
+                        inject: {
                             data: {
                                 title: setting.app_title,
                                 scheme_file: setting.app_scheme + "-file",

@@ -1,5 +1,5 @@
 import path from "path"
-import rimraf from "rimraf"
+import * as rimraf from "rimraf"
 import { rootPath } from "@buildin/share"
 
 const resolvePath = (...argus: string[]) => {
