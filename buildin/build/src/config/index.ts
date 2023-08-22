@@ -15,7 +15,10 @@ import {
     mainWebpackOutput,
     buildExternals,
     pkgPath,
-} from "@rush/share"
+    preloadTsConfig
+} from "@buildin/share"
+
+export { preloadTsConfig }
 
 const config = {
     rootPath: rootPath,

@@ -1,12 +1,16 @@
 import * as builder from "electron-builder"
-import setting from "@rush/share/setting"
-import { rootPath } from "@rush/share"
+import setting from "@buildin/share/setting"
+import { rootPath } from "@buildin/share"
 import path from "path"
 import fs from "fs-extra"
 import { homedir } from "os"
 import { execSync } from "child_process"
 
 const electronLanguages = ["en", "fr", "zh_CN", "de"]
+
+const resolvePath = (...argus: string[]) => {
+    return path.resolve(rootPath, ...argus)
+}
 
 const TARGET_PLATFORMS_configs = {
     mac: {
@@ -47,7 +51,7 @@ if (process.env.MAKE_FOR === "dev") {
 console.log(`开始安装依赖`);
 
 execSync("npm i", {
-    cwd: "../dist",
+    cwd: resolvePath("../dist"),
     stdio: 'inherit'
 });
 
@@ -57,7 +61,7 @@ builder.build({
     ...targets,
     config: {
         releaseInfo: {
-            releaseNotesFile: `../changelog/${setting.app_version}.md`
+            releaseNotesFile: resolvePath(`../changelog/${setting.app_version}.md`)
         },
         npmRebuild: true, // 是否在打包应用程序之前rebuild本地依赖
         nodeGypRebuild: false, // 是否在开始打包应用程序之前执行,用electron-builder node-gyp-rebuild 来代替
@@ -68,13 +72,13 @@ builder.build({
         // asarUnpack: ["**/node_modules/live-server/**/*"],
         asarUnpack: ["**/*.node"],
         directories: {
-            buildResources: "../build-assets",
-            output: "../out",
-            app: "../dist",
+            buildResources: resolvePath("../build-assets"),
+            output: resolvePath("../out"),
+            app: resolvePath("../dist"),
         },
         extraFiles: [
             {
-                "from": "../build-assets",
+                "from": resolvePath("../build-assets"),
                 "to": ""
             },
         ],
@@ -136,17 +140,17 @@ builder.build({
             artifactName: "${productName}_mac_${arch}_${version}.${ext}",
         },
         extraResources: {
-            from: "../extra",
+            from: resolvePath("../extra"),
             to: "",
         },
         mac: {
-            icon: "../build-assets/icons/512x512.png",
+            icon: resolvePath("../build-assets/icons/512x512.png"),
         },
         win: {
-            icon: "../build-assets/icons/1024x1024.png",
+            icon: resolvePath("../build-assets/icons/1024x1024.png"),
         },
         linux: {
-            icon: "../build-assets/icons/1024x1024.png",
+            icon: resolvePath("../build-assets/icons/1024x1024.png"),
             artifactName: "${productName}_linux_${arch}_${version}.${ext}",
             category: "Utility",
             synopsis: "效率工具，懒人必备",

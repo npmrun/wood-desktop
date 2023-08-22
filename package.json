@@ -19,26 +19,26 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "@rush/build": "workspace:*",
-        "@rush/main-common": "workspace:*",
+        "@buildin/build": "workspace:*",
+        "@buildin/share": "workspace:*",
         "@rush/common": "workspace:*",
-        "@rush/main": "workspace:*",
+        "@rush/main-common": "workspace:*",
+        "@rush/main-entry": "workspace:*",
         "@rush/main-tool": "workspace:*",
         "@rush/preload": "workspace:*",
         "@rush/render": "workspace:*",
-        "@rush/share": "workspace:*",
         "@rush/tsconfig": "workspace:*",
-        "@types/fs-extra": "^9.0.13",
-        "@types/node": "16.10.1",
-        "electron": "19.0.11",
+        "@types/fs-extra": "^11.0.1",
+        "@types/node": "20.5.1",
+        "electron": "25.6.0",
         "electron-rebuild": "3.2.9",
         "npm-run-all": "^4.1.5",
         "ts-node": "^10.9.1",
-        "typescript": "^4.8.4",
-        "vite": "^2.9.15"
+        "typescript": "^5.1.6",
+        "vite": "^4.4.9"
     },
     "dependencies": {
         "electron-log": "^4.4.8",
-        "fs-extra": "^10.1.0"
+        "fs-extra": "^11.1.1"
     }
 }

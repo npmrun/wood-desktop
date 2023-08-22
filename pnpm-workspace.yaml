@@ -1,7 +1,11 @@
 packages:
   # all packages in subdirs of packages/ and components/
-  - 'packages/*'
-  - 'build'
+  - 'packages/common'
+  - 'packages/main/*'
+  - 'packages/preload'
+  - 'packages/render'
+  - 'packages/share'
+  - 'buildin/*'
   - 'tsconfig'
   # exclude packages that are inside test directories
   - '!**/test/**'

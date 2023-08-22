@@ -1,6 +1,6 @@
 
-import setting from "@rush/share/setting"
-import { rootPath } from "@rush/share"
+import setting from "@buildin/share/setting"
+import { rootPath } from "@buildin/share"
 import path from "path"
 import fs from "fs-extra"
 

@@ -1,6 +1,7 @@
 import { app, BrowserWindow, dialog, shell } from "electron"
 import { getFileUrl } from "@rush/main-tool"
-import { appIconPath, setting } from "@rush/main-common/shared"
+import { appIconPath } from "@rush/main-common/shared"
+import setting from "@buildin/share/setting"
 
 export let forceClose: boolean = false
 export let lastChoice: number = -1

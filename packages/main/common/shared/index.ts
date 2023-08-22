@@ -1,7 +1,5 @@
 import path from "path"
 
-export { default as setting } from "../../setting"
-
 declare const __buildAssets: string
 export const appIconPath = path.join(__buildAssets, "/icons/180x180.png")
 export const appTrayPath = path.join(__buildAssets, "/icons/120x120.png")

@@ -9,9 +9,9 @@ import startPreload from "./preload/run"
 
 import path from "path"
 import config from "./config"
-import { isVite } from "@rush/share"
+import { isVite } from "@buildin/share"
 
-const txtPath = path.resolve(config.rootPath, "./electron-pid.txt")
+const txtPath = path.resolve(__dirname, "../node_modules/.temp/electron-pid.txt")
 
 function killElectron() {
     return new Promise<void>((resolve, reject) => {
