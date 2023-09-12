@@ -15,6 +15,7 @@
   "dependencies": {
     "@rush/main-func": "workspace:*",
     "@rush/main-common": "workspace:*",
+    "@rush/main-config": "workspace:*",
     "@rush/main-script": "workspace:*",
     "@rush/main-tool": "workspace:*"
   }

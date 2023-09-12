@@ -17,6 +17,9 @@ importers:
       inversify:
         specifier: ^6.0.1
         version: 6.0.1
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
       reflect-metadata:
         specifier: ^0.1.13
         version: 0.1.13
@@ -175,6 +178,9 @@ importers:
       '@rush/main-common':
         specifier: workspace:*
         version: link:../main-packages/common
+      '@rush/main-config':
+        specifier: workspace:*
+        version: link:../main-packages/config
       '@rush/main-func':
         specifier: workspace:*
         version: link:../main-packages/func
@@ -194,6 +200,8 @@ importers:
       '@types/webpack-env':
         specifier: ^1.18.1
         version: 1.18.1
+
+  packages/main-packages/config: {}
 
   packages/main-packages/func:
     dependencies:

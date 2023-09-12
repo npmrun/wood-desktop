@@ -1,7 +1,20 @@
+import "reflect-metadata"
+
 import { Base } from "@rush/main-common/interface"
 import { app } from "electron"
 import { Application } from "./Base"
 import { forceClose, mainWindow, showMainWindow } from "./showMain"
+import { Container } from "inversify"
+import MainConfig, { Settings } from "@rush/main-config"
+
+const container = new Container()
+
+container.load(MainConfig)
+
+// const setting = container.get(Settings)
+
+// console.log(setting.config());
+
 
 interface ILife {
     // onLaunch?(): void
