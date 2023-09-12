@@ -3,7 +3,6 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "build:pty": "electron-rebuild -f -w node-pty -d http://proxy.xieyaxin.top/headers",
         "rebuild": "electron-rebuild -d http://proxy.xieyaxin.top/headers",
         "rm": "npm run rm -C buildin/build",
         "dev:script": "npm run dev -C packages/main/script",
@@ -21,24 +20,19 @@
     "devDependencies": {
         "@buildin/build": "workspace:*",
         "@buildin/share": "workspace:*",
-        "@rush/common": "workspace:*",
-        "@rush/main-common": "workspace:*",
-        "@rush/main-entry": "workspace:*",
-        "@rush/main-tool": "workspace:*",
-        "@rush/preload": "workspace:*",
-        "@rush/render": "workspace:*",
-        "@rush/tsconfig": "workspace:*",
+        "@buildin/tsconfig": "workspace:*",
         "@types/fs-extra": "^11.0.1",
         "@types/node": "20.5.1",
         "electron": "25.6.0",
         "electron-rebuild": "3.2.9",
         "npm-run-all": "^4.1.5",
-        "ts-node": "^10.9.1",
         "typescript": "^5.1.6",
         "vite": "^4.4.9"
     },
     "dependencies": {
         "electron-log": "^4.4.8",
-        "fs-extra": "^11.1.1"
+        "fs-extra": "^11.1.1",
+        "inversify": "^6.0.1",
+        "reflect-metadata": "^0.1.13"
     }
 }

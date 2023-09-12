@@ -1,5 +1,5 @@
 {
-    "name": "@rush/tsconfig",
+    "name": "@buildin/tsconfig",
     "private": true,
     "scripts": {}
 }

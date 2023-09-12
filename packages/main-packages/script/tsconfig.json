@@ -1,7 +1,7 @@
 {
-    "extends": "@rush/tsconfig/tsconfig.main.json",
+    "extends": "@buildin/tsconfig/tsconfig.main.json",
     "compilerOptions": {
-        "outDir": "../../dist/scripts",
+        "outDir": "../../../dist/scripts",
         "module": "CommonJS",
         "rootDir": "src",
         "declaration": false,

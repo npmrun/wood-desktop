@@ -10,6 +10,6 @@
         "lib": ["ES2018"],
         "allowSyntheticDefaultImports": true
     },
-    "include": ["packages/ea", "packages/common","packages/main*/**/*"],
+    "include": ["packages/common"],
     "exclude": ["node_modules", "**/dist", "**/__tests__/**/*", "**/test/**", "**/tests/**"]
 }

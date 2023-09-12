@@ -1,7 +1,7 @@
 import { isPromise } from "@rush/main-common/shared"
 import { ipcMain } from "electron"
 
-const modelsFile = require.context("../func", true, /\.ts$/)
+const modelsFile = require.context("./func", true, /\.ts$/)
 let funcs = {}
 
 export function initPrase() {

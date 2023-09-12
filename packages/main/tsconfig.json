@@ -1,0 +1,10 @@
+{
+    "extends": "@buildin/tsconfig/tsconfig.electron.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./*"]
+        }
+    },
+    "include": ["**/*.ts", "../common/**/*.ts", "../main-packages/**/*.ts"]
+}

@@ -12,11 +12,11 @@ export const viteConfig = resolve(pkgPath, "render/vite.config.ts")
 
 export const electronEntry = resolve(rootPath, "dist/electron/entry.js")
 
-export const mainWebpackDevEntry = resolve(pkgPath, "main/entry/index.dev.ts")
-export const mainWebpackBuildEntry = resolve(pkgPath, "main/entry/index.ts")
+export const mainWebpackDevEntry = resolve(pkgPath, "main/index.dev.ts")
+export const mainWebpackBuildEntry = resolve(pkgPath, "main/index.ts")
 export const mainWebpackName = "entry.js"
 export const mainWebpackOutput = resolve(rootPath, "dist/electron")
-export const mainTsConfig = resolve(pkgPath, "main/entry/tsconfig.json")
+export const mainTsConfig = resolve(pkgPath, "main/tsconfig.json")
 
 export const preloadWebpackEntry = {
     preload: resolve(pkgPath, "preload/preload.ts"),
