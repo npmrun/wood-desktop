@@ -1,6 +1,7 @@
 {
   "name": "@rush/main-func",
   "version": "1.0.0",
+  "main": "index.ts",
   "devDependencies": {
     "@types/webpack-env": "^1.18.1"
   },

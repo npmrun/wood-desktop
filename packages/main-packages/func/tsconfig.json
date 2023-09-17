@@ -1,4 +1,7 @@
 {
     "extends": "@buildin/tsconfig/tsconfig.electron.json",
+    "compilerOptions": {
+        "types": ["@types/webpack-env"]
+    },
     "include": ["**/*.ts", "../../common/**/*.ts"]
 }
