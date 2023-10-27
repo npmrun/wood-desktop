@@ -20,6 +20,9 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
+      mitt:
+        specifier: ^3.0.1
+        version: 3.0.1
       reflect-metadata:
         specifier: ^0.1.13
         version: 0.1.13
@@ -181,6 +184,9 @@ importers:
       '@rush/main-config':
         specifier: workspace:*
         version: link:../main-packages/config
+      '@rush/main-core':
+        specifier: workspace:*
+        version: link:../main-packages/core
       '@rush/main-func':
         specifier: workspace:*
         version: link:../main-packages/func
@@ -203,6 +209,27 @@ importers:
 
   packages/main-packages/config: {}
 
+  packages/main-packages/core:
+    dependencies:
+      '@rush/main-common':
+        specifier: workspace:*
+        version: link:../common
+      '@rush/main-config':
+        specifier: workspace:*
+        version: link:../config
+      '@rush/main-func':
+        specifier: workspace:*
+        version: link:../func
+      '@rush/main-log':
+        specifier: workspace:*
+        version: link:../log
+      '@rush/main-script':
+        specifier: workspace:*
+        version: link:../script
+      '@rush/main-tool':
+        specifier: workspace:*
+        version: link:../tool
+
   packages/main-packages/func:
     dependencies:
       '@rush/main-common':
@@ -212,6 +239,8 @@ importers:
       '@types/webpack-env':
         specifier: ^1.18.1
         version: 1.18.1
+
+  packages/main-packages/log: {}
 
   packages/main-packages/script: {}
 
@@ -6608,6 +6637,10 @@ packages:
     dependencies:
       minipass: 3.3.6
       yallist: 4.0.0
+
+  /mitt@3.0.1:
+    resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
+    dev: false
 
   /mixin-deep@1.3.2:
     resolution: {integrity: sha512-WRoDn//mXBiJ1H40rqa3vH0toePwSsGb45iInWlTySa+Uu4k3tYUSxa2v1KqAiLtvlrSzaExqS1gtk96A9zvEA==}

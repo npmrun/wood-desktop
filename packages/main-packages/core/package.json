@@ -1,5 +1,5 @@
 {
-  "name": "@rush/main",
+  "name": "@rush/main-core",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,15 +9,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "electron-debug": "^3.2.0"
-  },
   "dependencies": {
-    "@rush/main-core": "workspace:*",
     "@rush/main-func": "workspace:*",
     "@rush/main-common": "workspace:*",
     "@rush/main-config": "workspace:*",
     "@rush/main-script": "workspace:*",
-    "@rush/main-tool": "workspace:*"
+    "@rush/main-tool": "workspace:*",
+    "@rush/main-log": "workspace:*"
   }
 }
