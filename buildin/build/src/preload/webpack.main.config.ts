@@ -2,7 +2,7 @@
 
 const webpack = require("webpack")
 import { perloadWebpack } from "@/config"
-import { preloadTsConfig } from "@buildin/share"
+import { preloadTsConfig } from "@buildin/share/var"
 import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin"
 
 let mainConfig = {

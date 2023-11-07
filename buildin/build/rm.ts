@@ -1,6 +1,6 @@
 import path from "path"
 import * as rimraf from "rimraf"
-import { rootPath } from "@buildin/share"
+import { rootPath } from "@buildin/share/var"
 
 const resolvePath = (...argus: string[]) => {
     return path.resolve(rootPath, ...argus)

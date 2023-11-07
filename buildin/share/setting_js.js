@@ -1,1 +1,1 @@
-module.exports = require("./_data.json")
+module.exports = require("rush/config/config.json")

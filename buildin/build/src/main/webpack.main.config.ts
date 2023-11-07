@@ -5,7 +5,7 @@ process.env.BABEL_ENV = "main"
 const path = require("path")
 const webpack = require("webpack")
 import { mainWebpack } from "@/config"
-import { mainTsConfig } from "@buildin/share"
+import { mainTsConfig } from "@buildin/share/var"
 import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin"
 
 let mainConfig = {

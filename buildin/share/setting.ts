@@ -1,3 +1,3 @@
-import SS from "./_data.json"
+import SS from "rush/config/config.json"
 
 export default SS

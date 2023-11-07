@@ -1,6 +1,6 @@
 import * as builder from "electron-builder"
 import setting from "@buildin/share/setting"
-import { rootPath } from "@buildin/share"
+import { rootPath } from "@buildin/share/var"
 import path from "path"
 import fs from "fs-extra"
 import { homedir } from "os"

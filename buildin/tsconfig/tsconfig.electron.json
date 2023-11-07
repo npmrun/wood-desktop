@@ -4,7 +4,9 @@
         "target": "ES2018",
         "lib": ["ES2018"],
         "types": [
-            "reflect-metadata"
+            "reflect-metadata",
+            "rush/config/global",
+            "rush/config/main"
         ],
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
@@ -13,5 +15,6 @@
         "moduleResolution": "node",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true
-    }
+    },
+    "exclude": ["node_modules", "**/dist", "**/__tests__/**/*", "**/test/**", "**/tests/**"]
 }

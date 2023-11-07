@@ -2,11 +2,10 @@
   "name": "@buildin/share",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
     "build": "tsc -P tsconfig.json"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": ""
 }

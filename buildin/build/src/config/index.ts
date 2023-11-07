@@ -14,9 +14,8 @@ import {
     mainWebpackName,
     mainWebpackOutput,
     buildExternals,
-    pkgPath,
     preloadTsConfig
-} from "@buildin/share"
+} from "@buildin/share/var"
 
 export { preloadTsConfig }
 

@@ -1,0 +1,4 @@
+{
+    "extends": "@buildin/tsconfig/tsconfig.json",
+    "include": ["**/*.ts"],
+}

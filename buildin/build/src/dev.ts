@@ -9,7 +9,7 @@ import startPreload from "./preload/run"
 
 import path from "path"
 import config from "./config"
-import { isVite } from "@buildin/share"
+import { isVite } from "@buildin/share/var"
 
 const txtPath = path.resolve(__dirname, "../node_modules/.temp/electron-pid.txt")
 
