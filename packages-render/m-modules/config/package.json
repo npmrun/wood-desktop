@@ -2,11 +2,15 @@
   "name": "@rush/render-config",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "unplugin-icons": "^0.16.5",
+    "vite": "^4.5.0"
+  }
 }

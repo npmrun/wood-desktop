@@ -1,0 +1,14 @@
+diff --git a/dist/node/chunks/dep-bb8a8339.js b/dist/node/chunks/dep-bb8a8339.js
+index 417b6a1589395acefc8443e821a4960cf951e247..6388d8631e05d0297174f1cf51d7390c7cb8fdc5 100644
+--- a/dist/node/chunks/dep-bb8a8339.js
++++ b/dist/node/chunks/dep-bb8a8339.js
+@@ -66276,6 +66276,9 @@ async function bundleConfigFile(fileName, isESM) {
+                         if (idFsPath && !isImport && isESMFile(idFsPath)) {
+                             throw new Error(`${JSON.stringify(id)} resolved to an ESM file. ESM file cannot be loaded by \`require\`. See http://vitejs.dev/guide/troubleshooting.html#this-package-is-esm-only for more details.`);
+                         }
++                        if(idFsPath.includes("electron-template/buildin")  || idFsPath.includes("electron-template/packages-render")){
++                          return
++                        }
+                         return {
+                             path: idFsPath,
+                             external: true,

@@ -10,7 +10,7 @@ export const distPath = resolve(rootPath, "dist")
 export const outPath = resolve(rootPath, "dist/electron")
 
 export const isVite = true
-export const viteCMD = resolve(rootPath, "node_modules/vite/bin/vite.js")
+export const viteCMD = resolve(renderPkgPath, "render/node_modules/vite/bin/vite.js")
 export const viteConfig = resolve(renderPkgPath, "render/vite.config.ts")
 
 export const electronEntry = resolve(rootPath, "dist/electron/entry.js")

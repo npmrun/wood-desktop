@@ -7,7 +7,11 @@
         "esModuleInterop": true,
         "module": "esnext",
         "moduleResolution": "node",
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": ".",
+        "paths": {
+            "@buildin/share/*": ["../../buildin/share"]
+        }
     },
     "include": ["vite.config.ts", "vite.env.d.ts", "plugins",]
 }

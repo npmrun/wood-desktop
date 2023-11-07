@@ -1,4 +1,4 @@
-import { ConfigEnv, defineConfig, loadEnv, UserConfigExport } from "vite"
+import { ConfigEnv, defineConfig, loadEnv, UserConfigExport, mergeConfig } from "vite"
 import vue from "@vitejs/plugin-vue"
 import vueJsx from "@vitejs/plugin-vue-jsx"
 import Components from "unplugin-vue-components/vite"
@@ -13,12 +13,14 @@ import Inspector from "vite-plugin-vue-inspector"
 import ViteRestart from "vite-plugin-restart"
 import WindiCSS from "vite-plugin-windicss"
 import monacoEditorPlugin from "vite-plugin-monaco-editor"
-import Icons from "unplugin-icons/vite"
+import setting from "@buildin/share/setting"
+import getConfig from "@rush/render-config"
 
 import PrincessResolver from "princess-ui/PrincessResolver"
 // @ts-ignore
 // import setting from "../setting" //https://github.com/vitejs/vite/issues/5370
-const setting = require("@buildin/share/setting_js.js") as typeof import("@buildin/share/setting").default
+// 用pnpm patch 修改一下
+// const setting = require("@buildin/share/setting_js.js") as typeof import("@buildin/share/setting").default
 
 import _ from "lodash-es"
 import path from "path"
@@ -28,14 +30,10 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
     const env = <ImportMetaEnv>loadEnv(mode, __dirname)
     let isProd = mode === "production"
     let isDev = mode === "development"
-    let isElectron = process.env.PLATFORM === "ELECTRON"
 
-    return defineConfig({
+    return mergeConfig(getConfig({ command, mode }), defineConfig({
         root: __dirname,
         base: "./",
-        define: {
-            "isElectron": `${isElectron}`,
-        },
         server: {
             port: <number>(process.env.PORT ?? 3000),
         },
@@ -66,9 +64,6 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
             },
         },
         plugins: [
-            Icons({
-                compiler: "vue3",
-            }),
             isDev &&
             ViteRestart({
                 reload: ["../common/languages/**/*.json", "vite.config.[jt]s", "windi.config.[jt]s"],
@@ -169,5 +164,5 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
                 ],
             }),
         ],
-    })
+    }))
 }
