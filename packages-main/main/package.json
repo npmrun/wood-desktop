@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@rush/main-process-reporter": "workspace:*",
+    "@rush/process-reporter": "workspace:*",
     "electron-debug": "^3.2.0"
   }
 }

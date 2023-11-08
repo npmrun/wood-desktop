@@ -11,7 +11,7 @@
         "isolatedModules": true,
         "esModuleInterop": true,
         "lib": ["esnext", "dom"],
-        "types": ["unplugin-icons/types/vue", "@buildin/share/global"],
+        "types": ["unplugin-icons/types/vue", "rush/config/global"],
         "skipLibCheck": true,
         "baseUrl": ".",
         "paths": {

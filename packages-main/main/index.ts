@@ -1,9 +1,16 @@
 import "reflect-metadata"
 
-import { app } from "electron"
+import { app, ipcMain } from "electron"
 import { forceClose, mainWindow, showMainWindow } from "@rush/main-window"
 
 import { containerMap } from "@rush/main-core"
+import { onProcessTreeMetricsForPid } from '@rush/process-reporter';
+import { broadcast } from "@rush/main-tool";
+
+onProcessTreeMetricsForPid(process.pid, { samplingInterval: 1000 }) // returns a rx.Observable
+  .subscribe(report => {
+    broadcast("process-report", report)
+  })
 
 console.log(containerMap.Settings.config());
 
