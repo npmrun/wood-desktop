@@ -1,16 +1,19 @@
 {
-  "name": "@rush/main",
+  "name": "@rush/process-reporter",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "typings": "index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@rush/main-process-reporter": "workspace:*",
-    "electron-debug": "^3.2.0"
+  "dependencies": {
+    "memoizee": "^0.4.14",
+    "pidtree": "^0.3.0",
+    "pidusage": "2.0.16",
+    "rxjs": "^5.5.6"
   }
 }

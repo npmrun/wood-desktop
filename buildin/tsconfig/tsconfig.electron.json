@@ -14,7 +14,8 @@
         "resolveJsonModule": true,
         "moduleResolution": "node",
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
+        "allowJs": true
     },
     "exclude": ["node_modules", "**/dist", "**/__tests__/**/*", "**/test/**", "**/tests/**"]
 }

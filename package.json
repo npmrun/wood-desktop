@@ -30,6 +30,7 @@
         "@rush/main-tool": "workspace:*",
         "@rush/main-window": "workspace:*",
         "@types/fs-extra": "^11.0.1",
+        "@types/lodash": "^4.14.201",
         "@types/node": "20.5.1",
         "@types/webpack-env": "^1.18.1",
         "electron": "25.6.0",
@@ -42,7 +43,7 @@
         "electron-log": "^4.4.8",
         "fs-extra": "^11.1.1",
         "inversify": "^6.0.1",
-        "lodash-es": "^4.17.21",
+        "lodash": "^4.17.21",
         "mitt": "^3.0.1",
         "reflect-metadata": "^0.1.13"
     },

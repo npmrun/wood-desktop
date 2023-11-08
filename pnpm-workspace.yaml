@@ -2,12 +2,16 @@ packages:
   # all packages in subdirs of packages/ and components/
   - 'packages-common/common'
   - 'packages-common/m-*/*'
+  - 'packages-common/p-*/*'
   - 'packages-main/main'
   - 'packages-main/m-*/*'
+  - 'packages-main/p-*/*'
   - 'packages-preload/preload'
   - 'packages-preload/m-*/*'
+  - 'packages-preload/p-*/*'
   - 'packages-render/render'
   - 'packages-render/m-*/*'
+  - 'packages-render/p-*/*'
   - 'buildin/*'
   # exclude packages that are inside test directories
   - '!**/test/**'
