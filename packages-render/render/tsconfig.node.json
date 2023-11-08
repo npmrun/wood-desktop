@@ -1,17 +1,10 @@
 {
-    "compilerOptions": {
-        "target": "es5", // 最低兼容的版本
-        "strict": true, // 启用严格模式
-        "composite": true,
-        "resolveJsonModule": true,
-        "esModuleInterop": true,
-        "module": "esnext",
-        "moduleResolution": "node",
-        "allowSyntheticDefaultImports": true,
-        "baseUrl": ".",
-        "paths": {
-            "@buildin/share/*": ["../../buildin/share"]
-        }
-    },
-    "include": ["vite.config.ts", "vite.env.d.ts", "plugins",]
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["vite.config.ts"]
 }

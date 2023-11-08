@@ -1,18 +1,60 @@
 import "reflect-metadata"
 
-import { app, ipcMain } from "electron"
+import { BrowserWindow, Menu, app, ipcMain } from "electron"
 import { forceClose, mainWindow, showMainWindow } from "@rush/main-window"
 
 import { containerMap } from "@rush/main-core"
 import { onProcessTreeMetricsForPid } from '@rush/process-reporter';
 import { broadcast } from "@rush/main-tool";
 
-onProcessTreeMetricsForPid(process.pid, { samplingInterval: 1000 }) // returns a rx.Observable
-  .subscribe(report => {
-    broadcast("process-report", report)
-  })
+// onProcessTreeMetricsForPid(process.pid, { samplingInterval: 1000 }) // returns a rx.Observable
+//   .subscribe(report => {
+//     broadcast("process-report", report)
+//   })
 
 console.log(containerMap.Settings.config());
+
+const menu = Menu.buildFromTemplate(<any>[
+    {
+        label: "重载",
+        accelerator: "CmdOrCtrl+R",
+        click: function (item: any, focusedWindow: BrowserWindow) {
+            if (focusedWindow) {
+                // 重载之后, 刷新并关闭所有的次要窗体
+                if (focusedWindow.id === 1) {
+                    BrowserWindow.getAllWindows().forEach(function (win) {
+                        if (win.id > 1) {
+                            win.close()
+                        }
+                    })
+                }
+                focusedWindow.reload()
+            }
+        },
+    },
+    {
+        label: "开发者",
+        submenu: [
+            {
+                label: "切换开发者工具",
+                accelerator: (function () {
+                    if (process.platform === "darwin") {
+                        return "Alt+Command+I"
+                    } else {
+                        return "Ctrl+Shift+I"
+                    }
+                })(),
+                click: function (item: any, focusedWindow: BrowserWindow) {
+                    if (focusedWindow) {
+                        // @ts-ignore
+                        focusedWindow.toggleDevTools()
+                    }
+                },
+            },
+        ],
+    },
+])
+Menu.setApplicationMenu(menu)
 
 const gotTheLock = app.requestSingleInstanceLock()
 if (!gotTheLock) {
