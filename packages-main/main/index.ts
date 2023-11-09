@@ -6,11 +6,18 @@ import { forceClose, mainWindow, showMainWindow } from "@rush/main-window"
 import { containerMap } from "@rush/main-core"
 import { onProcessTreeMetricsForPid } from '@rush/process-reporter';
 import { broadcast } from "@rush/main-tool";
-
+import ProcessManager from "@rush/main-process-manager";
 // onProcessTreeMetricsForPid(process.pid, { samplingInterval: 1000 }) // returns a rx.Observable
 //   .subscribe(report => {
 //     broadcast("process-report", report)
 //   })
+
+ipcMain.on("runCommand", (ev, command)=>{
+    console.log(command);
+    if (command) {
+        ProcessManager.getInstance().create(command)
+    }
+})
 
 console.log(containerMap.Settings.config());
 

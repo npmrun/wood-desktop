@@ -7,7 +7,7 @@
             "@/*": ["./*"]
         },
         "types": [
-            "rush/config/global"
+            "@rush/types/global"
         ]
     },
     "include": ["**/*.ts", "../common/**/*.ts"]

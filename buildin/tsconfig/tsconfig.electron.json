@@ -5,8 +5,8 @@
         "lib": ["ES2018"],
         "types": [
             "reflect-metadata",
-            "rush/config/global",
-            "rush/config/main"
+            "@rush/types/global",
+            "@rush/types/main"
         ],
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
