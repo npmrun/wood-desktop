@@ -52,7 +52,8 @@ export default class ProcessManager {
         const array = this.#processTasks
         for (let i = array.length - 1; i >= 0; i--) {
             const process = array[i]
-            if (!process.isProcessRunning()) {
+            process.refresh()
+            if (process.status === EProcessStatus.Exit || process.status === EProcessStatus.Normal) {
                 process.event.removeAllListeners()
                 this.#processTasks.splice(i, 1)
             }
