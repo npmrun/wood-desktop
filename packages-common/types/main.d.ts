@@ -13,3 +13,12 @@
 declare const __appStatic: string
 declare const __extra: string
 declare const __buildAssets: string
+
+declare namespace Electron {
+    interface WebContents{
+        /**
+         * 来源窗口名字
+         */
+        $senderName: string
+    }
+}

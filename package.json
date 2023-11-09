@@ -27,6 +27,7 @@
         "@rush/main-common": "workspace:*",
         "@rush/main-config": "workspace:*",
         "@rush/main-core": "workspace:*",
+        "@rush/main-message-manager": "workspace:*",
         "@rush/main-process-manager": "workspace:*",
         "@rush/main-tool": "workspace:*",
         "@rush/main-window": "workspace:*",

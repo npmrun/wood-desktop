@@ -59,6 +59,9 @@ importers:
       '@rush/main-core':
         specifier: workspace:*
         version: link:packages-main/m-modules/core
+      '@rush/main-message-manager':
+        specifier: workspace:*
+        version: link:packages-main/m-modules/message-manager
       '@rush/main-process-manager':
         specifier: workspace:*
         version: link:packages-main/m-modules/process-manager
@@ -224,6 +227,8 @@ importers:
   packages-main/m-modules/config: {}
 
   packages-main/m-modules/core: {}
+
+  packages-main/m-modules/message-manager: {}
 
   packages-main/m-modules/process-manager: {}
 

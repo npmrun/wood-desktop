@@ -11,16 +11,25 @@ _agent.on("process-start", (_0, _pid) => {
     pid.value = _pid
 })
 
+_agent.on("process-list", (_0, list)=>{
+    console.log(list);
+})
+
 _agent.on("process-msg", (_0, _1, data: string, exitCode) => {
     if (exitCode === undefined) {
         logs.value += data
     }
-    console.log(exitCode)
-
     if (exitCode !== undefined) {
         logs.value += `\n退出码: ${exitCode}\n`
+        pid.value = ""
     }
 })
+
+function handleKill() {
+    if (pid.value) {
+        _agent.send("killByPid", pid.value)
+    }
+}
 
 function handleSend() {
     if (command.value) {
@@ -35,7 +44,8 @@ function handleSend() {
     <input type="text" v-model="command" />
     <!-- <HelloWorld msg="Vite + Vue" /> -->
     <button @click="handleSend">发送消息</button>
-    pid: {{ pid }}
+    <button @click="handleKill">杀死进程</button>
+    pid:<input type="text" v-model="pid">
     <div>
         <textarea style="width: 500px; height: 500px" readonly v-model="logs"></textarea>
     </div>

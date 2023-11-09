@@ -7,6 +7,7 @@ import { containerMap } from "@rush/main-core"
 import { onProcessTreeMetricsForPid } from '@rush/process-reporter';
 import { broadcast } from "@rush/main-tool";
 import ProcessManager from "@rush/main-process-manager";
+import MessageManager from "@rush/main-message-manager";
 // onProcessTreeMetricsForPid(process.pid, { samplingInterval: 1000 }) // returns a rx.Observable
 //   .subscribe(report => {
 //     broadcast("process-report", report)
@@ -16,6 +17,12 @@ ipcMain.on("runCommand", (ev, command)=>{
     console.log(command);
     if (command) {
         ProcessManager.getInstance().create(command)
+    }
+})
+ipcMain.on("killByPid", (ev, pid)=>{
+    console.log(pid);
+    if (pid) {
+        ProcessManager.getInstance().killByPid(pid)
     }
 })
 

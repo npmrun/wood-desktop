@@ -4,6 +4,8 @@ import { forkFn, execa } from "./execa"
 import { app } from "electron"
 import kill, { killPID } from "./kill"
 import { broadcast } from "@rush/main-tool"
+import { nextTick } from "process"
+import { EventEmitter } from "events"
 
 export enum EProcessStatus {
     Normal = "normal",
@@ -24,14 +26,67 @@ export default class ProcessManager {
         return ProcessManager.instance
     }
 
+    // 创建进程
     create(command: string, isLazy = false) {
         let task = new ProcessTask(command, isLazy)
+        task.event.on("*", () => {
+            this.emit()
+        })
         this.#processTasks.push(task)
+    }
+
+    emit() {
+        this.refresh()
+        broadcast("process-list", this.#processTasks.map(v => {
+            return {
+                pid: v.pid,
+                status: v.status,
+                command: v.command,
+                log: v.log,
+            }
+        }))
+    }
+
+    // 刷新进程列表
+    refresh() {
+        const array = this.#processTasks
+        for (let i = array.length - 1; i >= 0; i--) {
+            const process = array[i]
+            if (!process.isProcessRunning()) {
+                process.event.removeAllListeners()
+                this.#processTasks.splice(i, 1)
+            }
+        }
+    }
+
+    // 强制杀死进程
+    forceKillByPid(pid: number) {
+        const process = this.#processTasks.find(v => {
+            if (v.isProcessRunning()) {
+                return v.pid == pid
+            }
+        })
+        if (process) {
+            process.forceKill()
+        }
+    }
+
+    // 杀死进程
+    killByPid(pid: number) {
+        const process = this.#processTasks.find(v => {
+            if (v.isProcessRunning()) {
+                return v.pid == pid
+            }
+        })
+        if (process) {
+            process.kill()
+        }
     }
 }
 
 class ProcessTask {
     pid?: number
+    event = new EventEmitter()
     command: string
     execCommand: {
         cmd: string
@@ -49,22 +104,18 @@ class ProcessTask {
         }
     }
 
-    isRunning() {
-        switch (this.status) {
-            case EProcessStatus.Starting:
-            case EProcessStatus.Running:
-            case EProcessStatus.Stopping:
-                return true
-            case EProcessStatus.Normal:
-            case EProcessStatus.Exit:
-                return false
-            default:
-                return false
-        }
-    }
-
     isProcessRunning() {
-        return this.instance?.exitCode === null ?? false
+        // https://wenku.csdn.net/answer/84c1b0fd72804cff90d5b882fde49dc3
+        if (this.pid) {
+            try {
+                process.kill(this.pid, 0)
+                return true
+            } catch (error) {
+                return false
+            }
+        }
+        return false
+        // return this.instance?.exitCode === null ?? false
     }
 
     #init() {
@@ -80,19 +131,34 @@ class ProcessTask {
         }
     }
 
+    refresh() {
+        if (this.status === EProcessStatus.Starting) return
+        if (this.status === EProcessStatus.Stopping) return
+        if (this.isProcessRunning()) {
+            this.status = EProcessStatus.Running
+        } else if (this.status !== EProcessStatus.Normal) {
+            this.status = EProcessStatus.Exit
+        }
+    }
+
     run() {
+        if (this.pid) return
+        if (this.status === EProcessStatus.Starting) return
+        if (this.status === EProcessStatus.Stopping) return
         if (!this.execCommand) return
-        if (this.isRunning()) return
+        if (this.isProcessRunning()) return
         const { cmd: execCommand, argu: args, isFile } = this.execCommand
         let exec = isFile ? forkFn : execa
 
         this.status = EProcessStatus.Starting
+        this.event.emit(this.status)
+        this.event.emit("*")
         let instance = exec(execCommand, args, (err, data, isComplete) => {
-            broadcast("process-msg", this.command, data, isComplete ? data : undefined)
+            broadcast("process-msg", this.command, data, isComplete ? instance.exitCode : undefined)
             if (isComplete) {
                 this.status = EProcessStatus.Exit
-                // this.log.push(`${data}`)
-                this.checkDeath()
+                this.event.emit(this.status)
+                this.event.emit("*")
                 return
             }
             if (err) {
@@ -104,30 +170,32 @@ class ProcessTask {
 
         instance.on("spawn", () => {
             this.status = EProcessStatus.Running
+            this.event.emit(this.status)
+            this.event.emit("*")
         })
         this.instance = instance
         this.pid = instance.pid
         broadcast("process-start", this.pid)
     }
 
-    kill() {
+    kill(force?: boolean) {
+        if (!force && this.status === EProcessStatus.Starting) return
+        if (!force && this.status === EProcessStatus.Stopping) return
         if (!this.instance) return
+        if (!this.isProcessRunning()) return
         this.status = EProcessStatus.Stopping
-        let isKilled = this.instance.kill()
-        if (!isKilled) {
-            kill(this.instance)
-        }
-        this.status = EProcessStatus.Exit
-        this.checkDeath()
+        this.event.emit(this.status)
+        this.event.emit("*")
+        this.instance.kill()
     }
 
-    checkDeath() {
+    // 强制杀死
+    forceKill() {
         if (!this.instance) return
-        if (this.isRunning()) return
         if (!this.isProcessRunning()) return
-        let isKilled = this.instance.kill()
-        if (!isKilled) {
-            kill(this.instance)
-        }
+        this.status = EProcessStatus.Stopping
+        this.event.emit(this.status)
+        this.event.emit("*")
+        kill(this.instance)
     }
 }
