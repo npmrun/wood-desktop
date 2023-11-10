@@ -1,4 +1,3 @@
-import { broadcast } from "@rush/main-tool"
 import { IpcMainEvent, ipcMain, webContents } from "electron"
 
 

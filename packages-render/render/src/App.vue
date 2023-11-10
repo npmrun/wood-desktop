@@ -1,67 +1,61 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { Splitpanes, Pane } from 'splitpanes'
 
-// import HelloWorld from './components/HelloWorld.vue'
-
-const command = ref("")
-const pid = ref("")
-const logs = ref<string>("")
-
-_agent.on("process-start", (_0, _pid) => {
-    pid.value = _pid
-})
-
-_agent.on("process-list", (_0, list)=>{
-    console.log(list);
-})
-
-_agent.on("process-msg", (_0, _1, data: string, exitCode) => {
-    if (exitCode === undefined) {
-        logs.value += data
-    }
-    if (exitCode !== undefined) {
-        logs.value += `\n退出码: ${exitCode}\n`
-        pid.value = ""
-    }
-})
-
-function handleKill() {
-    if (pid.value) {
-        _agent.send("killByPid", pid.value)
-    }
-}
-
-function handleSend() {
-    if (command.value) {
-        _agent.send("runCommand", command.value)
-        logs.value += `${command.value}: \n`
-        command.value = ""
-    }
-}
 </script>
 
 <template>
-    <input type="text" v-model="command" />
-    <!-- <HelloWorld msg="Vite + Vue" /> -->
-    <button @click="handleSend">发送消息</button>
-    <button @click="handleKill">杀死进程</button>
-    pid:<input type="text" v-model="pid">
-    <div>
-        <textarea style="width: 500px; height: 500px" readonly v-model="logs"></textarea>
-    </div>
+    <Splitpanes class="default-theme" style="height: 100%;">
+        <Pane min-size="10">1</Pane>
+        <Pane>
+            <Splitpanes class="default-theme" horizontal>
+                <Pane>2</Pane>
+                <Pane>3</Pane>
+                <Pane>4</Pane>
+            </Splitpanes>
+        </Pane>
+        <Pane>5</Pane>
+    </Splitpanes>
 </template>
 
-<style scoped>
-.logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
+<style lang="scss">
+.splitpanes__pane {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 0 3px rgba(0, 0, 0, .2) inset;
 }
-.logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
+
+em.specs {
+  font-size: 0.2em;
+  line-height: 1;
+  position: absolute;
+  color: #bbb;
+  bottom: 0.5em;
+  left: 0;
+  right: 0;
+  text-align: center;
 }
-.logo.vue:hover {
-    filter: drop-shadow(0 0 2em #42b883aa);
+
+
+// GENERAL STYLES.
+html, body, #app {height: 100%;margin: 0;}
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 5em;
 }
+
+// documentation link.
+p {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  color: #666;
+  z-index: 10;
+  font-size: 12px;
+  
+  a {color: inherit;}
+}
+
 </style>

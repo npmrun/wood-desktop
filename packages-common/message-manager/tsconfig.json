@@ -1,0 +1,11 @@
+{
+    "extends": "@buildin/tsconfig/tsconfig.electron.json",
+    "include": [
+        "main/**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "./tsconfig.client.json"
+        }
+    ]
+}

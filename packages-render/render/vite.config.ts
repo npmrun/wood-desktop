@@ -1,6 +1,8 @@
 import { defineConfig, ConfigEnv, UserConfigExport } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
+import UnoCSS from 'unocss/vite'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 const port = process.env.PORT ?? 3344
 
@@ -27,7 +29,11 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
         },
       },
     },
-    plugins: [vue()],
+    plugins: [
+      vue(), 
+      UnoCSS(),
+      tsconfigPaths(),
+    ],
   })
 
 }

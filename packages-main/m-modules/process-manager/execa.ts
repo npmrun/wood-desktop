@@ -15,7 +15,7 @@ export function execa(
         // https://www.jianshu.com/p/d4d7cf170e79
         shell: process.platform === 'win32', // 仅在当前运行环境为 Windows 时，才使用 shell
         stdio: "pipe",
-        env: env,
+        // env: env,
         cwd
     })
     myProcess.stdout.on("data", data => {
@@ -44,7 +44,7 @@ export function forkFn(
 ) {
     let myProcess = fork(file, argu, {
         stdio: "pipe",
-        env: env,
+        // env: npmRunPathEnv(),
         cwd
     })
     myProcess?.stdout?.on("data", data => {

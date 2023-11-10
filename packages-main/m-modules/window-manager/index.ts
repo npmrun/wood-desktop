@@ -1,0 +1,6 @@
+
+class WindowManager {
+    constructor(parameters) {
+        
+    }
+}

@@ -155,13 +155,14 @@ class ProcessTask {
         this.event.emit(this.status)
         this.event.emit("*")
         let instance = exec(execCommand, args, (err, data, isComplete) => {
-            broadcast("process-msg", this.command, data, isComplete ? instance.exitCode : undefined)
             if (isComplete) {
                 this.status = EProcessStatus.Exit
                 this.event.emit(this.status)
                 this.event.emit("*")
+                broadcast("process-msg", this.command, `已结束进程：${this.command}\n`, isComplete ? instance.exitCode : undefined)
                 return
             }
+            broadcast("process-msg", this.command, err || data, isComplete ? instance.exitCode : undefined)
             if (err) {
                 this.log.push(err)
             } else {

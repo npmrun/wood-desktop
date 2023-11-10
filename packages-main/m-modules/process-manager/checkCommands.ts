@@ -20,6 +20,7 @@ const resolveDist = (...argu: string[]) => {
 const commands = {
     "live-server": resolvePath("node_modules/live-server/live-server.js"),
     show: resolveDist("scripts/main.js"),
+    test: resolveDist("scripts/test.js"),
 }
 
 export function checkCommand(str: string) {
