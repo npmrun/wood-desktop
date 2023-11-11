@@ -52,6 +52,7 @@ export default class WindowManager {
     }
 
     showWindow(name: string) {
+        // TODO 同类型的窗口不需一个个定义
         const urlInfo = this.#urlMap[name]
         let win = this.get(urlInfo?.name)
         if (!win || win?.isDestroyed()) {

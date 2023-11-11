@@ -184,6 +184,7 @@ export let windowsMenu: any[] = [
             {
                 label: "关于我",
                 click(item: any, focusedWindow: BrowserWindow) {
+                    WindowManager.getInstance().showWindow("about" + num)
                     // https://www.electronjs.org/docs/api/browser-window#winsetmenubarvisibilityvisible-windows-linux
                     // showAboutWindow()
                 }
@@ -191,3 +192,5 @@ export let windowsMenu: any[] = [
         ]
     }
 ]
+
+const num = 0
