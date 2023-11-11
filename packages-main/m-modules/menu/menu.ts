@@ -7,6 +7,7 @@ import { cloneDeep } from "lodash"
 import setting from "@buildin/share/setting"
 import autoLaunch from "auto-launch"
 import { updateMenu } from "./utils"
+import WindowManager from "@rush/main-window-manager"
 
 let isAutoRun = false
 let isLoadingAuto = true
@@ -52,9 +53,9 @@ export let windowsMenu: any[] = [
         click: function (item: any, focusedWindow: BrowserWindow) {
             if (focusedWindow) {
                 // 重载之后, 刷新并关闭所有的次要窗体
-                if (focusedWindow.id === 1) {
+                if (focusedWindow.$$opts.name === WindowManager.getInstance().mainInfo.name) {
                     BrowserWindow.getAllWindows().forEach(function (win) {
-                        if (win.id > 1) {
+                        if (win.$$opts.name !== WindowManager.getInstance().mainInfo.name) {
                             win.close()
                         }
                     })

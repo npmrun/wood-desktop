@@ -15,10 +15,16 @@ declare const __extra: string
 declare const __buildAssets: string
 
 declare namespace Electron {
-    interface WebContents{
+    interface WebContents {
         /**
          * 来源窗口名字
          */
         $senderName: string
+    }
+
+    interface BrowserWindow {
+        $$opts: any
+        $$lastChoice: number
+        $$forceClose: boolean
     }
 }

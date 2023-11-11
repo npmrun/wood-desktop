@@ -77,6 +77,9 @@ importers:
       '@rush/main-window':
         specifier: workspace:*
         version: link:packages-main/m-modules/window
+      '@rush/main-window-manager':
+        specifier: workspace:*
+        version: link:packages-main/m-modules/window-manager
       '@rush/types':
         specifier: workspace:*
         version: link:packages-common/types
