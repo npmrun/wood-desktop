@@ -1,20 +1,10 @@
 import "reflect-metadata"
+import "./global"
 
-import "@rush/main-menu"
-
-import { BrowserWindow, Menu, app, ipcMain } from "electron"
-import { forceClose, mainWindow, showMainWindow } from "@rush/main-window"
-
+import { app, ipcMain } from "electron"
 import { containerMap } from "@rush/main-core"
-import { onProcessTreeMetricsForPid } from '@rush/process-reporter';
-import { broadcast, getFileUrl } from "@rush/main-tool";
 import ProcessManager from "@rush/main-process-manager";
-import MessageManager from "@rush/common-message-manager/main";
 import WindowManager from "@rush/main-window-manager";
-// onProcessTreeMetricsForPid(process.pid, { samplingInterval: 1000 }) // returns a rx.Observable
-//   .subscribe(report => {
-//     broadcast("process-report", report)
-//   })
 
 ipcMain.on("runCommand", (ev, command) => {
     console.log(command);
@@ -46,7 +36,6 @@ if (!gotTheLock) {
      * 当应用程序完成初始化之后执行一次
      */
     app.on("ready", () => {
-        WindowManager.getInstance().showWindow("about")
         WindowManager.getInstance().showMainWindow()
         // showMainWindow()
     })

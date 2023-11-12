@@ -4,6 +4,7 @@ import path, { normalize } from "path"
 import url from "url"
 import * as file from "./file"
 import setting from "@buildin/share/setting"
+import logger from "electron-log"
 
 let webviewPreloadPath = path.join(__dirname, "webview.js")
 let preloadPath = path.join(__dirname, "preload.js")
@@ -75,3 +76,4 @@ const _agent = {
 }
 
 contextBridge.exposeInMainWorld("_agent", _agent)
+contextBridge.exposeInMainWorld("logger", logger.functions)

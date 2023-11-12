@@ -7,10 +7,13 @@ import { getFileUrl } from "@rush/main-tool";
 interface IConfig {
     name: string
     url: string
+    type: "info" | ""
     windowOpts: BrowserWindowConstructorOptions
     overideWindowOpts: boolean
     denyWindowOpen: boolean
 }
+
+type Param = Partial<IConfig> & Required<Pick<IConfig, "name">>
 
 const defaultWindowConfig = {
     height: 600,
@@ -42,23 +45,38 @@ export default class WindowManager {
         return WindowManager.instance
     }
 
-    showMainWindow() {
-        let mainWin = this.get(this.#mainInfo.name)
-        if (!mainWin || mainWin?.isDestroyed()) {
-            this.#windows.push(WindowManager.getInstance().#add(this.#mainInfo))
-        } else {
-            mainWin.show()
+    #showWin(info: Param) {
+        if (this.#windows.length >= 6) {
+            dialog.showErrorBox("错误", "窗口数量超出限制")
+            return
         }
+        let index = this.findIndex(info?.name)
+        if (index === -1) {
+            this.#windows.push(WindowManager.getInstance().#add(info))
+        } else {
+            if (this.#windows[index].isDestroyed()) {
+                this.#windows[index] = WindowManager.getInstance().#add(info)
+            } else {
+                this.#windows[index].show()
+            }
+        }
+        this.showCurrentWindow()
     }
 
-    showWindow(name: string) {
-        // TODO 同类型的窗口不需一个个定义
-        const urlInfo = this.#urlMap[name]
-        let win = this.get(urlInfo?.name)
-        if (!win || win?.isDestroyed()) {
-            this.#windows.push(WindowManager.getInstance().#add(urlInfo))
-        } else {
-            win.show()
+    showMainWindow() {
+        this.#showWin(this.#mainInfo)
+    }
+
+    showWindow(name: string, winOpts?: BrowserWindowConstructorOptions) {
+        for (const key in this.#urlMap) {
+            const info = this.#urlMap[key];
+            if (new RegExp(key).test(name)) {
+                info.name = name
+                if (winOpts) {
+                    info.windowOpts = winOpts
+                }
+                this.#showWin(info)
+            }
         }
     }
 
@@ -86,13 +104,36 @@ export default class WindowManager {
 
     #mainInfo = {
         name: "main", // 主窗口key
-        url: getFileUrl("index.html")
+        url: getFileUrl("index.html"),
     }
     #urlMap = {
-        "about": {
-            name: "about",
-            "url": getFileUrl("index.html"),
+        "^about": {
+            "url": getFileUrl("about.html"),
+            overideWindowOpts: true,
+            type: "info",
+            windowOpts: {
+                width: 600,
+                height: 200,
+                minimizable: false,
+                darkTheme: true,
+                modal: true,
+                show: false,
+                resizable: false,
+                icon: appIconPath,
+                // parent: Shared.data.mainWindow as BrowserWindow,
+                webPreferences: {
+                    devTools: false,
+                    enableRemoteModule: false,
+                    sandbox: false,
+                    nodeIntegration: false,
+                    contextIsolation: true,
+                },
+            }
         }
+    }
+
+    length() {
+        return this.#windows.length
     }
 
     public get mainInfo() {
@@ -106,11 +147,12 @@ export default class WindowManager {
         name: "",
         url: "",
         windowOpts: {},
+        type: "",
         overideWindowOpts: false,
         denyWindowOpen: true
     }
 
-    #add(config: Partial<IConfig> & Required<Pick<IConfig, 'name'>>) {
+    #add(config: Param) {
         let curConfig = cloneDeep(this.#defaultConfig)
         for (const key in config) {
             if (Object.prototype.hasOwnProperty.call(config, key)) {
@@ -121,7 +163,6 @@ export default class WindowManager {
             }
         }
         const browserWin = new BrowserWindow(extend(curConfig.overideWindowOpts ? {} : cloneDeep(defaultWindowConfig), curConfig.windowOpts ?? {}))
-        curConfig.url && browserWin.loadURL(curConfig.url)
         browserWin.webContents.setWindowOpenHandler(details => {
             if (curConfig.denyWindowOpen) {
                 return { action: "deny" }
@@ -130,7 +171,10 @@ export default class WindowManager {
         browserWin.$$forceClose = false
         browserWin.$$lastChoice = -1
         browserWin.on("close", (event: any) => {
-            if (curConfig.name !== this.#mainInfo.name) return
+            if (curConfig.name !== this.#mainInfo.name) {
+                this.#onClose(curConfig.name)
+                return
+            }
             let that = this
             function justQuit() {
                 browserWin.$$lastChoice = 1
@@ -165,12 +209,43 @@ export default class WindowManager {
             }
         })
         browserWin.$$opts = curConfig
+        // 在此注册窗口
+        browserWin.webContents.executeJavaScript("console.log('注入')")
+        if (curConfig.type === "info") {
+            // 隐藏菜单
+            browserWin.setMenuBarVisibility(false)
+            browserWin.on("ready-to-show", () => {
+                browserWin?.show()
+            })
+        }
+        curConfig.url && browserWin.loadURL(curConfig.url)
         return browserWin
+    }
+
+    showCurrentWindow() {
+        console.log(this.#windows.map(v => v.$$opts.name).join(","));
+    }
+
+    #onClose(name: string) {
+        for (let i = this.#windows.length - 1; i >= 0; i--) {
+            let win = this.#windows[i]
+            if (name === win.$$opts.name) {
+                win.destroy()
+                this.#windows.splice(i, 1)
+            }
+        }
+        this.showCurrentWindow()
     }
 
     get(name: string) {
         return this.#windows.find(v => {
             return v.$$opts.name === name
+        })
+    }
+
+    getMainWindow(){
+        return this.#windows.find(v => {
+            return v.$$opts.name === this.#mainInfo.name
         })
     }
 
@@ -215,20 +290,20 @@ export default class WindowManager {
         return result
     }
 
-    show(name: string | RegExp) {
-        let indexList = this.findAllIndex(name)
-        if (!!indexList.length) {
-            for (let i = 0; i < indexList.length; i++) {
-                const index = indexList[i];
-                const win = this.#windows[index]
-                if (win.isDestroyed()) {
-                    this.#windows[index] = this.#add(win.$$opts)
-                } else {
-                    win.show()
-                }
-            }
-        } else {
-            console.warn("该窗口不存在")
-        }
-    }
+    // show(name: string | RegExp) {
+    //     let indexList = this.findAllIndex(name)
+    //     if (!!indexList.length) {
+    //         for (let i = 0; i < indexList.length; i++) {
+    //             const index = indexList[i];
+    //             const win = this.#windows[index]
+    //             if (win.isDestroyed()) {
+    //                 this.#windows[index] = this.#add(win.$$opts)
+    //             } else {
+    //                 win.show()
+    //             }
+    //         }
+    //     } else {
+    //         console.warn("该窗口不存在")
+    //     }
+    // }
 }

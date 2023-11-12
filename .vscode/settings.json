@@ -1,4 +1,7 @@
 {
     "less.lint.unknownAtRules": "ignore",
+    "scss.lint.unknownAtRules": "ignore",
     "less.validate": false,
+    "scss.validate": false,
+    "css.customData": [".vscode/unocss.json"]
 }

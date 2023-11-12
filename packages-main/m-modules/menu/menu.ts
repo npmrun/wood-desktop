@@ -38,11 +38,12 @@ export let windowsMenu: any[] = [
         label: "置顶",
         id: "alwaysTopID",
         click: function (item: any, focusedWindow: BrowserWindow) {
-            if (Shared.data.mainWindow?.isAlwaysOnTop()) {
-                Shared.data.mainWindow.setAlwaysOnTop(false)
+            const mainWin = WindowManager.getInstance().getMainWindow()
+            if (mainWin?.isAlwaysOnTop()) {
+                mainWin.setAlwaysOnTop(false)
                 updateMenu(windowsMenu, "alwaysTopID", "label", "置顶")
             } else {
-                Shared.data.mainWindow?.setAlwaysOnTop(true)
+                mainWin?.setAlwaysOnTop(true)
                 updateMenu(windowsMenu, "alwaysTopID", "label", "取消置顶")
             }
         },
@@ -53,12 +54,25 @@ export let windowsMenu: any[] = [
         click: function (item: any, focusedWindow: BrowserWindow) {
             if (focusedWindow) {
                 // 重载之后, 刷新并关闭所有的次要窗体
-                if (focusedWindow.$$opts.name === WindowManager.getInstance().mainInfo.name) {
-                    BrowserWindow.getAllWindows().forEach(function (win) {
-                        if (win.$$opts.name !== WindowManager.getInstance().mainInfo.name) {
-                            win.close()
-                        }
+                if (WindowManager.getInstance().length() > 1 && focusedWindow.$$opts.name === WindowManager.getInstance().mainInfo.name) {
+                    const choice = dialog.showMessageBoxSync(focusedWindow, {
+                        type: 'question',
+                        buttons: ['取消', '是的，继续', '不，算了'],
+                        title: "警告",
+                        defaultId: 2,
+                        cancelId: 0,
+                        message: '警告',
+                        detail: '重载主窗口将关闭所有子窗口，是否继续',
                     })
+                    if (choice == 1) {
+                        BrowserWindow.getAllWindows().forEach(function (win) {
+                            if (win.$$opts.name !== WindowManager.getInstance().mainInfo.name) {
+                                win.close()
+                            }
+                        })
+                    } else {
+                        return
+                    }
                 }
                 focusedWindow.reload()
             }
@@ -118,12 +132,12 @@ export let windowsMenu: any[] = [
                                 await outlineAutoLauncher.disable();
                             }
                         } catch (error) {
-                            // logger.error("设置开机自启报错")
-                            // logger.error(error)
+                            logger.error("设置开机自启报错")
+                            console.error(error)
                         }
                         const isStart = await outlineAutoLauncher.isEnabled()
                         isAutoRun = isStart
-                        // logger.debug("是否开机自启:", isStart, ss)
+                        logger.debug("是否开机自启:", isStart, ss)
                     } else {
                         checkAutoStatus()
                     }
@@ -184,7 +198,7 @@ export let windowsMenu: any[] = [
             {
                 label: "关于我",
                 click(item: any, focusedWindow: BrowserWindow) {
-                    WindowManager.getInstance().showWindow("about" + num)
+                    WindowManager.getInstance().showWindow("about")
                     // https://www.electronjs.org/docs/api/browser-window#winsetmenubarvisibilityvisible-windows-linux
                     // showAboutWindow()
                 }
@@ -192,5 +206,3 @@ export let windowsMenu: any[] = [
         ]
     }
 ]
-
-const num = 0

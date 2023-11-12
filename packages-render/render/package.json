@@ -12,6 +12,7 @@
     "@unocss/reset": "^0.57.3",
     "sass": "^1.69.5",
     "splitpanes": "^3.1.5",
+    "vite-plugin-html": "^3.0.6",
     "vite-tsconfig-paths": "^4.2.1",
     "vue": "^3.3.8"
   },
