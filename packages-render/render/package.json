@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@marktext/muya": "^0.2.3",
     "@types/splitpanes": "^2.2.5",
     "@unocss/reset": "^0.57.3",
     "sass": "^1.69.5",

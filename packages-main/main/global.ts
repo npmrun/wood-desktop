@@ -21,10 +21,10 @@ export function initGlobal() {
      */
     WindowManager.init()
 
-    ipcMain.on("runCommand", (ev, command) => {
+    ipcMain.on("runCommand", (ev, command, cwd: string, isLazy: boolean) => {
         console.log(command);
         if (command) {
-            ProcessManager.create(command)
+            ProcessManager.create(command, cwd, isLazy)
         }
     })
     ipcMain.on("killByPid", (ev, pid) => {

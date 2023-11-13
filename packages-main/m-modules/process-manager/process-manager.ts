@@ -27,8 +27,11 @@ export default class ProcessManager {
     }
 
     // 创建进程
-    create(command: string, isLazy = false) {
-        let task = new ProcessTask(command, isLazy)
+    create(command: string, cwd?: string, isLazy?: boolean) {
+        let task = new ProcessTask(command, {
+            isLazy,
+            cwd
+        })
         task.event.on("*", () => {
             this.emit()
         })
@@ -94,12 +97,16 @@ class ProcessTask {
         isFile: boolean
         argu: string[]
     }
+    cwd: string = app.getPath("userData")
     status: EProcessStatus = EProcessStatus.Normal
     log: string[] = []
     instance: null | ChildProcess = null
-    constructor(command, isLazy = false) {
+    constructor(command, { isLazy = false, cwd }) {
         this.command = command
         this.#init()
+        if (cwd) {
+            this.cwd = cwd
+        }
         if (!isLazy) {
             this.run()
         }
@@ -168,8 +175,8 @@ class ProcessTask {
             } else {
                 this.log.push(data)
             }
-        }, {}, app.getPath("userData"))
-        logger.debug("当前工作目录："+app.getPath("userData"))
+        }, {}, this.cwd)
+        logger.debug("当前工作目录：" + app.getPath("userData"))
 
         instance.on("spawn", () => {
             this.status = EProcessStatus.Running
