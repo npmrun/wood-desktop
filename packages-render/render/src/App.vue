@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Splitpanes, Pane } from 'splitpanes'
+import Test from "./test.vue"
 </script>
 
 <template>
@@ -16,7 +17,9 @@ import { Splitpanes, Pane } from 'splitpanes'
                 <Pane>4</Pane>
             </Splitpanes>
         </Pane>
-        <Pane>5</Pane>
+        <Pane>
+            <Test></Test>
+        </Pane>
     </Splitpanes>
 </template>
 

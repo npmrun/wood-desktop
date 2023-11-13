@@ -3,7 +3,9 @@ import { spawn } from "child_process"
 // import * as iconv from "iconv-lite"
 import { URL } from "url"
 import { fork } from "child_process"
+import {npmRunPathEnv} from 'npm-run-path';
 
+// cwd不存在或者不是一个目录时的话会导致报错
 export function execa(
     command: string,
     argu?: string[],
@@ -15,6 +17,7 @@ export function execa(
         // https://www.jianshu.com/p/d4d7cf170e79
         shell: process.platform === 'win32', // 仅在当前运行环境为 Windows 时，才使用 shell
         stdio: "pipe",
+        env: npmRunPathEnv(),
         // env: env,
         cwd
     })
@@ -44,7 +47,7 @@ export function forkFn(
 ) {
     let myProcess = fork(file, argu, {
         stdio: "pipe",
-        // env: npmRunPathEnv(),
+        env: npmRunPathEnv(),
         cwd
     })
     myProcess?.stdout?.on("data", data => {

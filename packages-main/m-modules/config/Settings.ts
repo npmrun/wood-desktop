@@ -3,7 +3,7 @@ import { app } from "electron"
 import path from "path"
 import setting from "@buildin/share/setting"
 import { cloneDeep } from "lodash"
-import { injectable } from "inversify"
+// import { injectable } from "inversify"
 
 type IOnFunc = (n: IConfig, c: IConfig) => void
 type IT = (keyof IConfig)[] | keyof IConfig | "_"
@@ -49,11 +49,16 @@ function isEmptyDir(fPath: string) {
     }
 }
 
-@injectable()
-export class Settings {
-    public constructor() {
-        this.#init()
+class _Settings {
+    private constructor() {}
+    static instance: null | _Settings = null
+    static getInstance() {
+        if (_Settings.instance == null) {
+            _Settings.instance = new _Settings()
+        }
+        return _Settings.instance
     }
+
     #cb: [IT, IOnFunc][] = []
 
     onChange(fn: IOnFunc, that?: any)
@@ -109,7 +114,7 @@ export class Settings {
             this.#config[key] = config[key] || this.#config[key]
         }
     }
-    #init() {
+    init() {
         console.log(`位置：${this.#pathFile}`)
         if (fs.pathExistsSync(this.#pathFile)) {
             const confingPath = fs.readFileSync(this.#pathFile, { encoding: "utf8" })
@@ -216,3 +221,5 @@ export class Settings {
         return this.#config[key]
     }
 }
+
+export const Settings = _Settings.getInstance()

@@ -43,6 +43,7 @@ export const mainWebpack = {
         __buildAssets: `"${genPathRoot("build-assets").replace(/\\/g, "\\\\")}"`,
         __extra: `"${genPathRoot("extra").replace(/\\/g, "\\\\")}"`,
         __appStatic: `"${genPathRoot("dist/electron").replace(/\\/g, "\\\\")}"`,
+        __appAsarDir: `"${genPathRoot("dist").replace(/\\/g, "\\\\")}"`,
     },
     prodVariable: {
         // __static: `require("path").join(__dirname, "/static").replace(/\\\\/g, "\\\\\\\\")`,
@@ -50,6 +51,7 @@ export const mainWebpack = {
         __buildAssets: `require("path").join(__dirname, "../../..").replace(/\\\\/g, "\\\\\\\\")`,
         __extra: `require("path").join(__dirname, "../..").replace(/\\\\/g, "\\\\\\\\")`,
         __appStatic: `require("path").join(__dirname).replace(/\\\\/g, "\\\\\\\\")`,
+        __appAsarDir: `require("path").join(__dirname, "..").replace(/\\\\/g, "\\\\\\\\")`,
     },
 }
 export const perloadWebpack = {

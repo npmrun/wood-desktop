@@ -4,18 +4,18 @@ import { app } from "electron"
 import path from "path"
 
 const resolvePath = (...argu: string[]) => {
-    let p = app.getAppPath()
-    if (isDev) {
-        p = rootPath
-    }
-    return path.resolve(p, ...argu)
+    // let p = __appAsarDir
+    // if (isDev) {
+    //     p = rootPath
+    // }
+    return path.resolve(__appAsarDir, ...argu)
 }
 const resolveDist = (...argu: string[]) => {
-    let p = app.getAppPath()
-    if (isDev) {
-        p = distPath
-    }
-    return path.resolve(p, ...argu)
+    // let p = app.getAppPath()
+    // if (isDev) {
+    //     p = distPath
+    // }
+    return path.resolve(__appAsarDir, ...argu)
 }
 const commands = {
     "live-server": resolvePath("node_modules/live-server/live-server.js"),

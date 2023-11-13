@@ -1,5 +1,5 @@
 {
-  "name": "@rush/main-log",
+  "name": "@rush/main-log-manager",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",

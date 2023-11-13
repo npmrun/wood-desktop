@@ -38,7 +38,7 @@ export let windowsMenu: any[] = [
         label: "置顶",
         id: "alwaysTopID",
         click: function (item: any, focusedWindow: BrowserWindow) {
-            const mainWin = WindowManager.getInstance().getMainWindow()
+            const mainWin = WindowManager.getMainWindow()
             if (mainWin?.isAlwaysOnTop()) {
                 mainWin.setAlwaysOnTop(false)
                 updateMenu(windowsMenu, "alwaysTopID", "label", "置顶")
@@ -54,7 +54,7 @@ export let windowsMenu: any[] = [
         click: function (item: any, focusedWindow: BrowserWindow) {
             if (focusedWindow) {
                 // 重载之后, 刷新并关闭所有的次要窗体
-                if (WindowManager.getInstance().length() > 1 && focusedWindow.$$opts.name === WindowManager.getInstance().mainInfo.name) {
+                if (WindowManager.length() > 1 && focusedWindow.$$opts.name === WindowManager.mainInfo.name) {
                     const choice = dialog.showMessageBoxSync(focusedWindow, {
                         type: 'question',
                         buttons: ['取消', '是的，继续', '不，算了'],
@@ -66,7 +66,7 @@ export let windowsMenu: any[] = [
                     })
                     if (choice == 1) {
                         BrowserWindow.getAllWindows().forEach(function (win) {
-                            if (win.$$opts.name !== WindowManager.getInstance().mainInfo.name) {
+                            if (win.$$opts.name !== WindowManager.mainInfo.name) {
                                 win.close()
                             }
                         })
@@ -198,7 +198,7 @@ export let windowsMenu: any[] = [
             {
                 label: "关于我",
                 click(item: any, focusedWindow: BrowserWindow) {
-                    WindowManager.getInstance().showWindow("about")
+                    WindowManager.showWindow("about")
                     // https://www.electronjs.org/docs/api/browser-window#winsetmenubarvisibilityvisible-windows-linux
                     // showAboutWindow()
                 }
