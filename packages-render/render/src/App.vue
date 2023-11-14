@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Splitpanes, Pane } from 'splitpanes'
 // import Test from "./test.vue"
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import Muya from '@marktext/muya'
 // import MD2Html from '@marktext/muya/dist/state/markdownToHtml'
 import zh from '@marktext/muya/dist/locales/zh'
@@ -22,6 +22,7 @@ import {
     TableRowColumMenu,
 } from "@marktext/muya/dist/ui/index";
 
+let muya: Muya
 onMounted(() => {
     const imagePathPicker = async () => {
         return "https://pics.ettoday.net/images/2253/d2253152.jpg";
@@ -52,27 +53,46 @@ onMounted(() => {
     Muya.use(TableRowColumMenu);
     Muya.use(PreviewToolBar);
     const container = document.querySelector('#editor')
-    const muya = new Muya(container, {
-        markdown: `## HELOO`,
-    })
-    muya.locale(zh);
+    if(container){
+        setTimeout(() => {
+            muya = new Muya(container as HTMLElement, {
+                markdown: `## HELOO`,
+            })
+            muya.locale(zh);
 
-    muya.init();
+            muya.init();
+            console.log(muya);
+        }, 0);
+    }
+    
 })
+
+function handleUndo() {
+    muya?.undo()
+}
+
+const res = ref()
+function getMdText() {
+    if(muya){
+        res.value = muya.getMarkdown()
+    }
+}
 </script>
 
 <template>
     <Splitpanes style="height: 100%;">
         <Pane min-size="20" max-size="30" size="20">
-            <div h-full border-r border-r-solid border-red bg-gray>
-                <i
-                    style='width:16px;height:16px;display:inline-block;background: url("/@fs/D:/@code/@project/electron-template/node_modules/.pnpm/@marktext+muya@0.2.3/node_modules/@marktext/muya/dist/assets/icons/5e68b273687eed0d.png") 0% 0% / 100% no-repeat;'></i>
+            <div h-full>
+                1231
             </div>
         </Pane>
         <Pane>
-            <Splitpanes class="default-theme" horizontal>
-                <Pane>2</Pane>
-                <Pane>3</Pane>
+            <Splitpanes horizontal>
+                <Pane>
+                    <button @click="handleUndo">撤销</button>
+                    <button @click="getMdText">获取Md</button>
+                </Pane>
+                <Pane>{{ res }}</Pane>
                 <Pane>4</Pane>
             </Splitpanes>
         </Pane>
@@ -80,13 +100,13 @@ onMounted(() => {
             <div class="editor-container">
                 <div id="editor"></div>
             </div>
-            <!-- <Test></Test> -->
         </Pane>
     </Splitpanes>
 </template>
 
 <style lang="scss">
 .editor-container {
+    width: 100%;
     height: 100%;
     overflow: auto;
     position: relative;
@@ -97,17 +117,18 @@ onMounted(() => {
     width: 100%;
     font-size: 16px;
     outline: none;
-    position: relative;
 
     .icon {
         box-sizing: content-box !important;
     }
 }
 
-.mu-quick-insert .icon-container>i.icon {
-    overflow: hidden;
+.icon-container>i.icon {
+    overflow: hidden !important;
 }
-
+.icon-wrapper>i.icon {
+    overflow: hidden !important;
+}
 // .splitpanes__pane {
 //   display: flex;
 //   justify-content: center;

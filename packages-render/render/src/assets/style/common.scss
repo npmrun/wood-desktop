@@ -30,6 +30,7 @@ body,
 
 .splitpanes__splitter {
   @apply relative;
+  background-color: #080808;
 }
 
 .splitpanes__splitter:before {
@@ -45,8 +46,8 @@ body,
 
 .splitpanes--vertical>.splitpanes__splitter:before {
   /* fix vertical scrollbar */
-  /*left: -10px;*/
-  @apply h-full -right-10px;
+  left: -5px;
+  @apply h-full -right-5px;
 }
 
 .splitpanes--horizontal>.splitpanes__splitter {
