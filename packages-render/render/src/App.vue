@@ -1,105 +1,180 @@
 <script setup lang="ts">
-import { Splitpanes, Pane } from 'splitpanes'
-// import Test from "./test.vue"
-import { onMounted, ref } from 'vue';
-import Muya from '@marktext/muya'
-// import MD2Html from '@marktext/muya/dist/state/markdownToHtml'
-import zh from '@marktext/muya/dist/locales/zh'
-import '@marktext/muya/dist/assets/style.css'
-import {
-    CodeBlockLanguageSelector,
-    EmojiSelector,
-    ImageEditTool,
-    ImageResizeBar,
-    ImageToolBar,
-    InlineFormatToolbar,
-    ParagraphFrontButton,
-    ParagraphFrontMenu,
-    ParagraphQuickInsertMenu,
-    PreviewToolBar,
-    TableColumnToolbar,
-    TableDragBar,
-    TableRowColumMenu,
-} from "@marktext/muya/dist/ui/index";
+import { Splitpanes, Pane } from "splitpanes"
+import muyaEditor from "./components/muya-editor.vue"
+import { panelEl, titleHeightPercent, panelSizes, isCollapsed } from "./data"
 
-let muya: Muya
-onMounted(() => {
-    const imagePathPicker = async () => {
-        return "https://pics.ettoday.net/images/2253/d2253152.jpg";
-    };
-
-    const imageAction = async () => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve("https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg");
-            }, 3000);
-        });
-    };
-    Muya.use(EmojiSelector);
-    Muya.use(InlineFormatToolbar);
-    Muya.use(ImageEditTool, {
-        imagePathPicker,
-        imageAction,
-    });
-    Muya.use(ImageToolBar);
-    Muya.use(ImageResizeBar);
-    Muya.use(CodeBlockLanguageSelector);
-
-    Muya.use(ParagraphFrontButton);
-    Muya.use(ParagraphFrontMenu);
-    Muya.use(TableColumnToolbar);
-    Muya.use(ParagraphQuickInsertMenu);
-    Muya.use(TableDragBar);
-    Muya.use(TableRowColumMenu);
-    Muya.use(PreviewToolBar);
-    const container = document.querySelector('#editor')
-    if(container){
-        setTimeout(() => {
-            muya = new Muya(container as HTMLElement, {
-                markdown: `## HELOO`,
-            })
-            muya.locale(zh);
-
-            muya.init();
-            console.log(muya);
-        }, 0);
-    }
-    
-})
-
-function handleUndo() {
-    muya?.undo()
-}
-
-const res = ref()
-function getMdText() {
-    if(muya){
-        res.value = muya.getMarkdown()
-    }
+function handleResize(event: { size: number }[]) {
+    panelSizes.value = event.map(({ size }) => size)
 }
 </script>
 
 <template>
-    <Splitpanes style="height: 100%;">
+    <Splitpanes ref="panelEl" style="height: 100%">
         <Pane min-size="20" max-size="30" size="20">
             <div h-full>
-                1231
+                {{ titleHeightPercent }}
             </div>
         </Pane>
         <Pane>
-            <Splitpanes horizontal>
-                <Pane>
-                    <button @click="handleUndo">撤销</button>
-                    <button @click="getMdText">获取Md</button>
+            <Splitpanes horizontal @resized="handleResize">
+                <Pane :min-size="titleHeightPercent" :size="panelSizes[0]">
+                    <div
+                        style="line-height: 1em"
+                        border="l y gray/20 solid"
+                        text="gray/80"
+                        min-h-30px
+                        max-h-30px
+                        select-none
+                        flex
+                        all:my-auto
+                    >
+                        <div p1 flex>
+                            <div>
+                                sad
+                            </div>
+                            <div mr-2 op-60 shrink-0>asdadsa</div>
+                        </div>
+                        <div px1 flex gap-2 flex-auto h-full>
+                            <div
+                                flex
+                                justify-end
+                                items-center
+                                w-full
+                                h-full
+                                gap2
+                                transition
+                                duration-400
+                                class
+                                un-children="inline-flex items-center cursor-pointer gap-1"
+                            >
+                                <label>
+                                    <input type="checkbox" />
+                                    <span text-sm>Transform</span>
+                                </label>
+                                <div w-1px h-full bg-gray:20></div>
+                                <button i-ri-mist-line icon-btn title="Format"></button>
+                            </div>
+                        </div>
+                    </div>
                 </Pane>
-                <Pane>{{ res }}</Pane>
-                <Pane>4</Pane>
+                <Pane :min-size="titleHeightPercent" :size="panelSizes[1]">
+                    <div
+                        style="line-height: 1em"
+                        border="l y gray/20 solid"
+                        text="gray/80"
+                        min-h-30px
+                        max-h-30px
+                        select-none
+                        flex
+                        all:my-auto
+                    >
+                        <div p1 flex>
+                            <div>图表</div>
+                            <div mr-2 op-60 shrink-0>asdadsa</div>
+                        </div>
+                        <div px1 flex gap-2 flex-auto h-full>
+                            <div
+                                flex
+                                justify-end
+                                items-center
+                                w-full
+                                h-full
+                                gap2
+                                transition
+                                duration-400
+                                class
+                                un-children="inline-flex items-center cursor-pointer gap-1"
+                            >
+                                <label>
+                                    <input type="checkbox" />
+                                    <span text-sm>Transform</span>
+                                </label>
+                                <div w-1px h-full bg-gray:20></div>
+                                <button i-ri-mist-line icon-btn title="Format"></button>
+                            </div>
+                        </div>
+                    </div>
+                </Pane>
+                <Pane :min-size="titleHeightPercent" :size="panelSizes[2]">
+                    <div
+                        style="line-height: 1em"
+                        border="l y gray/20 solid"
+                        text="gray/80"
+                        min-h-30px
+                        max-h-30px
+                        select-none
+                        flex
+                        all:my-auto
+                    >
+                        <div p1 flex>
+                            <div>图表</div>
+                            <div mr-2 op-60 shrink-0>asdadsa</div>
+                        </div>
+                        <div px1 flex gap-2 flex-auto h-full>
+                            <div
+                                flex
+                                justify-end
+                                items-center
+                                w-full
+                                h-full
+                                gap2
+                                transition
+                                duration-400
+                                class
+                                un-children="inline-flex items-center cursor-pointer gap-1"
+                            >
+                                <label>
+                                    <input type="checkbox" />
+                                    <span text-sm>Transform</span>
+                                </label>
+                                <div w-1px h-full bg-gray:20></div>
+                                <button i-ri-mist-line icon-btn title="Format"></button>
+                            </div>
+                        </div>
+                    </div>
+                </Pane>
+                <Pane :min-size="titleHeightPercent" :size="panelSizes[3]">
+                    <div
+                        style="line-height: 1em"
+                        border="l y gray/20 solid"
+                        text="gray/80"
+                        min-h-30px
+                        max-h-30px
+                        select-none
+                        flex
+                        all:my-auto
+                    >
+                        <div p1 flex>
+                            <div>图表</div>
+                            <div mr-2 op-60 shrink-0>asdadsa</div>
+                        </div>
+                        <div px1 flex gap-2 flex-auto h-full>
+                            <div
+                                flex
+                                justify-end
+                                items-center
+                                w-full
+                                h-full
+                                gap2
+                                transition
+                                duration-400
+                                class
+                                un-children="inline-flex items-center cursor-pointer gap-1"
+                            >
+                                <label>
+                                    <input type="checkbox" />
+                                    <span text-sm>Transform</span>
+                                </label>
+                                <div w-1px h-full bg-gray:20></div>
+                                <button i-ri-mist-line icon-btn title="Format"></button>
+                            </div>
+                        </div>
+                    </div>
+                </Pane>
             </Splitpanes>
         </Pane>
         <Pane>
-            <div class="editor-container">
-                <div id="editor"></div>
-            </div>
+            <muyaEditor></muyaEditor>
         </Pane>
     </Splitpanes>
 </template>
@@ -123,10 +198,10 @@ function getMdText() {
     }
 }
 
-.icon-container>i.icon {
+.icon-container > i.icon {
     overflow: hidden !important;
 }
-.icon-wrapper>i.icon {
+.icon-wrapper > i.icon {
     overflow: hidden !important;
 }
 // .splitpanes__pane {
@@ -148,7 +223,6 @@ function getMdText() {
 //   text-align: center;
 // }
 
-
 // // GENERAL STYLES.
 // html, body, #app {height: 100%;margin: 0;}
 // body {
@@ -167,4 +241,5 @@ function getMdText() {
 //   font-size: 12px;
 
 //   a {color: inherit;}
-// }</style>
+// }
+</style>

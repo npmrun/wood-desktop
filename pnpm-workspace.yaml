@@ -10,6 +10,7 @@ packages:
   - 'packages-render/render'
   - 'packages-render/m-*/*'
   - 'packages-render/p-*/*'
+  - 'packages-render/muya'
   - 'buildin/*'
   # exclude packages that are inside test directories
   - '!**/test/**'

@@ -8,8 +8,8 @@ import {
 
 export default defineConfig({
     presets: [
-        presetUno(),
         presetAttributify(),
+        presetUno(),
     ],
     transformers: [
         transformerDirectives()

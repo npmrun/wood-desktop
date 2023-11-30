@@ -31,21 +31,30 @@ const TARGET_PLATFORMS_configs = {
         win: ["nsis:ia32", "nsis:x64", "portable:ia32"],
     },
 }
-let targets: Record<string, string[]> = TARGET_PLATFORMS_configs.win
-if (process.platform == "linux") {
-    targets = TARGET_PLATFORMS_configs.linux
-}
-if (process.platform == "darwin") {
-    targets = TARGET_PLATFORMS_configs.mac
-}
-if (process.env.MAKE_FOR === "dev") {
-    targets = TARGET_PLATFORMS_configs.macs
-} else if (process.env.MAKE_FOR === "mac") {
-    targets = TARGET_PLATFORMS_configs.mac
-} else if (process.env.MAKE_FOR === "win") {
-    targets = TARGET_PLATFORMS_configs.win
-} else if (process.env.MAKE_FOR === "all") {
-    targets = TARGET_PLATFORMS_configs.all
+
+let targets: Record<string, string[]> = {}
+
+if(!process.env.IS_ACTIONS){
+    targets = {
+        win: ["nsis:x64"]
+    }
+} else {
+    let targets: Record<string, string[]> = TARGET_PLATFORMS_configs.win
+    if (process.platform == "linux") {
+        targets = TARGET_PLATFORMS_configs.linux
+    }
+    if (process.platform == "darwin") {
+        targets = TARGET_PLATFORMS_configs.mac
+    }
+    if (process.env.MAKE_FOR === "dev") {
+        targets = TARGET_PLATFORMS_configs.macs
+    } else if (process.env.MAKE_FOR === "mac") {
+        targets = TARGET_PLATFORMS_configs.mac
+    } else if (process.env.MAKE_FOR === "win") {
+        targets = TARGET_PLATFORMS_configs.win
+    } else if (process.env.MAKE_FOR === "all") {
+        targets = TARGET_PLATFORMS_configs.all
+    }
 }
 
 console.log(`开始安装依赖`);

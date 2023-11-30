@@ -19,6 +19,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       GH_TOKEN: ${{ secrets.ELECTRON_TOKEN }}
+      IS_ACTIONS: true
     strategy:
       matrix:
         # https://www.likecs.com/ask-314443.html

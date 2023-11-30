@@ -8,12 +8,13 @@
         "rm": "npm run rm -C buildin/build",
         "dev:script": "npm run dev -C packages-main/script",
         "build:script": "npm run build -C packages-main/script",
+        "build:muya": "npm run build -C packages-render/muya",
         "dev:app": "npm run dev -C buildin/build",
         "build:app": "npm run build -C packages-render/render",
         "pack:app": "npm run build -C buildin/build",
         "devaa": "npm-run-all -s rm -p dev:script dev:app",
         "dev": "npm-run-all -s rm -p dev:app",
-        "build": "npm-run-all -s rm build:script build:app pack:app"
+        "build": "npm-run-all -s rm build:muya build:script build:app pack:app"
     },
     "keywords": [],
     "author": "",

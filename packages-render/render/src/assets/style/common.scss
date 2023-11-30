@@ -5,6 +5,13 @@ body,
   overflow: hidden;
 }
 
+// *,:before,:after {
+//     box-sizing: border-box;
+//     border-width: 0;
+//     border-style: solid;
+//     // border-color: var(--un-default-border-color, #e5e7eb)
+// }
+
 :root {
   /* scrollbars colors */
   --play-ttc-c-thumb: #eee;
@@ -30,7 +37,7 @@ body,
 
 .splitpanes__splitter {
   @apply relative;
-  background-color: #080808;
+  background-color: #7d7d7d1a;
 }
 
 .splitpanes__splitter:before {
@@ -57,4 +64,20 @@ body,
 .splitpanes--horizontal>.splitpanes__splitter:before {
   /* fix vertical scrollbar */
   @apply w-full -bottom-6px -top-6px;
+}
+
+.splitpanes__splitter:before {
+    content: "";
+    transition: opacity .4s;
+    background-color: #7d7d7d1a;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    opacity: 0;
+}
+
+.splitpanes--vertical>.splitpanes__splitter {
+    min-width: 1px;
+    cursor: col-resize;
 }
