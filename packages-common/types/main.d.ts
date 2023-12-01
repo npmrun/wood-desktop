@@ -30,7 +30,7 @@ declare namespace Electron {
         /**
          * 来源窗口名字
          */
-        $senderName: string
+        $$senderName: string
     }
 
     interface BrowserWindow {

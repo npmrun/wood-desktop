@@ -5,6 +5,9 @@ import url from "url"
 import * as file from "./file"
 import setting from "@buildin/share/setting"
 import logger from "electron-log"
+import { MessageManager } from "@rush/common-message-manager/client"
+
+MessageManager.init()
 
 let webviewPreloadPath = path.join(__dirname, "webview.js")
 let preloadPath = path.join(__dirname, "preload.js")
@@ -28,11 +31,11 @@ const _agent = {
         node: process.versions["node"],
         electron: process.versions["electron"],
     },
-    getStaticHtml(type: any){
+    getStaticHtml(type: any) {
         let html = url.pathToFileURL(normalize(path.join(extraPath, `./${type}.html`))).toString()
         return html
     },
-    getStaticHtmlSource(type: any){
+    getStaticHtmlSource(type: any) {
         let html = normalize(path.join(extraPath, `./${type}.html`))
         return file.readFileSync(html)
     },
@@ -49,11 +52,11 @@ const _agent = {
     callLong: callMethodLong,
     callSync: callMethodSync,
     send(command: string, ...argu: any[]) {
-        if(!command) return
+        if (!command) return
         return ipcRenderer.send(command, ...argu)
     },
     sendSync(command: string, ...argu: any[]) {
-        if(!command) return
+        if (!command) return
         return ipcRenderer.sendSync(command, ...argu)
     },
     on(command: string, cb: (event: IpcRendererEvent, ...args: any[]) => void) {

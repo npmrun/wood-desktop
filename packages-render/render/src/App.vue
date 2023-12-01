@@ -2,20 +2,26 @@
 import { Splitpanes, Pane } from "splitpanes"
 import muyaEditor from "./components/muya-editor.vue"
 import { panelEl, titleHeightPercent, panelSizes, isCollapsed } from "./data"
+import { titleWidthPercent, panelWidthSizes } from "./data2"
 
 function handleResize(event: { size: number }[]) {
     panelSizes.value = event.map(({ size }) => size)
 }
+
+function handleWidthResize(event: { size: number }[]) {
+    panelWidthSizes.value = event.map(({ size }) => size)
+}
 </script>
 
 <template>
-    <Splitpanes ref="panelEl" style="height: 100%">
-        <Pane min-size="20" max-size="30" size="20">
+    <Splitpanes ref="panelEl" style="height: 100%" @resized="handleWidthResize">
+        <Pane :min-size="titleWidthPercent" :size="panelWidthSizes[0]">
             <div h-full>
-                {{ titleHeightPercent }}
+                {{ titleWidthPercent }}
+                {{ panelWidthSizes }}
             </div>
         </Pane>
-        <Pane>
+        <Pane :min-size="titleWidthPercent" :size="panelWidthSizes[1]">
             <Splitpanes horizontal @resized="handleResize">
                 <Pane :min-size="titleHeightPercent" :size="panelSizes[0]">
                     <div
@@ -173,7 +179,7 @@ function handleResize(event: { size: number }[]) {
                 </Pane>
             </Splitpanes>
         </Pane>
-        <Pane>
+        <Pane :size="panelWidthSizes[2]">
             <muyaEditor></muyaEditor>
         </Pane>
     </Splitpanes>

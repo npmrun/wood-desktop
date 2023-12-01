@@ -4,6 +4,7 @@ import WindowManager from "@rush/main-window-manager"
 import ProcessManager from "@rush/main-process-manager"
 import LogManager from "@rush/main-log-manager"
 import { app, ipcMain } from "electron"
+import { MessageManager } from "@rush/common-message-manager/main"
 
 export function initGlobal() {
     /**
@@ -20,6 +21,11 @@ export function initGlobal() {
      * 窗口管理器初始化
      */
     WindowManager.init()
+
+    /**
+     * 消息管理器初始化
+     */
+    MessageManager.init()
 
     ipcMain.on("runCommand", (ev, command, cwd: string, isLazy: boolean) => {
         console.log(command);

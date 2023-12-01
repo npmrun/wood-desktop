@@ -141,6 +141,10 @@ export default class WindowManager {
         }
     }
 
+    getWndows() {
+        return this.#windows
+    }
+
     length() {
         return this.#windows.length
     }
@@ -177,6 +181,7 @@ export default class WindowManager {
                 return { action: "deny" }
             }
         })
+        browserWin.webContents.$$senderName = curConfig.name
         browserWin.$$forceClose = false
         browserWin.$$lastChoice = -1
         browserWin.on("close", (event: any) => {
@@ -219,7 +224,7 @@ export default class WindowManager {
         })
         browserWin.$$opts = curConfig
         // 在此注册窗口
-        browserWin.webContents.executeJavaScript("console.log('注入')")
+        // browserWin.webContents.executeJavaScript(`window._global=${JSON.stringify({ name: curConfig.name })}`)
         if (curConfig.type === "info") {
             // 隐藏菜单
             browserWin.setMenuBarVisibility(false)
