@@ -1,7 +1,23 @@
 {
-    "app_title": "ene-desktop",
-    "app_desc": "it is a good story!",
+    "app_title": "genial",
+    "app_desc": "个人专属应用，打造属于自己的完美工具箱。",
     "app_author": "npmrun",
     "app_version": "0.0.1-beta.1",
-    "app_scheme": "ene"
+    "app_scheme": "genial",
+    "release": {
+        "githubProvider": {
+            "repo": "electron-template",
+            "owner": "npmrun"
+        }
+    },
+    "default_config": {
+        "storagePath": "$storagePath$",
+        "language": "zh",
+        "common.theme": "auto",
+        "editor.bg": "",
+        "editor.logoType": "logo",
+        "editor.fontFamily": "Cascadia Mono, Consolas, 'Courier New', monospace",
+        "update.repo": "electron-template",
+        "update.owner": "npmrun"
+    }
 }

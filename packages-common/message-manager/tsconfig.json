@@ -1,10 +1,12 @@
 {
     "extends": "@buildin/tsconfig/tsconfig.electron.json",
-    "compilerOptions": {},
+    "compilerOptions": {
+        "composite": false
+    },
     "include": ["main/**/*.ts", "common/**/*.ts"],
     "references": [
         {
-            "paths": "./tsconfig.client.json"
+            "path": "./tsconfig.client.json"
         }
     ]
 }

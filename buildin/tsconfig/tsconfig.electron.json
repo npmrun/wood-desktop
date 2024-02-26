@@ -5,6 +5,7 @@
         "lib": ["ES2018"],
         "types": [
             "reflect-metadata",
+            "@buildin/config/type",
             "@rush/types/global",
             "@rush/types/main"
         ],

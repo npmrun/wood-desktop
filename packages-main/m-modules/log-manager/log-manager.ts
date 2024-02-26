@@ -1,4 +1,5 @@
 import { app } from "electron";
+import type Logger from "electron-log";
 import logger from "electron-log/main";
 import path from "path";
 
@@ -14,13 +15,18 @@ export default class LogManager {
     }
 
     init() {
-        logger.transports.file.resolvePathFn = () => path.resolve(app.getPath("logs"), "__client__.txt")
+        // 可记录nodejs的报错
+        // https://github.com/search?q=repo%3Agetsentry%2Fsentry-electron%20process.on&type=code
+        console.log(`Log位置：`+app.getPath("logs"))
 
-        const loggerMain = logger.create({ logId: "main" })
-        // @ts-ignore
-        loggerMain.transports.file.resolvePathFn = () => path.resolve(app.getPath("logs"), "__main__.txt")
+        const mainLog = logger.scope('main');
 
-        global.logger = logger
-        global.loggerMain = loggerMain
+        logger.transports.file.resolvePathFn = (variables: Logger.PathVariables, message?: Logger.LogMessage) => {
+            if(message.scope === "preload" || message.scope === "client"){
+                return path.resolve(app.getPath("logs"), "__client__.txt")
+            }
+            return path.resolve(app.getPath("logs"), "__global__.txt")
+        }
+        global.logger = mainLog
     }
 }

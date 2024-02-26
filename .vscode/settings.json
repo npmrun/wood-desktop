@@ -3,5 +3,18 @@
     "scss.lint.unknownAtRules": "ignore",
     "less.validate": false,
     "scss.validate": false,
-    "css.customData": [".vscode/unocss.json"]
+    "css.customData": [
+        ".vscode/unocss.json"
+    ],
+    "workbench.tree.enableStickyScroll": true,
+    "i18n-ally.localesPaths": [
+        "packages-common/common/languages"
+    ],
+    "i18n-ally.sourceLanguage": "zh",
+    "i18n-ally.displayLanguage": "zh",
+    "i18n-ally.keystyle": "nested",
+    "i18n-ally.extract.autoDetect": false,
+    "i18n-ally.enabledParsers": [
+        "json"
+    ]
 }

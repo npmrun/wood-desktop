@@ -1,4 +1,4 @@
-import { spawn } from "child_process"
+import { fork, spawn } from "child_process"
 import * as iconv from "iconv-lite"
 
 export function execa(
@@ -6,10 +6,12 @@ export function execa(
     argu: string[],
     callback?: (err?: any, data?: any, isComplete?: boolean) => void,
     env?: {},
+    cwd?: string,
 ) {
     let myProcess = spawn(command, argu, {
         stdio: "pipe",
         env: env,
+        cwd: cwd,
     })
     myProcess.stdout.on("data", data => {
         callback && callback(null, `${data}`)

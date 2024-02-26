@@ -1,11 +1,11 @@
 import fs from "fs-extra"
 import { app } from "electron"
 import path from "path"
-import setting from "@buildin/share/setting"
-import { cloneDeep } from "lodash"
+import setting from "@buildin/config"
+import { cloneDeep, replace } from "lodash"
 // import { injectable } from "inversify"
 
-type IOnFunc = (n: IConfig, c: IConfig) => void
+type IOnFunc = (n: IConfig, c: IConfig, keys?:(keyof IConfig)[]) => void
 type IT = (keyof IConfig)[] | keyof IConfig | "_"
 
 let storagePath = path.join(app.getPath("documents"), setting.app_title)
@@ -15,22 +15,22 @@ if (process.env.NODE_ENV === "development") {
     storagePath = storagePathDev
 }
 
-const defaultConfig: IConfig = {
-    language: "zh",
-    backup_rule: "0 0/30 * * * ?",
-    "common.theme": "auto",
-    "update.repo": "electron-template",
-    "update.owner": "npmrun",
-    "editor.bg": "",
-    "snippet.storagePath": path.join(storagePath, "./SnippetData"),
-    "bookmark.storagePath": path.join(storagePath, "./BookmarkData"),
-    storagePath,
-}
+let _tempConfig = cloneDeep(setting.default_config as IConfig)
+Object.keys(_tempConfig).forEach(key => {
+    if (typeof _tempConfig[key] === "string" && _tempConfig[key].includes("$storagePath$")) {
+        _tempConfig[key] = _tempConfig[key].replace(/\$storagePath\$/g, storagePath)
+        if (_tempConfig[key] && path.isAbsolute(_tempConfig[key])) {
+            _tempConfig[key] = path.normalize(_tempConfig[key])
+        }
+    }
+})
+
+const defaultConfig: IConfig = _tempConfig
 
 function init(config: IConfig) {
     // 在配置初始化后执行
     Object.keys(config).forEach(key => {
-        if (path.isAbsolute(config[key])) {
+        if (config[key] && path.isAbsolute(config[key])) {
             fs.ensureDirSync(config[key])
         }
     })
@@ -50,7 +50,7 @@ function isEmptyDir(fPath: string) {
 }
 
 class _Settings {
-    private constructor() {}
+    private constructor() { }
     static instance: null | _Settings = null
     static getInstance() {
         if (_Settings.instance == null) {
@@ -77,7 +77,7 @@ class _Settings {
             const k = temp[0]
             const fn = temp[1]
             if (k === "_") {
-                fn(n, c)
+                fn(n, c, keys)
             }
             if (typeof k === "string" && keys.includes(k as keyof IConfig)) {
                 fn(n, c)

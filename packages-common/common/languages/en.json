@@ -1,28 +1,28 @@
 {
-    "title": "enenenene",
-    "setting": {
-        "tabs": {
-            "common": "common",
-            "update": "update"
-        },
-        "language": {
-            "title": "Language",
-            "desc": "Switch Language",
-            "options": {
-                "zh": "Chinese",
-                "en": "English"
-            }
-        },
-        "storagePath": {
-            "title": "Data Storage Path",
-            "desc": "Local Data Storage Path",
-            "buttons": {
-                "select": "Select Path",
-                "open": "Open Path"
-            }
-        }
+  "title": "exeaasdaa33 {name} aaaa",
+  "setting": {
+    "tabs": {
+      "common": "common jhon",
+      "update": "update"
     },
-    "app-menu": {
-        "about": "about"
+    "language": {
+      "title": "Language",
+      "desc": "Switch Language",
+      "options": {
+        "zh": "Chinese",
+        "en": "English"
+      }
+    },
+    "storagePath": {
+      "title": "Data Storage Path",
+      "desc": "Local Data Storage Path",
+      "buttons": {
+        "select": "Select Path",
+        "open": "Open Path"
+      }
     }
+  },
+  "app-menu": {
+    "about": "about"
+  }
 }

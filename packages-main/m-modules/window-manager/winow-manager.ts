@@ -1,8 +1,10 @@
 import { BrowserWindow, BrowserWindowConstructorOptions, app, dialog, shell } from "electron";
-import { cloneDeep, extend } from "lodash"
+import { cloneDeep, merge } from "lodash"
 import { appIconPath } from "@rush/main-common/shared"
-import setting from "@buildin/share/setting"
+import setting from "@buildin/config"
 import { getFileUrl } from "@rush/main-tool";
+import { defaultWindowConfig, getWindowsMap, mainInfo } from "./windowsMap";
+import path from "path";
 
 interface IConfig {
     name: string
@@ -11,29 +13,17 @@ interface IConfig {
     windowOpts: BrowserWindowConstructorOptions
     overideWindowOpts: boolean
     denyWindowOpen: boolean
+    confrimWindowClose: boolean
+    confrimWindowCloseText?: {
+        title: string,
+        message: string,
+        buttons: string[],
+        defaultId: number,
+        cancelId: number,
+    },
 }
 
 type Param = Partial<IConfig> & Required<Pick<IConfig, "name">>
-
-const defaultWindowConfig = {
-    height: 600,
-    useContentSize: true,
-    width: 800,
-    show: true,
-    resizable: true,
-    minWidth: 900,
-    minHeight: 600,
-    // icon: appIconPath,
-    frame: true, // 去除原生的菜单
-    transparent: false, // 背景透明, 会导致窗体没有阴影
-    alwaysOnTop: false,
-    webPreferences: {
-        webviewTag: true,
-        nodeIntegration: true,
-        contextIsolation: true,
-        preload: __appStatic + "/preload.js", // 预加载项
-    },
-}
 
 export default class WindowManager {
     private constructor() { }
@@ -67,14 +57,16 @@ export default class WindowManager {
         this.#showWin(this.#mainInfo)
     }
 
-    showWindow(name: string, winOpts?: BrowserWindowConstructorOptions) {
+    showWindow(name: string, opts?: Partial<IConfig>) {
         let have = false
         for (const key in this.#urlMap) {
             const info = this.#urlMap[key];
             if (new RegExp(key).test(name)) {
+                opts && merge(info, opts)
                 info.name = name
-                if (winOpts) {
-                    info.windowOpts = winOpts
+                if (!info.url) {
+                    dialog.showErrorBox("错误", name + "窗口未提供url")
+                    return
                 }
                 this.#showWin(info)
                 have = true
@@ -108,38 +100,9 @@ export default class WindowManager {
         })
     }
 
-    #mainInfo = {
-        name: "main", // 主窗口key
-        url: getFileUrl("index.html"),
-        windowOpts: {
-            icon: appIconPath,
-        }
-    }
-    #urlMap = {
-        "^about": {
-            "url": getFileUrl("about.html"),
-            overideWindowOpts: true,
-            type: "info",
-            windowOpts: {
-                width: 600,
-                height: 200,
-                minimizable: false,
-                darkTheme: true,
-                modal: true,
-                show: false,
-                resizable: false,
-                icon: appIconPath,
-                // parent: Shared.data.mainWindow as BrowserWindow,
-                webPreferences: {
-                    devTools: false,
-                    enableRemoteModule: false,
-                    sandbox: false,
-                    nodeIntegration: false,
-                    contextIsolation: true,
-                },
-            }
-        }
-    }
+    #mainInfo = mainInfo
+
+    #urlMap = getWindowsMap()
 
     getWndows() {
         return this.#windows
@@ -162,7 +125,15 @@ export default class WindowManager {
         windowOpts: {},
         type: "",
         overideWindowOpts: false,
-        denyWindowOpen: true
+        confrimWindowClose: false,
+        denyWindowOpen: true,
+        confrimWindowCloseText: {
+            title: setting.app_title,
+            defaultId: 0,
+            cancelId: 0,
+            message: "确定要关闭吗？",
+            buttons: ["没事", "直接退出"]
+        },
     }
 
     #add(config: Param) {
@@ -175,8 +146,13 @@ export default class WindowManager {
                 }
             }
         }
-        const browserWin = new BrowserWindow(extend(curConfig.overideWindowOpts ? {} : cloneDeep(defaultWindowConfig), curConfig.windowOpts ?? {}))
+        const privateConfig = merge(curConfig.overideWindowOpts ? {} : cloneDeep(defaultWindowConfig), curConfig.windowOpts ?? {})
+        logger.debug(`当前创建的窗口参数：`)
+        logger.debug(privateConfig)
+        const browserWin = new BrowserWindow(privateConfig)
         browserWin.webContents.setWindowOpenHandler(details => {
+            console.log(details);
+            
             if (curConfig.denyWindowOpen) {
                 return { action: "deny" }
             }
@@ -185,7 +161,11 @@ export default class WindowManager {
         browserWin.$$forceClose = false
         browserWin.$$lastChoice = -1
         browserWin.on("close", (event: any) => {
-            if (curConfig.name !== this.#mainInfo.name) {
+            // if (curConfig.name !== this.#mainInfo.name) {
+            //     this.#onClose(curConfig.name)
+            //     return
+            // }
+            if (!curConfig.confrimWindowClose) {
                 this.#onClose(curConfig.name)
                 return
             }
@@ -197,6 +177,7 @@ export default class WindowManager {
                 // 不要用quit();试了会弹两次
                 browserWin.$$forceClose = true
                 app.quit() // exit()直接关闭客户端，不会执行quit();
+                that.showCurrentWindow()
             }
             if (browserWin.$$forceClose) {
                 that.delete(curConfig.name)
@@ -208,11 +189,11 @@ export default class WindowManager {
                 } else {
                     choice = dialog.showMessageBoxSync(browserWin, {
                         type: "info",
-                        title: setting.app_title,
-                        defaultId: 0,
-                        cancelId: 0,
-                        message: "确定要关闭吗？",
-                        buttons: ["没事", "直接退出"],
+                        title: curConfig.confrimWindowCloseText.title,
+                        defaultId: curConfig.confrimWindowCloseText.defaultId,
+                        cancelId: curConfig.confrimWindowCloseText.cancelId,
+                        message: curConfig.confrimWindowCloseText.message,
+                        buttons: curConfig.confrimWindowCloseText.buttons,
                     })
                 }
                 if (choice === 1) {
@@ -224,7 +205,26 @@ export default class WindowManager {
         })
         browserWin.$$opts = curConfig
         // 在此注册窗口
-        // browserWin.webContents.executeJavaScript(`window._global=${JSON.stringify({ name: curConfig.name })}`)
+        // browserWin.webContents.addListener("did-finish-load", ()=>{
+        //     browserWin.webContents.executeJavaScript(`console.log("did-finish-load")`)
+        //     browserWin.webContents.executeJavaScript(`window._global=${JSON.stringify({ name: curConfig.name })};console.log(_global)`)
+        // })
+        // https://www.electronjs.org/zh/docs/latest/tutorial/security#12-%E5%88%9B%E5%BB%BAwebview%E5%89%8D%E7%A1%AE%E8%AE%A4%E5%85%B6%E9%80%89%E9%A1%B9
+        browserWin.webContents.on('will-attach-webview', (event, webPreferences, params) => {
+
+            if(webPreferences.preload !== path.resolve(app.getAppPath(), "webview.js")) {
+                // 如果未使用，则删除预加载脚本或验证其位置是否合法
+                delete webPreferences.preload
+            }
+        
+            // 禁用 Node.js 集成
+            webPreferences.nodeIntegration = false
+        
+            // 验证正在加载的 URL
+            // if (!params.src.startsWith('https://example.com/')) {
+            //   event.preventDefault()
+            // }
+        })
         if (curConfig.type === "info") {
             // 隐藏菜单
             browserWin.setMenuBarVisibility(false)
@@ -232,7 +232,10 @@ export default class WindowManager {
                 browserWin?.show()
             })
         }
-        curConfig.url && browserWin.loadURL(curConfig.url)
+        if (curConfig.url) {
+            browserWin.loadURL(curConfig.url)
+            logger.debug(`当前窗口网址：${curConfig.url}`)
+        }
         return browserWin
     }
 
@@ -255,6 +258,19 @@ export default class WindowManager {
         return this.#windows.find(v => {
             return v.$$opts.name === name
         })
+    }
+
+    getFocusWindow() {
+        let mainWindow = this.getMainWindow()
+        if (mainWindow.isFocused()) {
+            return mainWindow
+        }
+        for (let i = 0; i < this.#windows.length; i++) {
+            const win = this.#windows[i];
+            if (win.isFocused()) {
+                return win
+            }
+        }
     }
 
     getMainWindow() {

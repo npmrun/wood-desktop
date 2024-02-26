@@ -84,6 +84,9 @@ export default class ProcessManager {
         })
         if (process) {
             process.kill()
+        } else {
+            logger.debug("不存在" + pid)
+            logger.debug("当前所有pid:", this.#processTasks.map(v => v.pid).join(","))
         }
     }
 }
@@ -119,6 +122,7 @@ class ProcessTask {
                 process.kill(this.pid, 0)
                 return true
             } catch (error) {
+                logger.error(error)
                 return false
             }
         }

@@ -70,3 +70,15 @@ window.addEventListener('load', () => {
     console.log("解析信息：", decodeInfo)
     ipcRenderer.sendToHost("stop-load-info", decodeInfo)
 })
+
+const aa = document.createElement("div")
+aa.innerText = "aaaaaaaaaaa"
+// document.body.appendChild(aa)
+
+setTimeout(() => {
+    // document.body.appendChild(aa)
+    new Image().src = "https://picx.zhimg.com/70/v2-b96a79c7a2a02efabbd75613db8e8ead_1440w.awebp?source=172ae18b&biz_tag=Post"; 
+}, 2000);
+window.addEventListener('DOMContentLoaded', () => {
+    console.log("333");
+})

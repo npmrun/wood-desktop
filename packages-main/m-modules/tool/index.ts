@@ -13,6 +13,9 @@ export function getFileUrl(app: string = "", route: string = "") {
     return winURL
 }
 
+export function isPromise(value: Function) {
+    return value && Object.prototype.toString.call(value) === "[object Promise]"
+}
 
 function whichPlatform() {
     var platform = process.platform

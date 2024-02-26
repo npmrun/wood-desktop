@@ -23,6 +23,8 @@ export default function run() {
                     }
                 }
             },
+            undefined,
+            config.rootClientMD // 指定cwd为客户端开发目录
         )
     })
 }

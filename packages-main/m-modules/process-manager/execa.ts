@@ -1,6 +1,6 @@
 // import { spawn } from "cross-spawn"
 import { spawn } from "child_process"
-// import * as iconv from "iconv-lite"
+import * as iconv from "iconv-lite"
 import { URL } from "url"
 import { fork } from "child_process"
 import {npmRunPathEnv} from 'npm-run-path';
@@ -13,9 +13,10 @@ export function execa(
     env?: {},
     cwd?: string | URL
 ) {
+    // cross-spawn退出： https://github.com/kentcdodds/cross-spawn-with-kill
     let myProcess = spawn(command, argu, {
         // https://www.jianshu.com/p/d4d7cf170e79
-        shell: process.platform === 'win32', // 仅在当前运行环境为 Windows 时，才使用 shell
+        shell: process.platform === 'win32', // 仅在当前运行环境为 Windows 时，才使用 shell 会创建cmd.exe，可能导致进程结束了但是效果还在
         stdio: "pipe",
         env: npmRunPathEnv(),
         // env: env,
@@ -28,8 +29,8 @@ export function execa(
         callback && callback(`${err}`)
     })
     myProcess.stderr.on("data", data => {
-        // callback && callback(`${iconv.decode(data, "gbk")}`)
-        callback && callback(`${data}`)
+        callback && callback(`${iconv.decode(data, "gbk")}`)
+        // callback && callback(`${data}`)
     })
 
     myProcess.on("close", code => {
@@ -57,7 +58,7 @@ export function forkFn(
         callback && callback(`${err}`)
     })
     myProcess?.stderr?.on("data", data => {
-        callback && callback(`${data}`)
+        callback && callback(`${iconv.decode(data, "gbk")}`)
     })
 
     myProcess.on("close", code => {

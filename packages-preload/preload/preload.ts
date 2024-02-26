@@ -3,9 +3,9 @@ import { callMethod, callMethodLong, callMethodSync } from "./call"
 import path, { normalize } from "path"
 import url from "url"
 import * as file from "./file"
-import setting from "@buildin/share/setting"
+import setting from "@buildin/config"
 import logger from "electron-log"
-import { MessageManager } from "@rush/common-message-manager/client"
+import { MessageManager } from "@rush/common-message-manager/preload"
 
 MessageManager.init()
 
@@ -79,4 +79,6 @@ const _agent = {
 }
 
 contextBridge.exposeInMainWorld("_agent", _agent)
-contextBridge.exposeInMainWorld("logger", logger.functions)
+
+const clientLog = logger.scope("client")
+contextBridge.exposeInMainWorld("logger", clientLog)

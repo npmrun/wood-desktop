@@ -1,5 +1,5 @@
 import * as builder from "electron-builder"
-import setting from "@buildin/share/setting"
+import setting from "@buildin/config"
 import { rootPath } from "@buildin/share/var"
 import path from "path"
 import fs from "fs-extra"
@@ -34,7 +34,7 @@ const TARGET_PLATFORMS_configs = {
 
 let targets: Record<string, string[]> = {}
 
-if(!process.env.IS_ACTIONS){
+if (!process.env.IS_ACTIONS) {
     targets = {
         win: ["nsis:x64"]
     }
@@ -93,13 +93,12 @@ builder.build({
         ],
         electronDownload: {
             cache: path.join(homedir(), ".electron"),
-            mirror: "https://npm.taobao.org/mirrors/electron/",
+            mirror: "http://npm.taobao.org/mirrors/electron/",
         },
         publish: [
             {
                 provider: 'github',
-                repo: 'electron-template',
-                owner: 'npmrun'
+                ...setting.release.githubProvider
             }
         ],
         // mac: {

@@ -12,5 +12,6 @@ packages:
   - 'packages-render/p-*/*'
   - 'packages-render/muya'
   - 'buildin/*'
+  - 'config'
   # exclude packages that are inside test directories
   - '!**/test/**'

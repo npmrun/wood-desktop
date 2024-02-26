@@ -1,1 +1,0 @@
-module.exports = require("rush/config/config.json")

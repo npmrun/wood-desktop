@@ -1,6 +1,3 @@
-import { ipcRenderer } from "electron"
-import { BIND_WINDOW } from "../common";
-
 class _MessageManager {
     private constructor() { }
     static instance: null | _MessageManager = null
@@ -10,8 +7,10 @@ class _MessageManager {
         }
         return _MessageManager.instance
     }
-    init() {
-        ipcRenderer.send(BIND_WINDOW)
+
+    broadcast(event: string, ...args: any[]) {
+        if (!event) return
+        return _agent.send(event, ...args)
     }
 }
 

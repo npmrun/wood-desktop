@@ -22,17 +22,23 @@ class _MessageManager {
         //     const name = v.webContents.$$senderName
         //     this.#sender[name] = v.webContents
         // })
-        // loggerMain.debug(`已注册的窗口：${Object.keys(this.#sender).join(",")}`)
+        // logger.debug(`已注册的窗口：${Object.keys(this.#sender).join(",")}`)
         // 2. 从渲染层注册
         ipcMain.on(BIND_WINDOW, (ev: IpcMainEvent) => {
             const name = ev.sender.$$senderName
             this.#sender[name] = ev.sender
-            loggerMain.debug(`当前注册窗口：${ev.sender.$$senderName}，已注册的窗口：${Object.keys(this.#sender).join(",")}`)
+            logger.debug(`当前注册窗口：${ev.sender.$$senderName}，已注册的窗口：${Object.keys(this.#sender).join(",")}`)
         })
     }
 
     broadcast(event: string, ...args: any[]) {
         webContents.getAllWebContents().forEach(browser => browser.send(event, ...args))
+    }
+
+    on(event: string, listener: (event: Electron.IpcMainEvent, ...args: any[]) => void) {
+        return ipcMain.on(event, (event, ...args: any[]) => {
+            listener(event, ...args)
+        })
     }
 }
 

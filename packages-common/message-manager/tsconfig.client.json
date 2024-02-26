@@ -1,24 +1,35 @@
 {
-    "extends": "@buildin/tsconfig/tsconfig.json",
+    // "extends": "@rush/render/tsconfig.json",
     "compilerOptions": {
         "composite": true,
-        "target": "ESNext",
-        "useDefineForClassFields": true,
-        "module": "ESNext",
-        "lib": ["ES2020", "DOM", "DOM.Iterable"],
-        "skipLibCheck": true,
-        /* Bundler mode */
-        "moduleResolution": "Node",
-        "allowImportingTsExtensions": true,
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "noEmit": true,
-        "jsx": "preserve",
-        /* Linting */
-        "strict": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "noFallthroughCasesInSwitch": true
+        // "target": "ESNext",
+        // "useDefineForClassFields": true,
+        // "module": "ESNext",
+        // "lib": [
+        //     "ES2020",
+        //     "DOM",
+        //     "DOM.Iterable"
+        // ],
+        "types": [
+            "@rush/render/src/vite-env"
+        ],
+        // "skipLibCheck": true,
+        // /* Bundler mode */
+        // "moduleResolution": "Node",
+        // "allowImportingTsExtensions": true,
+        // "resolveJsonModule": true,
+        // "isolatedModules": true,
+        // "noEmit": true,
+        // "jsx": "preserve",
+        // /* Linting */
+        // "strict": true,
+        // "noUnusedLocals": true,
+        // "noUnusedParameters": true,
+        // "noFallthroughCasesInSwitch": true
     },
-    "include": ["client/**/*.ts", "common/**/*.ts"]
+    "include": [
+        "./client/**/*.ts",
+        "./common/**/*.ts",
+        "./preload/**/*.ts"
+    ]
 }

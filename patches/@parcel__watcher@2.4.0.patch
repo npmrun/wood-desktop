@@ -1,0 +1,13 @@
+diff --git a/index.js b/index.js
+index 4929c54149d224f6e8deb606fc866771f7b0c7aa..af755b41332e8a980430371018fb21ecbbf6c4e9 100644
+--- a/index.js
++++ b/index.js
+@@ -12,7 +12,7 @@ if (process.platform === 'linux') {
+ 
+ let binding;
+ try {
+-  binding = require(name);
++  binding = require("@parcel/watcher-win32-x64");
+ } catch (err) {
+   try {
+     binding = require('./build/Release/watcher.node');

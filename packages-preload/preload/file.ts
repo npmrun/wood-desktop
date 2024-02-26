@@ -150,3 +150,20 @@ export function readFolderToTree(folderPath, fn?:(node: any)=>boolean) {
     })
     return tree
 }
+
+export function savaFileByData(img_path: string, imgData: any) {
+    return new Promise<void>((resolve, reject) => {
+        let target = path.resolve(img_path)
+        let p = path.parse(target)
+        if (!fs.existsSync(p.dir)) {
+            fs.mkdirSync(p.dir, { recursive: true })
+        }
+        fs.writeFile(target, imgData, function (err: Error | null) {
+            if (err) {
+                reject(err)
+                return
+            }
+            resolve()
+        })
+    })
+}

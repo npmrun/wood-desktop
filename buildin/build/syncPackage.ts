@@ -1,5 +1,5 @@
 
-import setting from "@buildin/share/setting"
+import setting from "@buildin/config"
 import { rootPath } from "@buildin/share/var"
 import path from "path"
 import fs from "fs-extra"

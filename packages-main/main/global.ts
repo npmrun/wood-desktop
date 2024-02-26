@@ -3,8 +3,11 @@ import { Settings } from "@rush/main-config"
 import WindowManager from "@rush/main-window-manager"
 import ProcessManager from "@rush/main-process-manager"
 import LogManager from "@rush/main-log-manager"
-import { app, ipcMain } from "electron"
+import { app, ipcMain, net, protocol } from "electron"
 import { MessageManager } from "@rush/common-message-manager/main"
+import { initCommands, initPrase } from "./parseCommand"
+import { initPopup } from "./popup"
+import path from "path"
 
 export function initGlobal() {
     /**
@@ -27,10 +30,21 @@ export function initGlobal() {
      */
     MessageManager.init()
 
+    initPrase()
+    initCommands()
+
+    initPopup()
+
     ipcMain.on("runCommand", (ev, command, cwd: string, isLazy: boolean) => {
         console.log(command);
         if (command) {
             ProcessManager.create(command, cwd, isLazy)
+        }
+    })
+    ipcMain.on("forceKillByPid", (ev, pid) => {
+        console.log(pid);
+        if (pid) {
+            ProcessManager.forceKillByPid(pid)
         }
     })
     ipcMain.on("killByPid", (ev, pid) => {
@@ -44,7 +58,12 @@ export function initGlobal() {
    * 当运行了第两个应用程序时执行app.requestSingleInstanceLock()时触发
    */
     app.on("second-instance", () => {
-
+        let mainWindow = WindowManager.getMainWindow()
+        if (mainWindow) {
+            if (mainWindow.isMinimized()) mainWindow.restore()
+            mainWindow.focus()
+            mainWindow.show()
+        }
     })
     /**
      * 当应用程序完成初始化之后执行一次
@@ -52,6 +71,14 @@ export function initGlobal() {
     app.on("ready", () => {
         WindowManager.showMainWindow()
         // showMainWindow()
+
+
+        // 处理rush-file协议
+        // https://electron.nodejs.cn/docs/latest/api/protocol/
+        protocol.handle('rush-file', (request) => {
+            const absolutePath = path.resolve(Settings.values("storagePath"), "./file", request.url.slice('rush-file://'.length))
+            return net.fetch('file://' + absolutePath)
+        })
     })
 
     /**
@@ -59,7 +86,9 @@ export function initGlobal() {
      * 如果开发者调用了app.quit()，程序会自动关闭所有窗口，并且回调will-quit事件，不会回调该事件
      */
     app.on("window-all-closed", () => {
-
+        // 可以在这里面清理创建的子进程
+        if (process.platform !== "darwin") {
+            app.exit()
+        }
     })
-
 }

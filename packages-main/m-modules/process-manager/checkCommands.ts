@@ -1,6 +1,6 @@
 import { isDev } from "@rush/main-tool"
 import { rootPath, distPath } from "@buildin/share/var"
-import { app } from "electron"
+import fs from "fs-extra"
 import path from "path"
 
 const resolvePath = (...argu: string[]) => {
@@ -25,8 +25,11 @@ const commands = {
 
 export function checkCommand(str: string) {
     const p = commands[str]
-    if (p) {
+    const isExist = fs.pathExistsSync(p)
+    if (p && isExist) {
         return p
+    } else {
+        console.log(`不存在${str}命令:${p}`);
     }
 }
 

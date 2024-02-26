@@ -14,7 +14,8 @@ import {
     mainWebpackName,
     mainWebpackOutput,
     buildExternals,
-    preloadTsConfig
+    preloadTsConfig,
+    clientCMD
 } from "@buildin/share/var"
 
 export { preloadTsConfig }
@@ -22,6 +23,7 @@ export { preloadTsConfig }
 const config = {
     rootPath: rootPath,
     rootViteCMD: viteCMD,
+    rootClientMD: clientCMD,
     rootViteConfig: viteConfig,
     rootElectronCMD: electron as unknown as string,
     rootElectronEntry: electronEntry,

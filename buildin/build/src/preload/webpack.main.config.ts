@@ -39,7 +39,7 @@ let mainConfig = {
     },
     output: {
         filename: perloadWebpack.outputName, // [name]
-        libraryTarget: "commonjs2",
+        libraryTarget: "commonjs", // commonjs2会导致webview的preload加载报错
         path: perloadWebpack.outputPath,
     },
     plugins: [new webpack.NoEmitOnErrorsPlugin()],
