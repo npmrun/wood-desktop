@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { PopupMenu } from "@/bridge/PopupMenu"
 import FileTree from "./_components/FileTree/FileTree.vue"
-import { findNode, findPath, findPathAll } from "@rush/common/utils/treeHelper"
+import { findNode, findPath } from "@rush/common/utils/treeHelper"
 import { INiuTreeKey, convert, findByKeyParent, ENiuTreeStatus } from "princess-ui"
 import { INiuTreeData, convertTreeData } from "princess-ui"
 import CodeEditor from "./_components/CodeEditor/code-editor.vue"
@@ -9,11 +9,10 @@ import MdEditor from "./_components/MdEditor/MdEditor.vue"
 import AdjustLine from "@/components/AdjustLine/AdjustLine.vue"
 import { toast } from "vue3-toastify"
 import Preview from "./_components/Preview/Preview.vue"
+import params from "./params.json"
 
-defineOptions({
-    url: "/Template/ControlTree",
-    title: "控制树"
-})
+defineOptions(params)
+
 const ppp: any = {
     viewerEffect({ markdownBody }: any) {
 

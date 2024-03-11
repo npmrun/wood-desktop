@@ -1,10 +1,8 @@
 <script lang="ts" setup>
 import Dialog from "./_components/Dialog/Dialog.vue"
+import params from "./params.json"
 
-defineOptions({
-    url: "/Template/MutliDialog",
-    title: "嵌套对话框"
-})
+defineOptions(params)
 
 const showDialog = ref(false)
 const showDialog2 = ref(false)

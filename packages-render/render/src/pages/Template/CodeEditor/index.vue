@@ -1,10 +1,8 @@
 <script lang="ts" setup>
 import CodeEditor from "./_components/CodeEditor/code-editor.vue"
+import params from "./params.json"
 
-defineOptions({
-    url: "/Template/CodeEditor",
-    title: "编辑器"
-})
+defineOptions(params)
 
 const configStore = useConfigStore()
 </script>

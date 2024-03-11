@@ -88,6 +88,13 @@ export let windowsMenu: any[] = [
             //     },
             // },
             {
+                label: "重启",
+                click: function (item: any, focusedWindow: BrowserWindow) {
+                    app.relaunch()
+                    app.exit()
+                },
+            },
+            {
                 label: "最小化到托盘",
                 click: function (item: any, focusedWindow: BrowserWindow) {
                     // Shared.data.lastChoice = 1

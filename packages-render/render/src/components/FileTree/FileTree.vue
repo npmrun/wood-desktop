@@ -1,7 +1,8 @@
 <template>
     <div ref="filetree" style="height: 100%;">
         <ps-tree v-bind="props" :dropFn="dropFn" @expand="$attrs.onExpand as any" @itemDragstart="onItemDragstart"
-            @itemDragend="onItemDragend" @itemDrop="onItemDrop" @click="clickItem" auto-expand>
+            @itemDragend="onItemDragend" @itemDrop="onItemDrop" @click="clickItem" auto-expand
+            @change="() => emit('change')">
             <template #default="data">
                 <item :hideExt="hideExt" @click.stop="clickNode($event, data.data)" @change="() => emit('change')"
                     @contextmenu.stop="onContextMenu($event, data.data)" :active-keys="activeKeys" :open-key="openKey"

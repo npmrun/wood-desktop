@@ -1,4 +1,4 @@
-const allModules = import.meta.glob("./*/index.vue", { eager: true })
+const allModules = import.meta.glob("./*/params.json", { eager: true })
 
 export const moduleArray: any[] = []
 

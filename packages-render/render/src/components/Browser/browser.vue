@@ -18,6 +18,7 @@ const emits = defineEmits<{
     (ev: "leftmenu"): void
     (ev: "collect", url: string): void
     (ev: "load-page", url: string): void
+    (ev: "webinfo", websiteInfo: typeof state['websiteInfo'],url: string): void
 }>()
 
 const matchCustomUrl = {
@@ -158,6 +159,7 @@ onMounted(() => {
             if (event.channel === "stop-load-info") {
                 state.websiteInfo = event.args[0]
                 state.isLoadingWebsiteInfo = false
+                emits('webinfo', toRaw(state.websiteInfo), state.curWebviewUrl)
             }
         })
         we.addEventListener('did-start-loading', function () {
@@ -231,6 +233,9 @@ function clickForward() {
 defineExpose({
     update() {
         clickRefresh()
+    },
+    getWebInfo(){
+        return state.websiteInfo
     },
     loadURL(url: string) {
         toPage(url)

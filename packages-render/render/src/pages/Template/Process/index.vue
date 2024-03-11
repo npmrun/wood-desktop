@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-defineOptions({
-    url: "/Template/Process",
-    title: "进程管理"
-})
+import params from "./params.json"
+
+defineOptions(params)
 
 const command = ref("")
 const pid = ref("")

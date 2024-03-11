@@ -11,6 +11,7 @@ import { createSvgIconsPlugin } from "vite-plugin-svg-icons"
 import setting from "@buildin/config"
 import vueI18n from "@intlify/unplugin-vue-i18n/vite"
 import monacoEditorPlugin from "vite-plugin-monaco-editor"
+import Components from 'unplugin-vue-components/vite'
 
 const port = process.env.PORT ?? 3344
 
@@ -59,6 +60,9 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
         imports: ["vue", "vue-router", "pinia", "@vueuse/core", "vue-i18n"],
         dts: "auto-import.d.ts",
         dirs: ["src/hooks", "src/store/module"],
+      }),
+      Components({
+        dirs: ['src/componentsAuto'],
       }),
       createSvgIconsPlugin({
         // 指定需要缓存的图标文件夹

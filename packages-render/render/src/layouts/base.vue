@@ -71,7 +71,6 @@ const activeTab = ref<string | number>(-1)
 const TopMenu = globalStore.topMenu
 const SysMenu = globalStore.bottomMenu
 watch(() => router.currentRoute.value, (route) => {
-    console.log(route.path);
 
     for (let i = 0; i < TopMenu.length; i++) {
         const element = TopMenu[i];

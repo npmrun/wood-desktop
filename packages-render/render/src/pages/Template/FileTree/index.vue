@@ -1,11 +1,9 @@
 <script lang="ts" setup>
 import { convertTreeData, INiuTreeData, INiuTreeKey } from "princess-ui"
 import FileTree from "./_components/FileTree/FileTree.vue"
+import params from "./params.json"
 
-defineOptions({
-    url: "/Template/FileTree",
-    title: "文件树"
-})
+defineOptions(params)
 
 const state = reactive<{
     filelist: any[]

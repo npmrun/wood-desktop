@@ -60,7 +60,8 @@ function getIcons() {
     return icons
 }
 ipcRenderer.sendToHost("start-load-info")
-window.addEventListener('load', () => {
+
+window.addEventListener('DOMContentLoaded', () => {
     const favicons = getIcons()
     const decodeInfo = {
         title: document.title,

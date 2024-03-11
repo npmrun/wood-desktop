@@ -30,7 +30,6 @@
                 >
                     <!-- v-if="data.isFolder && (!data.isExpand || data.children?.length===0)" -->
                     <svg-icon
-                        
                         v-if="data.isFolder && (!data.isExpand)"
                         :name="getIcon(data)"
                         style="width: 100%; height: 100%"
@@ -41,8 +40,9 @@
                         :name="getIcon(data)"
                         style="width: 100%; height: 100%"
                     ></svg-icon>
+                    <img v-if="data.isFile && data.data?.favicon" :src="data.data.favicon" style="width: 100%; height: 100%">
                     <svg-icon
-                        v-if="data.isFile"
+                        v-else-if="data.isFile"
                         :name="getIcon(data)"
                         style="width: 100%; height: 100%"
                     ></svg-icon>
@@ -206,7 +206,7 @@ function onExpand(data: INiuTreeData) {
     // 没有子文件应该也能展开
     // if(data.isFolder && data.children?.length === 0) return
     data.isExpand = !data.isExpand
-    emits("change")
+    // emits("change")
 }
 
 function clickTitle(e: Event, data: INiuTreeData) {
