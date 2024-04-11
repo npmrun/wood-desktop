@@ -9,6 +9,7 @@ import path from "path";
 interface IConfig {
     name: string
     url: string
+    loadURLInSameWin?: boolean
     type: "info" | ""
     windowOpts: BrowserWindowConstructorOptions
     overideWindowOpts: boolean
@@ -47,6 +48,9 @@ export default class WindowManager {
             if (this.#windows[index].isDestroyed()) {
                 this.#windows[index] = WindowManager.getInstance().#add(info)
             } else {
+                if(info.url && info.loadURLInSameWin){
+                    this.#windows[index].loadURL(info.url)
+                }
                 this.#windows[index].show()
             }
         }

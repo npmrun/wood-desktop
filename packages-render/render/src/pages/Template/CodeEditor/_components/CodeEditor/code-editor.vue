@@ -160,9 +160,9 @@ onBeforeUnmount(() => {
     }
 })
 const style = computed(() => {
-    if (props.logo && props.logoType === "bg") {
+    if (props.logoType === "bg") {
         return {
-            backgroundImage: `url(${props.logo})`,
+            backgroundImage: `url(${getLogo.value})`,
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center center",

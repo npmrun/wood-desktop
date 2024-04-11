@@ -205,7 +205,7 @@ export let windowsMenu: any[] = [
             {
                 label: "关于我",
                 click(item: any, focusedWindow: BrowserWindow) {
-                    WindowManager.showWindow("about")
+                    WindowManager.showWindow("about1")
                     // https://www.electronjs.org/docs/api/browser-window#winsetmenubarvisibilityvisible-windows-linux
                     // showAboutWindow()
                 }

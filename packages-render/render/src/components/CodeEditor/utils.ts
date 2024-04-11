@@ -1,14 +1,15 @@
 export function judgeFile(filename: string) {
     if (!filename) return
     let ext = [
-        { language: 'vue', ext: '.vue', index: -1 },
-        { language: 'javascript', ext: '.js', index: -1 },
-        { language: 'css', ext: '.css', index: -1 },
-        { language: 'html', ext: '.html', index: -1 },
-        { language: 'tsx', ext: '.tsx', index: -1 },
-        { language: 'typescript', ext: '.ts', index: -1 },
-        { language: 'markdown', ext: '.md', index: -1 },
-        { language: 'dot', pre: '.', index: -1 },
+        { language: "vue", ext: ".vue", index: -1 },
+        { language: "javascript", ext: ".js", index: -1 },
+        { language: "css", ext: ".css", index: -1 },
+        { language: "html", ext: ".html", index: -1 },
+        { language: "tsx", ext: ".tsx", index: -1 },
+        { language: "typescript", ext: ".ts", index: -1 },
+        { language: "markdown", ext: ".md", index: -1 },
+        { language: "json", ext: ".json", index: -1 },
+        { language: "dot", pre: ".", index: -1 },
     ]
     let cur
     for (let i = 0; i < ext.length; i++) {

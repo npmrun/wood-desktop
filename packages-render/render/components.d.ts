@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    CodeEditor: typeof import('./src/pages-ui/CodeEditor/index.vue')['default']
     Dialog: typeof import('./src/componentsAuto/Dialog/Dialog.vue')['default']
     IPhone: typeof import('./src/componentsAuto/IPhone/IPhone.vue')['default']
     Mask: typeof import('./src/componentsAuto/Dialog/Mask.vue')['default']

@@ -62,7 +62,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
         dirs: ["src/hooks", "src/store/module"],
       }),
       Components({
-        dirs: ['src/componentsAuto'],
+        dirs: ['src/componentsAuto','src/pages-ui'],
       }),
       createSvgIconsPlugin({
         // 指定需要缓存的图标文件夹

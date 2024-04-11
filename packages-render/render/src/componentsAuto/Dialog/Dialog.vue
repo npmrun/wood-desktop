@@ -1,5 +1,5 @@
 <template>
-    <teleport :to="to" :disabled="disabled">
+    <teleport :to="to" :disabled="computedDisabled">
         <transition :name="maskAnimComputed">
             <Mask is-render v-model:show="isShow"></Mask>
         </transition>
@@ -14,10 +14,11 @@
         </div>
     </teleport>
 </template>
- 
+
 <script lang="ts" setup>
-import { onMounted, watch, ref, nextTick } from 'vue'
+import { onMounted, watch, ref, nextTick, provide, inject, computed } from 'vue'
 import Mask from './Mask.vue'
+import { DialogToken } from './Token';
 
 function setStyle(el: HTMLElement, css: Partial<CSSStyleDeclaration>) {
     for (const key in css) {
@@ -52,6 +53,15 @@ const props = withDefaults(defineProps<{
 const emits = defineEmits<{
     (e: "update:show", isShow: boolean): void
 }>()
+
+const isInDialog = inject(DialogToken, false)
+
+const computedDisabled = computed(() => {
+    return isInDialog ? true : props.disabled
+})
+if (!isInDialog) {
+    provide(DialogToken, true)
+}
 
 const maskAnimComputed = computed(() => {
     return props.animation ? "mask-fade" : undefined
@@ -158,7 +168,8 @@ $dialogtime: 0.2s;
     // 用定位方便一点但是无法用transform动画
     &.center {
         display: flex;
-        align-items: flex-end;
+        // align-items: flex-end;
+        align-items: center;
         justify-content: center;
         overflow: auto;
 
@@ -171,7 +182,8 @@ $dialogtime: 0.2s;
         display: flex;
         align-items: flex-end;
         overflow: hidden;
-        .dialog__content {
+
+        > .dialog__content {
             width: 100%;
         }
     }

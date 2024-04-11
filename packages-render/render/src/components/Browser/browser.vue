@@ -291,16 +291,17 @@ function clickOpenBrowser() {
 function clickOpenWindow() {
     _agent.call("createWindow", {
         windowOpts: {
-            // title: "aaaa",
+            title: state.curWebviewUrl,
             // icon: "https://bulma.io/favicons/apple-touch-icon.png"
         },
         denyWindowOpen: false,
         url: state.curWebviewUrl,
+        loadURLInSameWin: true,
         confrimWindowCloseText: {
             title: "退出",
             defaultId: 0,
             cancelId: 0,
-            message: "你要退出百度吗？",
+            message: "你要退出此窗口吗？",
             buttons: ["没事", "直接退出"]
         },
     })

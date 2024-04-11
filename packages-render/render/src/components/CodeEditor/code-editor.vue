@@ -3,18 +3,23 @@ import { judgeFile } from "./utils"
 import { monaco } from "./monaco"
 import { computed, getCurrentScope, onBeforeUnmount, onMounted, onScopeDispose, ref, watch } from "vue"
 import DefaultLogo from "./120x120.png"
+import { PlaceholderContentWidget } from "./PlaceholderContentWidget";
 const editorRef = ref<HTMLDivElement>()
 let editor: monaco.editor.IStandaloneCodeEditor | null = null
+let placeholderWidget: PlaceholderContentWidget | null = null
 const props = withDefaults(
     defineProps<{
         modelValue?: string
         name?: string
         logoType?: "bg" | "logo"
         logo?: string
+        placeholder?: string
         fontFamily?: string
+        readonly?: boolean
     }>(),
     {
         logo: DefaultLogo,
+        readonly: false,
         logoType: "logo",
         modelValue: "",
         name: "",
@@ -26,6 +31,9 @@ const emit = defineEmits<{
     (e: "cursor:position", position: [number, number]): void
 }>()
 defineExpose({
+    scrollTop(){
+        editor?.setScrollTop(0)
+    },
     insertText(text: string, type = "cursor") {
         if (editor) {
             let m = editor.getModel()
@@ -106,6 +114,7 @@ onMounted(() => {
         editor = monaco.editor.create(editorRef.value, {
             theme: "vs-light",
             fontFamily: props.fontFamily ?? "Cascadia Mono, Consolas, 'Courier New', monospace",
+            readOnly: props.readonly,
             minimap: {
                 autohide: true,
             }
@@ -115,6 +124,19 @@ onMounted(() => {
         })
         editorRef.value.addEventListener("resize", resizeLayout)
     }
+    watch(() => props.placeholder, () => {
+        if (editor) {
+            if (placeholderWidget) {
+                placeholderWidget.dispose()
+                placeholderWidget = null
+            }
+            if (props.placeholder) {
+                placeholderWidget = new PlaceholderContentWidget(props.placeholder, editor);
+            }
+        }
+    }, {
+        immediate: true
+    })
     // 如果不需要从动态外部更改代码的话应该就不需要这个
     watch(
         () => props.modelValue,
@@ -137,6 +159,13 @@ onMounted(() => {
         },
         { immediate: true },
     )
+    watch(() => props.readonly, () => {
+        if (editor) {
+            editor.updateOptions({
+                readOnly: props.readonly
+            })
+        }
+    })
     watch(() => props.fontFamily, () => {
         if (editor) {
             editor.updateOptions({

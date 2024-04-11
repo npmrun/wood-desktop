@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import Dialog from "./_components/Dialog/Dialog.vue"
 import params from "./params.json"
 
 defineOptions(params)
@@ -36,7 +35,7 @@ const showDialog3 = ref(false)
                     <div class="flex-1 w-0">
                         提示22
                     </div>
-                    <button class="delete" @click="showDialog = false"></button>
+                    <button class="delete" @click="showDialog2 = false"></button>
                 </div>
                 <div class="text-size-16px p-12px flex-1">
                     <p>您的设置尚未保存，请先确认</p>
@@ -54,7 +53,7 @@ const showDialog3 = ref(false)
                         <div class="flex-1 w-0">
                             提示22
                         </div>
-                        <button class="delete" @click="showDialog = false"></button>
+                        <button class="delete" @click="showDialog3 = false"></button>
                     </div>
                     <div class="text-size-16px p-12px flex-1">
                         <p>您的设置尚未保存，请先确认</p>

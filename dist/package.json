@@ -1,5 +1,5 @@
 {
-    "name": "genial",
+    "name": "Perfect-Desktop",
     "description": "个人专属应用，打造属于自己的完美工具箱。",
     "author": "npmrun",
     "main": "./electron/entry.js",

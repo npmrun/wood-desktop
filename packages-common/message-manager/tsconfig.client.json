@@ -11,7 +11,7 @@
         //     "DOM.Iterable"
         // ],
         "types": [
-            "@rush/render/src/vite-env"
+            "@rush/render/vite-env"
         ],
         // "skipLibCheck": true,
         // /* Bundler mode */

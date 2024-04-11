@@ -29,5 +29,6 @@ out
 dist/electron
 dist/scripts
 dist/package-lock.json
+dist/package.json
 files
 extra/app-opendir

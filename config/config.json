@@ -1,12 +1,12 @@
 {
-    "app_title": "genial",
+    "app_title": "wood-desktop",
     "app_desc": "个人专属应用，打造属于自己的完美工具箱。",
     "app_author": "npmrun",
     "app_version": "0.0.1-beta.1",
-    "app_scheme": "genial",
+    "app_scheme": "wood",
     "release": {
         "githubProvider": {
-            "repo": "electron-template",
+            "repo": "wood-desktop",
             "owner": "npmrun"
         }
     },
@@ -17,7 +17,7 @@
         "editor.bg": "",
         "editor.logoType": "logo",
         "editor.fontFamily": "Cascadia Mono, Consolas, 'Courier New', monospace",
-        "update.repo": "electron-template",
+        "update.repo": "wood-desktop",
         "update.owner": "npmrun"
     }
 }
