@@ -11,7 +11,7 @@
                 </select>
             </div>
         </SettingItem> -->
-        <SettingItem title="语言" desc="切换语言显示" :red-border="!configStore.isSameOne('language')">
+        <SettingItem :title="$t('setting.language.title')" :desc="$t('setting.language.desc')" :red-border="!configStore.isSameOne('language')">
             <div class="!max-w-320px !min-w-320px select">
                 <select :value="configStore.language"
                     @change="(e: any) => configStore.setConfig('language', e.target.value)" class="w-full max-w-xs">
@@ -20,10 +20,10 @@
                 </select>
             </div>
         </SettingItem>
-        <SettingItem title="数据保存路径" desc="本地数据保存地址" :red-border="!configStore.isSameOne('storagePath')">
+        <SettingItem :title="$t('setting.storagePath.title')" :desc="$t('setting.storagePath.desc')" :red-border="!configStore.isSameOne('storagePath')">
             <div class="mb-8px flex gap-8px">
-                <button class="button is-light" @click="chooseDir(configStore.storagePath)"> 选择目录 </button>
-                <button class="button is-light" @click="openDir(configStore.storagePath)">打开目录</button>
+                <button class="button is-light" @click="chooseDir(configStore.storagePath)"> {{ $t('setting.storagePath.buttons.select') }} </button>
+                <button class="button is-light" @click="openDir(configStore.storagePath)">{{ $t('setting.storagePath.buttons.open') }}</button>
             </div>
             <div class="whitespace-nowrap flex">
                 <div class="!min-w-320px !max-w-550px hover:flex-1 hover:w-0" style="transition: flex .5s linear;">
@@ -43,43 +43,6 @@
                 </div>
             </div>
         </SettingItem> -->
-        <SettingItem title="编辑器背景" desc="改变编辑器背景"
-            :red-border="!configStore.isSameOne('editor.bg') || !configStore.isSameOne('editor.logoType')">
-            <div class="whitespace-nowrap flex mb-2">
-                <div class="!min-w-320px !max-w-550px hover:flex-1 hover:w-0" style="transition: flex .5s linear;">
-                    <div class="control">
-                        <label class="radio">
-                            <input type="radio" name="logo"
-                                :checked="configStore['editor.logoType'] === 'logo' ? true : false"
-                                @change="(e: any) => configStore.setConfig('editor.logoType', 'logo')">
-                            LOGO
-                        </label>
-                        <label class="radio">
-                            <input type="radio" name="bg" :checked="configStore['editor.logoType'] === 'bg' ? true : false"
-                                @change="(e: any) => configStore.setConfig('editor.logoType', 'bg')">
-                            BG
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="whitespace-nowrap flex">
-                <div class="!min-w-320px !max-w-550px hover:flex-1 hover:w-0" style="transition: flex .5s linear;">
-                    <input spellcheck="false" :value="configStore['editor.bg']" :title="configStore['editor.bg']"
-                        @change="(e: any) => configStore.setConfig('editor.bg', e.target.value)"
-                        class="input input-bordered w-full" type="text" placeholder="请输入图片链接">
-                </div>
-            </div>
-        </SettingItem>
-        <SettingItem title="编辑器字体" desc="改变编辑器字体" :red-border="!configStore.isSameOne('editor.fontFamily')">
-            <div class="whitespace-nowrap flex">
-                <div class="!min-w-320px !max-w-550px hover:flex-1 hover:w-0" style="transition: flex .5s linear;">
-                    <input spellcheck="false" :value="configStore['editor.fontFamily']"
-                        :title="configStore['editor.fontFamily']"
-                        @change="(e: any) => configStore.setConfig('editor.fontFamily', e.target.value)"
-                        class="input input-bordered w-full" type="text" placeholder="请输入字体">
-                </div>
-            </div>
-        </SettingItem>
         <!-- <SettingItem v-if="isDev" title="代码片段保存位置" desc="用于储存代码片段"
             :red-border="!configStore.isSameOne('snippet.storagePath')">
             <button class="button is-light mb-8px" @click="chooseSnippetDataDir(configStore['snippet.storagePath'])"> 选择目录

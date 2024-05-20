@@ -10,5 +10,7 @@ export async function openDir(path: string){
 }
 
 export function showItemInFolder(fullPath: string){
+    console.log(fullPath);
+    
     return shell.showItemInFolder(path.normalize(fullPath))
 }

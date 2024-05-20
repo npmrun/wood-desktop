@@ -1,9 +1,41 @@
 {
     "title": "aaaaaa2 {name} bbbb",
     "setting": {
+        "tips": {
+          "notSave": "未保存"
+        },
         "tabs": {
             "common": "通用",
+            "editor": "编辑器",
             "update": "更新"
+        },
+        "update": {
+            "author": {
+                "title": "作者",
+                "desc": "更新的仓库作者",
+                "placeholder": "请输入作者"
+            },
+            "repo": {
+                "title": "仓库",
+                "desc": "更新的仓库",
+                "placeholder": "请输入仓库"
+            },
+            "version": {
+                "title": "检查更新",
+                "desc": "当前版本："
+            }
+        },
+        "editor": {
+            "bg": {
+                "title": "背景",
+                "desc": "改变编辑器背景",
+                "placeholder": "请输入图片链接"
+            },
+            "font": {
+                "title": "字体",
+                "desc": "改变编辑器字体",
+                "placeholder": "请输入字体"
+            }
         },
         "language": {
             "title": "语言",

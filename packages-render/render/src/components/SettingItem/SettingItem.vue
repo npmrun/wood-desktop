@@ -6,6 +6,12 @@ withDefaults(defineProps<{
 }>(), {
 
 })
+
+const { t } = useI18n()
+
+const notSave = computed(() => {
+    return `'${t('setting.tips.notSave')}'`
+})
 </script>
 <template>
     <div class="mb-35px" :class="[redBorder && 'notsave']">
@@ -34,7 +40,7 @@ withDefaults(defineProps<{
     }
 
     &::after {
-        content: "未保存";
+        content: v-bind(notSave);
         position: absolute;
         right: 0;
         top: 0;
@@ -45,5 +51,3 @@ withDefaults(defineProps<{
     }
 }
 </style>
-
-

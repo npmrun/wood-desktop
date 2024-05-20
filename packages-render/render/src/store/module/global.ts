@@ -14,6 +14,7 @@ function getID() {
 let topMenu = [
     { key: getID(), title: "首页", url: "/home" },
     { key: getID(), title: "工具", url: "/tools" },
+    { key: getID(), title: "代码片段", url: "/snippet/snippet" },
     { key: getID(), title: "模板", url: "/Template" },
 ]
 

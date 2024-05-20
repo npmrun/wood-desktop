@@ -8,6 +8,7 @@ import { MessageManager } from "@rush/common-message-manager/main"
 import { initCommands, initPrase } from "./parseCommand"
 import { initPopup } from "./popup"
 import path from "path"
+import config from "@buildin/config"
 
 export function initGlobal() {
     /**
@@ -72,11 +73,10 @@ export function initGlobal() {
         WindowManager.showMainWindow()
         // showMainWindow()
 
-
-        // 处理rush-file协议
+        // wood-file协议
         // https://electron.nodejs.cn/docs/latest/api/protocol/
-        protocol.handle('rush-file', (request) => {
-            const absolutePath = path.resolve(Settings.values("storagePath"), "./file", request.url.slice('rush-file://'.length))
+        protocol.handle(`${config.app_scheme}-file`, (request) => {
+            const absolutePath = path.resolve(Settings.values("storagePath"), "./file", request.url.slice(`${config.app_scheme}-file://`.length))
             return net.fetch('file://' + absolutePath)
         })
     })

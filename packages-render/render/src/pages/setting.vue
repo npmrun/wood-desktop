@@ -88,10 +88,13 @@ async function save() {
 
 const activeTab = ref(0)
 
+const { t } = useI18n()
+
 const TopMenu = computed<any[]>(() => {
     return [
-        { key: 0, title: "通用", url: "/setting" },
-        { key: 1, title: "更新", url: "/setting/update" },
+        { key: 0, title: t('setting.tabs.common'), url: "/setting" },
+        { key: 1, title: t('setting.tabs.editor'), url: "/setting/editor" },
+        { key: 2, title: t('setting.tabs.update'), url: "/setting/update" },
     ]
 })
 

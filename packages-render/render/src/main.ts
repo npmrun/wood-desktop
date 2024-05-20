@@ -11,6 +11,7 @@ import 'virtual:svg-icons-register'
 
 import router from "@/router"
 import pinia from "@/store"
+import directive from "@/directive"
 
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -23,6 +24,7 @@ app.use(Vue3Toasity, {
     hideProgressBar: true,
     autoClose: 3000,
 })
+app.use(directive)
 app.use(pinia)
 app.use(router)
 app.use(i18n)

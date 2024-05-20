@@ -1,9 +1,42 @@
 {
   "title": "exeaasdaa33 {name} aaaa",
   "setting": {
+    "tips": {
+      "notSave": "not save"
+    },
     "tabs": {
-      "common": "common jhon",
+      "common": "common",
+      "editor": "editor",
       "update": "update"
+    },
+    "update": {
+        "author": {
+            "title": "author",
+            "desc": "who's author",
+            "placeholder": "please input author's name"
+        },
+        "repo": {
+            "title": "repository",
+            "desc": "Updated repository name",
+            "placeholder": "please input repository's name"
+        },
+        "version": {
+            "title": "Check Version",
+            "desc": "Vurrent Version：",
+            "button": "Check Update"
+        }
+    },
+    "editor": {
+      "bg": {
+          "title": "background",
+          "desc": "change editor background",
+          "placeholder": "please input picture link"
+      },
+      "font": {
+          "title": "font",
+          "desc": "change editor font",
+          "placeholder": "please input font name"
+      }
     },
     "language": {
       "title": "Language",

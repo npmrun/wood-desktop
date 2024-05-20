@@ -1,76 +1,36 @@
 <template>
-    <div
-        class="node"
-        :title="data.title"
-        :onContextmenu="(e: Event) => emits('contextmenu', e)"
-        @click.stop="onExpand(data)"
-        @dragover.prevent="onDragover"
-        @dragleave.prevent="onDragleave"
-        @drop.prevent="onDrop"  
-    >
-        <div
-            class="node__text group"
-            :class="[
-                activeKeys.includes(data.key) && !isParentDragging ? 'active' : '',
-                isFocus && !isParentDragging ? 'focus' : '',
-                // isInCild ? 'inchild' : '',
-                focusKey === data.key ? 'focus-file' : '',
-            ]"
-            :style="{
-                paddingLeft: deep * 10 + 'px',
-                backgroundColor: isDragging ? '#fcd34d': ''
-            }"
-        >
+    <div class="node" :title="data.title" :onContextmenu="(e: Event) => emits('contextmenu', e)"
+        @dblclick.stop="onExpand(data)" @dragover.prevent="onDragover" @dragleave.prevent="onDragleave"
+        @drop.prevent="onDrop">
+        <div class="node__text" :class="[
+        activeKeys.includes(data.key) ? 'active' : '',
+        isFocus ? 'focus' : '',
+        // isInCild ? 'inchild' : '',
+        focusKey === data.key ? 'focus-file' : '',
+    ]" :style="{
+        paddingLeft: deep * 10 + 'px',
+        backgroundColor: isDragging ? '#fcd34d' : ''
+    }">
             <div class="node__text__text">
-                <div
-                    class="h-1/1 mx-5px flex items-center"
-                    style="width: 20px; height: 20px"
-                    @click.stop="onExpand(data)"
-                    @dblclick.stop
-                >
-                    <!-- v-if="data.isFolder && (!data.isExpand || data.children?.length===0)" -->
-                    <svg-icon
-                        
-                        v-if="data.isFolder && (!data.isExpand)"
-                        :name="getIcon(data)"
-                        style="width: 100%; height: 100%"
-                    ></svg-icon>
-                    <!-- v-if="data.isFolder && data.isExpand && data.children?.length!==0" -->
-                    <svg-icon
-                        v-if="data.isFolder && data.isExpand"
-                        :name="getIcon(data)"
-                        style="width: 100%; height: 100%"
-                    ></svg-icon>
-                    <svg-icon
-                        v-if="data.isFile"
-                        :name="getIcon(data)"
-                        style="width: 100%; height: 100%"
-                    ></svg-icon>
+                <div class="h-1/1 mx-5px flex items-center" style="width: 15px; height: 15px"
+                    @click.stop="onExpand(data)" @dblclick.stop>
+                    <svg-icon v-if="data.isFolder && !data.isExpand" name="code-folder"
+                        style="width: 100%; height: 100%"></svg-icon>
+                    <svg-icon v-if="data.isFolder && data.isExpand" name="code-folder-open"
+                        style="width: 100%; height: 100%"></svg-icon>
+                    <svg-icon v-if="data.isFile" name="code-file" style="width: 100%; height: 100%"></svg-icon>
                 </div>
-                <div v-if="!data.isEdit" @click="clickTitle($event, data)" class="node__text__title">
-                    {{ computedTitle }}
+                <div v-if="!data.isEdit" :onClick="(e: any) => emits('click', e)" class="node__text__title">
+                    {{ data.title }}
                 </div>
-                <div  @click="clickTitle($event, data)" v-if="!data.isEdit">
-                    <slot></slot>
-                </div>
-                <form action="#" v-if="data.isEdit" class="flex-1 w-0" @submit="onSubmit($event, data, 1)">
-                    <input
-                        id="value"
-                        @click.passive.stop
-                        @contextmenu.prevent.stop
-                        v-focus="data"
-                        @blur="onSubmit($event, data, 2)"
-                        :value="data.title"
-                        spellcheck="false"
-                    />
+                <form action="#" v-if="data.isEdit" class="flex-1 w-0" @submit="onSubmit($event, data)">
+                    <input id="value" @click.passive.stop @contextmenu.prevent.stop v-focus="data"
+                        @blur="onSubmit($event, data)" :value="data.title" />
                 </form>
-                <!-- <div class="ml-5px text-size-12px text-gray-400">{{data.children?.length?data.children?.length:''}}</div> -->
-                <svg-icon
-                    v-if="openKey === data.key"
-                    name="code-active"
-                    class="ml-5px"
-                    style="width: 8px; height: 8px"
-                ></svg-icon>
+                <div class="ml-5px text-size-12px text-gray-400">{{ data.children?.length ? data.children?.length : '' }}
+                </div>
+                <svg-icon v-if="openKey === data.key" name="code-active" class="ml-5px"
+                    style="width: 8px; height: 8px"></svg-icon>
             </div>
         </div>
     </div>
@@ -80,10 +40,10 @@
     position: relative;
 
     .node__text {
-        font-size: 14px;
+        font-size: 12px;
         cursor: pointer;
-        line-height: 30px;
-        height: 30px;
+        line-height: 25px;
+
         .node__text__text {
             padding: 0 10px 0 0;
             display: flex;
@@ -100,7 +60,7 @@
                 left: 0;
                 right: 0;
                 bottom: 0;
-                border: 1px solid #cdcdcd6b;
+                border: 1px solid #6db6ff;
                 pointer-events: none;
             }
         }
@@ -111,7 +71,7 @@
 
             &.focus {
                 color: #333;
-                background-color: #cdcdcd6b;
+                background-color: #aad5ff;
             }
         }
 
@@ -121,7 +81,7 @@
 
             &.focus {
                 color: #333;
-                background-color: #cdcdcd6b;
+                background-color: #aad5ff86;
             }
         }
 
@@ -131,14 +91,13 @@
             height: 100%;
 
             input {
-                line-height: 30px;
-                height: 24px;
+                height: 100%;
+                padding: 0;
                 width: 100%;
                 color: #333;
                 border-radius: 5px;
                 outline: 0;
-                border: 1px solid #cdcdcd6b;
-                margin-left: -1px;
+                border: 1px solid #32aff8b2;
             }
         }
 
@@ -161,8 +120,9 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
+// import { judgeFile } from '@common/util/file'
 import { Ref } from "vue"
-import { findByKeyParent, isChildOf, removeByKey, PsTree } from "princess-ui"
+import { findByKeyParent, isChildOf, removeByKey } from "princess-ui"
 import type { INiuTreeKey, INiuTreeData, ENiuTreeStatus } from "princess-ui"
 import { trim } from "lodash"
 
@@ -178,42 +138,29 @@ const emits = defineEmits<{
     (e: "itemDrop", ev: DragEvent, active: (status: boolean) => void, data: INiuTreeData): void
 }>()
 
-let isParentDragging = inject("isDragging", ref(false))
-
 const isDragging = ref(false)
 function onDragover(ev: DragEvent) {
-    if(props.dataSourceKey) return
+    if (props.dataSourceKey) return
     emits("itemDragover", ev, (status: boolean) => {
         isDragging.value = status
     }, props.data)
 }
 function onDragleave(ev: DragEvent) {
-    if(props.dataSourceKey) return
+    if (props.dataSourceKey) return
     emits("itemDragleave", ev, (status: boolean) => {
         isDragging.value = status
     }, props.data)
 }
 function onDrop(ev: DragEvent) {
-    if(props.dataSourceKey) return
+    if (props.dataSourceKey) return
     emits("itemDrop", ev, (status: boolean) => {
         isDragging.value = status
     }, props.data)
 }
 
 function onExpand(data: INiuTreeData) {
-    if(data.isFile) {
-        emits('click', event)
-        return
-    }
-    // 没有子文件应该也能展开
-    // if(data.isFolder && data.children?.length === 0) return
     data.isExpand = !data.isExpand
     emits("change")
-}
-
-function clickTitle(e: Event, data: INiuTreeData) {
-    emits('click', e)
-    return undefined
 }
 
 const props = withDefaults(
@@ -221,64 +168,29 @@ const props = withDefaults(
         data: INiuTreeData
         list: INiuTreeData[]
         activeKeys?: INiuTreeKey[]
-        hideExt?: string[]
         openKey?: INiuTreeKey
         focusKey?: INiuTreeKey
         deep: number
-        dataSourceKey?: INiuTreeKey
-        status?: ENiuTreeStatus
+        dataSourceKey: INiuTreeKey
+        status: ENiuTreeStatus
         isFocus?: boolean
     }>(),
     {
         activeKeys: () => [],
-        hideExt: () => [],
     },
 )
-const computedTitle = computed(()=>{
-    let title = props.data.title
-    for (let i = 0; i < props.hideExt.length; i++) {
-        const ext = props.hideExt[i];
-        if(title.endsWith(ext)){
-            title = title.replace(ext, "")
-            break
-        }
-    }
-    return title
-})
-
-function getIcon(data: INiuTreeData) {
-    if(data.isFile){
-        let curLanguage = judgeFile(data.title)?.language
-        if(!curLanguage) return 'micons-document'
-        return 'micons-'+judgeFile(data.title)?.icon
-    }
-    if(data.isFolder && (!data.isExpand)){
-        return "micons-folder"
-        // return "code-folder"
-    }
-    if(data.isFolder && data.isExpand){
-        return "micons-folder-open"
-        // return "code-folder-open"
-    }
-    return ''
-}
 function judgeFile(filename: string) {
     if (!filename) return
     let ext = [
-        { language: "html", ext: ".web", index: -1, icon: "html" },
-        { language: "json", ext: ".snip", index: -1, icon: "json" },
-        { language: "json", ext: ".json", index: -1, icon: "json" },
-        { language: "txt", ext: ".txt", index: -1, icon: "document" },
-        { language: "vue", ext: ".vue", index: -1, icon: "vue" },
-        { language: "javascript", ext: ".js", index: -1, icon: "javascript" },
-        { language: "css", ext: ".css", index: -1, icon: "css" },
-        { language: "scss", ext: ".scss", index: -1, icon: "scss" },
-        { language: "html", ext: ".html", index: -1, icon: "html" },
-        { language: "tsx", ext: ".tsx", index: -1, icon: "tsx" },
-        { language: "typescript", ext: ".ts", index: -1, icon: "typescript" },
-        { language: "markdown", ext: ".md", index: -1, icon: "markdown" },
-        { language: "markdown", ext: ".mdx", index: -1, icon: "markdown" },
-        { language: "dot", pre: ".", index: -1, icon: "dot" },
+        { language: "vue", ext: ".vue", index: -1 },
+        { language: "javascript", ext: ".js", index: -1 },
+        { language: "css", ext: ".css", index: -1 },
+        { language: "scss", ext: ".scss", index: -1 },
+        { language: "html", ext: ".html", index: -1 },
+        { language: "tsx", ext: ".tsx", index: -1 },
+        { language: "typescript", ext: ".ts", index: -1 },
+        { language: "markdown", ext: ".md", index: -1 },
+        { language: "dot", pre: ".", index: -1 },
     ]
     let cur
     for (let i = 0; i < ext.length; i++) {
@@ -322,14 +234,7 @@ const vFocus = {
         el.focus()
     },
 }
-let tempV: any
-function onSubmit(e: Event, data: INiuTreeData, temp: number) {
-    if(!tempV){
-        tempV = temp
-    }else{
-        tempV = undefined
-        return
-    }
+function onSubmit(e: Event, data: INiuTreeData) {
     e.preventDefault()
     if (draggable) {
         draggable.value = true
@@ -347,49 +252,46 @@ function onSubmit(e: Event, data: INiuTreeData, temp: number) {
     if (!value && data.isNew) {
         data.isDel = true
         removeByKey(data.key, props.list)
-    } else if (props.hideExt.includes(value) && data.isNew) {
-        data.isDel = true
-        removeByKey(data.key, props.list)
     } else if (value != data.title) {
         if (data.isNew) {
             data.title = trim(value)
             data.isNew = false
             data.isEdit = false
             const parent = findByKeyParent(data.key, props.list)
-            emits("createOne", data, parent, (status: boolean = true)=>{
-                if(status){
+            emits("createOne", data, parent, (status: boolean = true) => {
+                if (status) {
                     emits("change")
-                }else{
+                } else {
                     data.isDel = true
                     removeByKey(data.key, props.list)
                 }
             })
-        }else{
-            if(value && data.isFolder){
+        } else {
+            if (value && data.isFolder) {
                 const oldTitle = data.title
                 data.title = trim(value)
                 data.isEdit = false
-                emits("rename", data, (status: boolean = true)=>{
-                    if(status){
+                emits("rename", data, (status: boolean = true) => {
+                    if (status) {
                         emits("change")
-                    }else{
+                    } else {
                         data.title = oldTitle
                     }
                 })
-            }else if(value && data.isFile){
+            } else if (value && data.isFile) {
                 let curFile = judgeFile(value)
                 if (data.isFile && curFile) {
                     let index = curFile.index
                     let t = ""
                     if (curFile.ext) {
                         let t = value.slice(0, index)
-                        if(t){
+                        if (t) {
                             const oldTitle = data.title
-                            t && (data.title = trim(t)+curFile.ext)
-                            emits("rename", data, (status: boolean = true)=>{
-                                if(status){
+                            t && (data.title = trim(t) + curFile.ext)
+                            emits("rename", data, (status: boolean = true) => {
+                                if (status) {
                                     emits("change")
-                                }else{
+                                } else {
                                     data.title = oldTitle
                                 }
                             })
@@ -397,13 +299,13 @@ function onSubmit(e: Event, data: INiuTreeData, temp: number) {
                     }
                     if (curFile.pre) {
                         let t = value.slice(index + 1, value.length)
-                        if(t){
+                        if (t) {
                             const oldTitle = data.title
                             t && (data.title = curFile.pre + trim(t))
-                            emits("rename", data, (status: boolean = true)=>{
-                                if(status){
+                            emits("rename", data, (status: boolean = true) => {
+                                if (status) {
                                     emits("change")
-                                }else{
+                                } else {
                                     data.title = oldTitle
                                 }
                             })
@@ -414,15 +316,15 @@ function onSubmit(e: Event, data: INiuTreeData, temp: number) {
                     const oldTitle = data.title
                     data.title = trim(value)
                     data.isEdit = false
-                    emits("rename", data, (status: boolean = true)=>{
-                        if(status){
+                    emits("rename", data, (status: boolean = true) => {
+                        if (status) {
                             emits("change")
-                        }else{
+                        } else {
                             data.title = oldTitle
                         }
                     })
                 }
-            }else{
+            } else {
                 data.isEdit = false
             }
         }

@@ -6,6 +6,7 @@
 import MD5 from 'md5';
 import { uniqueId } from 'lodash';
 import Vditor from 'vditor'
+import config from '@buildin/config'
 import "vditor/dist/index.css"
 
 const props = defineProps<{
@@ -42,8 +43,8 @@ onMounted(() => {
             async click(bom) {
                 const url = bom.getAttribute("href")
                 const path = await _agent.call("api.config.keys", "storagePath")
-                const targetPath = "file:\\\\" + path + `/file/` + url!.replace(/rush-file\:\/\//, "")
-                _agent.call("utils.openExternal", targetPath)
+                const targetPath = "file:\\\\" + path + `/file/` + url!.replace(new RegExp(`${config.app_scheme}-file\:\/\/`), "")
+                _agent.call("utils.showItemInFolder", targetPath)
             }
         },
         upload: {
@@ -61,15 +62,15 @@ onMounted(() => {
                             // @ts-ignore
                             const fileName = file.name as string
                             let ext = fileName.split(".")[fileName.split(".").length - 1]
-                            const name = uniqueId() + "_T_" + MD5(t).toString().toUpperCase() + "_" + fileName
+                            const name = uniqueId() + "_T_" + MD5(t).toString().toUpperCase() + "_" + encodeURIComponent(fileName)
                             if (ext.toLowerCase() === "jpg" || ext.toLowerCase() === "png" || ext.toLowerCase() === "jpeg") {
                                 const targetPath = path + `/file/asset/image/${name}`
                                 await _agent.file.savaFileByData(targetPath, buf)
-                                contextEditor?.insertValue(`![](rush-file://asset/image/${name})`)
+                                contextEditor?.insertValue(`![](${config.app_scheme}-file://asset/image/${name})`)
                             } else {
                                 const targetPath = path + `/file/asset/file/${name}`
                                 await _agent.file.savaFileByData(targetPath, buf)
-                                contextEditor?.insertValue(`[${fileName}](rush-file://asset/file/${name})`)
+                                contextEditor?.insertValue(`[${fileName}](${config.app_scheme}-file://asset/file/${name})`)
                             }
                             resolve(null);
                         }

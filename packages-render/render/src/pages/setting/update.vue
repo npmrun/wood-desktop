@@ -1,27 +1,27 @@
 <template>
     <div class="w-80/100 mx-auto mt-25px p-8px pt-55px pb-80px">
         <div class="mb-35px">
-            <div class="text-size-20px font-bold">作者</div>
-            <div class="text-gray-400 pt-8px">更新的仓库作者</div>
+            <div class="text-size-20px font-bold">{{ $t('setting.update.author.title') }}</div>
+            <div class="text-gray-400 pt-8px">{{ $t('setting.update.author.desc') }}</div>
             <div class="pt-8px">
                 <input disabled spellcheck="false" :value="configStore['update.owner']"
                     @change="(e: any) => configStore.setConfig('update.owner', e.target.value)"
-                    class="input input-bordered !max-w-320px !min-w-320px" type="text" placeholder="请输入作者">
+                    class="input input-bordered !max-w-320px !min-w-320px" type="text" :placeholder="$t('setting.update.author.placeholder')">
             </div>
         </div>
         <div class="mb-35px">
-            <div class="text-size-20px font-bold">仓库</div>
-            <div class="text-gray-400 pt-8px">更新的仓库</div>
+            <div class="text-size-20px font-bold">{{ $t('setting.update.repo.title') }}</div>
+            <div class="text-gray-400 pt-8px">{{ $t('setting.update.repo.desc') }}</div>
             <div class="pt-8px">
                 <input disabled spellcheck="false" :value="configStore['update.repo']"
                     @change="(e: any) => configStore.setConfig('update.repo', e.target.value)"
-                    class="input input-bordered !max-w-320px !min-w-320px" type="text" placeholder="请输入仓库">
+                    class="input input-bordered !max-w-320px !min-w-320px" type="text" :placeholder="$t('setting.update.repo.placeholder')">
             </div>
         </div>
         <div class="mb-35px">
-            <div class="text-size-20px font-bold">检查更新</div>
+            <div class="text-size-20px font-bold">{{ $t('setting.update.version.title') }}</div>
             <div class="text-gray-400 pt-8px">
-                当前版本：{{ version }}
+                {{ $t('setting.update.version.desc') }}{{ version }}
             </div>
             <div class="pt-16px">
                 <UpdateButton></UpdateButton>

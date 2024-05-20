@@ -15,6 +15,8 @@ import Components from 'unplugin-vue-components/vite'
 
 const port = process.env.PORT ?? 3344
 
+import PrincessResolver from "princess-ui/PrincessResolver"
+
 // https://vitejs.dev/config/
 export default ({ command, mode }: ConfigEnv): UserConfigExport => {
   let isProd = mode === "production"
@@ -63,6 +65,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
       }),
       Components({
         dirs: ['src/componentsAuto','src/pages-ui'],
+        resolvers: [PrincessResolver()],
       }),
       createSvgIconsPlugin({
         // 指定需要缓存的图标文件夹

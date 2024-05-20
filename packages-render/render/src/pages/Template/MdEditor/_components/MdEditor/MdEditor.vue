@@ -42,7 +42,7 @@ onMounted(() => {
             async click(bom) {
                 const url = bom.getAttribute("href")
                 const path = await _agent.call("api.config.keys", "storagePath")
-                const targetPath = "file:\\\\" + path + `/file/` + url!.replace(/rush-file\:\/\//, "")
+                const targetPath = "file:\\\\" + path + `/file/` + url!.replace(/wood-file\:\/\//, "")
                 _agent.call("utils.openExternal", targetPath)
             }
         },
@@ -65,11 +65,11 @@ onMounted(() => {
                             if (ext.toLowerCase() === "jpg" || ext.toLowerCase() === "png" || ext.toLowerCase() === "jpeg") {
                                 const targetPath = path + `/file/asset/image/${name}`
                                 await _agent.file.savaFileByData(targetPath, buf)
-                                contextEditor?.insertValue(`![](rush-file://asset/image/${name})`)
+                                contextEditor?.insertValue(`![](wood-file://asset/image/${name})`)
                             } else {
                                 const targetPath = path + `/file/asset/file/${name}`
                                 await _agent.file.savaFileByData(targetPath, buf)
-                                contextEditor?.insertValue(`[${fileName}](rush-file://asset/file/${name})`)
+                                contextEditor?.insertValue(`[${fileName}](wood-file://asset/file/${name})`)
                             }
                             resolve(null);
                         }

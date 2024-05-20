@@ -165,7 +165,6 @@ import { Ref } from "vue"
 import { findByKeyParent, isChildOf, removeByKey, PsTree } from "princess-ui"
 import type { INiuTreeKey, INiuTreeData, ENiuTreeStatus } from "princess-ui"
 import { trim } from "lodash"
-import SvgIcon from "@/components/SvgIcon/SvgIcon.vue"
 
 const emits = defineEmits<{
     (e: "update:focus-key", focusKey?: INiuTreeKey): void

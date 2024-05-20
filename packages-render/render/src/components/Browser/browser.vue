@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import parse from 'url-parse';
 import { PopupMenu } from '@/bridge/PopupMenu'
-import SvgIcon from "@/components/SvgIcon/SvgIcon.vue"
 
 const props = withDefaults(defineProps<{
     collect?: boolean,

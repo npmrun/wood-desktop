@@ -13,5 +13,6 @@ declare module 'vue' {
     Mask: typeof import('./src/componentsAuto/Dialog/Mask.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SvgIcon: typeof import('./src/componentsAuto/SvgIcon/SvgIcon.vue')['default']
   }
 }
