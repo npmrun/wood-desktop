@@ -1,0 +1,6 @@
+{
+    "extends": "@buildin/tsconfig/tsconfig.electron.json",
+    "include": [
+        "**/*.ts"
+    ]
+}

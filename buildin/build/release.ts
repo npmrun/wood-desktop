@@ -95,12 +95,6 @@ builder.build({
             cache: path.join(homedir(), ".electron"),
             mirror: "http://npm.taobao.org/mirrors/electron/",
         },
-        publish: [
-            {
-                provider: 'github',
-                ...setting.release.githubProvider
-            }
-        ],
         // mac: {
         //     type: "distribution",
         //     category: "public.app-category.productivity",

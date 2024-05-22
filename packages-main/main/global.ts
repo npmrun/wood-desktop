@@ -5,12 +5,13 @@ import ProcessManager from "@rush/main-process-manager"
 import LogManager from "@rush/main-log-manager"
 import { BrowserView, BrowserWindow, app, ipcMain, net, protocol } from "electron"
 import { MessageManager } from "@rush/common-message-manager/main"
+import { UpdaterManage } from "@rush/main-updater"
 import { initCommands, initPrase } from "./parseCommand"
 import { initPopup } from "./popup"
 import path from "path"
 import config from "@buildin/config"
 
-export function initGlobal() {
+export async function initGlobal() {
     /**
      * 初始化配置
      */
@@ -30,6 +31,9 @@ export function initGlobal() {
      * 消息管理器初始化
      */
     MessageManager.init()
+
+    // 更新器初始化
+    ;(await import("@rush/main-updater")).UpdaterManage.init()
 
     initPrase()
     initCommands()

@@ -20,7 +20,8 @@ declare const __buildAssets: string
 //     logger: import("electron-log").LogFunctions;
 // }
 
-declare var logger: import("electron-log").LogFunctions;
+// declare var logger: import("electron-log").LogFunctions;
+declare var logger: import("electron-log").Logger;
 
 declare namespace Electron {
     interface WebContents {

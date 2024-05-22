@@ -171,8 +171,8 @@ const props = withDefaults(
         openKey?: INiuTreeKey
         focusKey?: INiuTreeKey
         deep: number
-        dataSourceKey: INiuTreeKey
-        status: ENiuTreeStatus
+        dataSourceKey?: INiuTreeKey
+        status?: ENiuTreeStatus
         isFocus?: boolean
     }>(),
     {

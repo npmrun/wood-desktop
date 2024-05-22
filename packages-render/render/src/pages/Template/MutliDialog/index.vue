@@ -10,8 +10,8 @@ const showDialog3 = ref(false)
 
 <template>
     <button class="button is-info content" @click="showDialog = true">打开对话框</button>
-    <Dialog v-model:show="showDialog" width="50%" max-width="500px" min-width="320px">
-        <div class="bg-light-50 rounded-4px w-full h-full flex flex-col min-h-[320px]">
+    <Dialog v-model:show="showDialog" style="width: 50%;max-width: 500px;min-width: 320px;">
+        <div class="bg-light-50 rounded-4px flex flex-col min-h-[320px]">
             <div class="text-size-20px font-bold p-12px border-b flex items-center">
                 <div class="flex-1 w-0">
                     提示

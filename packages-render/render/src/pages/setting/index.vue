@@ -77,6 +77,7 @@
                 @change="(e: any) => configStore.setConfig('backup_rule', e.target.value)"
                 class="input is-medium !max-w-320px !min-w-320px" type="text" placeholder="Text input">
         </SettingItem> -->
+        <button class="button is-light" @click="()=>_agent.call('openLogDir')">{{ $t("setting.log_path_btn") }}</button>
     </div>
 </template>
 
@@ -85,10 +86,7 @@ import SettingItem from "@/components/SettingItem/SettingItem.vue";
 
 const configStore = useConfigStore()
 // const isDev = import.meta.env.DEV
-function AA(e) {
-    console.log(e.target.value);
 
-}
 function openDir(path: string) {
     _agent.call("utils.openDir", path)
 }

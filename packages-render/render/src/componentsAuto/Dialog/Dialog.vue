@@ -1,12 +1,12 @@
 <template>
     <teleport :to="to" :disabled="computedDisabled">
         <transition :name="maskAnimComputed">
-            <Mask is-render v-model:show="isShow"></Mask>
+            <Mask is-render :inBox="inBox" v-model:show="isShow"></Mask>
         </transition>
-        <div class="dialog__wrapper" :class="[mode]" v-if="isShowWraper" @click.stop="isShow = false">
+        <div class="dialog__wrapper" v-bind="attrs" :class="[mode, inBox?'inbox':'']" v-if="isShowWraper" @click.stop="isShow = false">
             <transition :name="dialogAnimComputed" @after-leave="close()">
                 <div class="dialog__content"
-                    :style="{ width: width, height: height, minWidth: minWidth, maxWidth: maxWidth, minHeight: minHeight, maxHeight: maxHeight }"
+                    :style="style"
                     v-if="isShow" @click.stop>
                     <slot></slot>
                 </div>
@@ -19,6 +19,12 @@
 import { onMounted, watch, ref, nextTick, provide, inject, computed } from 'vue'
 import Mask from './Mask.vue'
 import { DialogToken } from './Token';
+
+defineOptions({
+    inheritAttrs: false
+})
+
+const attrs= useAttrs()
 
 function setStyle(el: HTMLElement, css: Partial<CSSStyleDeclaration>) {
     for (const key in css) {
@@ -35,12 +41,8 @@ const props = withDefaults(defineProps<{
     to?: string
     disabled?: boolean
     show?: boolean
-    minWidth?: string
-    maxWidth?: string
-    width?: string
-    minHeight?: string
-    maxHeight?: string
-    height?: string
+    style?: Record<string, string> | string
+    inBox?: boolean
     animation?: boolean
     mode?: "center" | "bottom"
 }>(), {
@@ -48,6 +50,7 @@ const props = withDefaults(defineProps<{
     disabled: false,
     show: false,
     animation: true,
+    inBox: false, // 对话框不全屏
     mode: "center",
 })
 const emits = defineEmits<{
@@ -158,24 +161,34 @@ $dialogtime: 0.2s;
 }
 
 .dialog__wrapper {
-    position: absolute;
+    position: fixed;
+    &.inbox{
+        position: absolute;
+        transform: scale(1); // 将内部的fixed降级为absolute
+    }
     left: 0;
     right: 0;
     bottom: 0;
     top: 0;
     z-index: 999;
 
+    .dialog__content {
+        height: fit-content;
+    }
+
     // 用定位方便一点但是无法用transform动画
     &.center {
         display: flex;
         // align-items: flex-end;
-        align-items: center;
-        justify-content: center;
+        // align-items: center; // align-items 为center溢出 后无法滚动到顶部
+        // justify-content: center;
         overflow: auto;
 
-        // .dialog__content {
-        //     margin: auto;
-        // }
+        .dialog__content {
+            margin: auto;
+            width: 30%;
+            // margin-top: 20vh;
+        }
     }
 
     &.bottom {

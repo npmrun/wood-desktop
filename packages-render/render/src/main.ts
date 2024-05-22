@@ -24,6 +24,14 @@ app.use(Vue3Toasity, {
     hideProgressBar: true,
     autoClose: 3000,
 })
+
+declare module 'vue' {
+    interface ComponentCustomProperties {
+      _agent: typeof _agent
+    }
+}
+
+app.config.globalProperties._agent=_agent
 app.use(directive)
 app.use(pinia)
 app.use(router)

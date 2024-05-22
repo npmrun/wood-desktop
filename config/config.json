@@ -4,12 +4,6 @@
     "app_author": "npmrun",
     "app_version": "0.0.1-beta.1",
     "app_scheme": "wood",
-    "release": {
-        "githubProvider": {
-            "repo": "wood-desktop",
-            "owner": "npmrun"
-        }
-    },
     "default_config": {
         "storagePath": "$storagePath$",
         "language": "zh",

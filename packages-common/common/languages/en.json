@@ -1,5 +1,8 @@
 {
   "title": "exeaasdaa33 {name} aaaa",
+  "update": {
+    "IDLE": "Check Update"
+  },
   "setting": {
     "tips": {
       "notSave": "not save"
@@ -9,6 +12,7 @@
       "editor": "editor",
       "update": "update"
     },
+    "log_path_btn": "open log path",
     "update": {
         "author": {
             "title": "author",
@@ -22,7 +26,7 @@
         },
         "version": {
             "title": "Check Version",
-            "desc": "Vurrent Version：",
+            "desc": "Current Version：",
             "button": "Check Update"
         }
     },

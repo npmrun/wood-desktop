@@ -1,5 +1,5 @@
 <template>
-    <div class="mask" v-if="isRenderShow" v-show="isDisplayShow" @click.stop="clickMask"></div>
+    <div :class="['mask', inBox?'inbox':'']" v-if="isRenderShow" v-show="isDisplayShow" @click.stop="clickMask"></div>
 </template>
 
 <script lang="ts" setup>
@@ -7,9 +7,11 @@ import { computed } from 'vue';
 const props = withDefaults(defineProps<{
     show?: boolean
     isRender?: boolean
+    inBox?: boolean
 }>(), {
     show: false,
-    isRender: false
+    isRender: false,
+    inBox: false,
 })
 const isDisplayShow = computed(() => {
     return !props.isRender ? props.show : true
@@ -29,7 +31,11 @@ function clickMask() {
 
 <style lang="scss" scoped>
 .mask {
-    position: absolute;
+    position: fixed;
+    &.inbox{
+        position: absolute;
+        transform: scale(1);
+    }
     left: 0;
     top: 0;
     right: 0;
