@@ -1,7 +1,7 @@
 <template>
     <button class="button is-info" :disabled="isUpdating" @click="clickButton"> {{ isUpdating ? "正在检查更新" : "检查更新"}} </button>
     <!-- <div class="mt-1">{{ UpdateStatus }}</div> -->
-    <Dialog :mask-can-close="false"isabled v-model:show="showDialog">
+    <Dialog :mask-can-close="false" isabled v-model:show="showDialog">
         <div class="bg-light-50 rounded-4px flex flex-col m-4">
             <div class="text-size-20px font-bold p-12px border-b flex items-center">
                 <div v-if="[EUpdateStatus.Downloading, EUpdateStatus.Downloaded, EUpdateStatus.Avaliable].includes(curStatus)" class="flex-1 w-0">更新提示</div>
