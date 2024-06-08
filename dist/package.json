@@ -23,5 +23,5 @@
         "node-pty": "^1.0.0",
         "reflect-metadata": "^0.1.13"
     },
-    "version": "0.0.1-beta.2"
+    "version": "0.0.1-beta.3"
 }
