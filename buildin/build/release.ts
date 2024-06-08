@@ -91,10 +91,10 @@ builder.build({
                 "to": ""
             },
         ],
-        electronDownload: {
-            cache: path.join(homedir(), ".electron"),
-            mirror: "http://npm.taobao.org/mirrors/electron/",
-        },
+        // electronDownload: {
+        //     cache: path.join(homedir(), ".electron"),
+        //     mirror: "http://npm.taobao.org/mirrors/electron/",
+        // },
         // mac: {
         //     type: "distribution",
         //     category: "public.app-category.productivity",
