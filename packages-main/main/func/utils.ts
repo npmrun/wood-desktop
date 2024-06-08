@@ -89,16 +89,22 @@ export function setDesktop(p: string){
     // }
     if (platform === "MacOS") {
         exec(`osascript -e 'tell application "System Events" to set picture of desktop 1 to "${p}"'`, (err, stdout, stderr) => {
+            logger.error("设置壁纸命令：", `osascript -e 'tell application "System Events" to set picture of desktop 1 to "${p}"'`)
+            logger.error("设置壁纸错误", stderr)
             err && error("设置壁纸错误", stderr)
         })
     } else if (platform === "windows") {
         var script = path.resolve(__extra, "./scripts/setDesktop.cs")
-        exec(`powershell -NoProfile -Command "Add-Type -Path ${script}; [Wallpaper.Setter]::SetWallpaper('${p}')"`, (err, stdout, stderr) => {
+        exec(`powershell -NoProfile -Command "Add-Type -Path '${script}'; [Wallpaper.Setter]::SetWallpaper('${p}')"`, (err, stdout, stderr) => {
+            logger.error("设置壁纸命令：", `powershell -NoProfile -Command "Add-Type -Path ${script}; [Wallpaper.Setter]::SetWallpaper('${p}')"`)
+            logger.error("设置壁纸错误", stderr)
             err && error("设置壁纸错误", stderr)
         })
     } else {
         var script = path.resolve(__extra, "./scripts/set_wallpaper_linux.sh")
         exec(`bash "${script}" "${p}"`, (err, stdout, stderr) => {
+            logger.error("设置壁纸命令：", `bash "${script}" "${p}"`)
+            logger.error("设置壁纸错误", stderr)
             err && error("设置壁纸错误", stderr)
         })
     }

@@ -95,4 +95,9 @@ export async function initGlobal() {
             app.exit()
         }
     })
+
+    process.on("error", (err)=>{
+        logger.error("系统错误:")
+        logger.error(err)
+    })
 }
