@@ -1,7 +1,7 @@
 <template>
     <teleport :to="to" :disabled="computedDisabled">
         <transition :name="maskAnimComputed">
-            <Mask is-render :inBox="inBox" v-model:show="isShow"></Mask>
+            <Mask is-render :inBox="inBox" :can-close="maskCanClose"v-model:show="isShow"></Mask>
         </transition>
         <div class="dialog__wrapper" v-bind="attrs" :class="[mode, inBox?'inbox':'']" v-if="isShowWraper" @click.stop="isShow = false">
             <transition :name="dialogAnimComputed" @after-leave="close()">
@@ -43,6 +43,7 @@ const props = withDefaults(defineProps<{
     show?: boolean
     style?: Record<string, string> | string
     inBox?: boolean
+    maskCanClose?: boolean
     stopPropagation?: boolean
     animation?: boolean
     mode?: "center" | "bottom"
@@ -50,6 +51,7 @@ const props = withDefaults(defineProps<{
     to: 'body',
     disabled: false,
     stopPropagation: true,
+    maskCanClose: true,
     show: false,
     animation: true,
     inBox: false, // 对话框不全屏
