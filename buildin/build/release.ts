@@ -91,6 +91,8 @@ builder.build({
                 "to": ""
             },
         ],
+        // 采用github action打包时需要这个
+        publish: setting.release_publish as any,
         // electronDownload: {
         //     cache: path.join(homedir(), ".electron"),
         //     mirror: "http://npm.taobao.org/mirrors/electron/",
