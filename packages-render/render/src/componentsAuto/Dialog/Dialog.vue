@@ -1,7 +1,7 @@
 <template>
     <teleport :to="to" :disabled="computedDisabled">
         <transition :name="maskAnimComputed">
-            <Mask is-render :inBox="inBox" :can-close="maskCanClose"v-model:show="isShow"></Mask>
+            <Mask is-render :inBox="inBox" :can-close="maskCanClose" v-model:show="isShow"></Mask>
         </transition>
         <div class="dialog__wrapper" v-bind="attrs" :class="[mode, inBox?'inbox':'']" v-if="isShowWraper" @click.stop="isShow = false">
             <transition :name="dialogAnimComputed" @after-leave="close()">
