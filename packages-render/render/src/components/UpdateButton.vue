@@ -1,6 +1,6 @@
 <template>
-    <button class="button is-info" :disabled="isUpdating" @click="onCheck"> {{ isUpdating ? "正在检查更新" : "检查更新"}} </button>
-    <div class="mt-1">{{ UpdateStatus }}</div>
+    <button class="button is-info" :disabled="isUpdating" @click="clickButton"> {{ isUpdating ? "正在检查更新" : "检查更新"}} </button>
+    <!-- <div class="mt-1">{{ UpdateStatus }}</div> -->
     <Dialog disabled v-model:show="showDialog">
         <div class="bg-light-50 rounded-4px flex flex-col m-4">
             <div class="text-size-20px font-bold p-12px border-b flex items-center">
@@ -45,4 +45,12 @@ watchEffect(()=>{
         showDialog.value = true
     }
 })
+
+function clickButton() {
+    if([EUpdateStatus.Downloaded, EUpdateStatus.Downloading, EUpdateStatus.Avaliable, EUpdateStatus.Notavaliable].includes(curStatus.value)) {
+        showDialog.value = true
+    } else {
+        onCheck()
+    }
+}
 </script>

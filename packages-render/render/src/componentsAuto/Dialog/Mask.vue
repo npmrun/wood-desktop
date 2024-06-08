@@ -7,10 +7,12 @@ import { computed } from 'vue';
 const props = withDefaults(defineProps<{
     show?: boolean
     isRender?: boolean
+    canClose?: boolean
     inBox?: boolean
 }>(), {
     show: false,
     isRender: false,
+    canClose: true,
     inBox: false,
 })
 const isDisplayShow = computed(() => {
@@ -25,6 +27,7 @@ const emits = defineEmits<{
 }>()
 
 function clickMask() {
+    if(!props.canClose) return
     emits("update:show", false)
 }
 </script>
