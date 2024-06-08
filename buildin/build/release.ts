@@ -93,10 +93,10 @@ builder.build({
         ],
         // 采用github action打包时需要这个
         publish: setting.release_publish as any,
-        // electronDownload: {
-        //     cache: path.join(homedir(), ".electron"),
+        electronDownload: {
+            cache: path.join(homedir(), ".electron"),
         //     mirror: "http://npm.taobao.org/mirrors/electron/",
-        // },
+        },
         // mac: {
         //     type: "distribution",
         //     category: "public.app-category.productivity",

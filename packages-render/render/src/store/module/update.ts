@@ -48,9 +48,6 @@ export const useUpdateStore = defineStore("update", () => {
             _agent.send("updater:check")
             curStatus.value = EUpdateStatus.InitCheckingUpdate
         }
-        if (curStatus.value === EUpdateStatus.Downloaded) {
-            _agent.send("updater:quitandinstall")
-        }
     }
 
     const isUpdating = computed(() => {
@@ -90,7 +87,11 @@ export const useUpdateStore = defineStore("update", () => {
     _agent.on("updater:downloaded", (_, res: any) => {
         curStatus.value = EUpdateStatus.Downloaded
     })
-
+    _agent.on("updater:download_start", (p)=> {
+        downloadPercent.value = 0
+        curStatus.value = EUpdateStatus.Downloading
+        logger.debug("当前下载路径：", p)
+    })
     // onBeforeUnmount(() => {
     //     _agent.offAll("checking-for-update")
     //     _agent.offAll("updater:error")
@@ -100,10 +101,22 @@ export const useUpdateStore = defineStore("update", () => {
     //     _agent.offAll("updater:downloaded")
     // })
 
+    function startDownload(){
+        _agent.send("start-download")
+    }
+
+    function quitAndInstall(){
+        if (curStatus.value === EUpdateStatus.Downloaded) {
+            _agent.send("updater:quitandinstall")
+        }
+    }
+
     return {
         EUpdateStatus,
         isUpdating,
+        startDownload,
         onCheck,
+        quitAndInstall,
         UpdateStatus,
         curStatus,
         downloadPercent,

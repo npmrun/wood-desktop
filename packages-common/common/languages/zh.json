@@ -6,7 +6,7 @@
             "InitCheckingUpdate": "初始化检查更新",
             "CheckingUpdate": "开始检查更新",
             "Error": "检查更新出错",
-            "Avaliable": "检查到新版本 v{version}，开始下载",
+            "Avaliable": "检查到新版本 v{version}",
             "Notavaliable": "当前版本已经是最新 v{version}",
             "Downloading": "当前下载进度{percent}%",
             "Downloaded": "新版本下载完毕,点击安装"

@@ -68,7 +68,7 @@ class _UpdaterManage {
 
         // 检查到新版本
         autoUpdater.on("update-available", (info: UpdateInfo) => {
-            log.debug(`检查到新版本 v ${info.version}，开始下载`, "新版本信息为:", info)
+            log.debug(`检查到新版本 v ${info.version}`, "新版本信息为:", info)
             broadcast("updater:avaliable", {
                 data: info
             })
@@ -95,7 +95,13 @@ class _UpdaterManage {
             log.debug("新版本下载完毕,点击安装")
             broadcast("updater:downloaded")
         })
-
+        ipcMain.on("start-download", async () => {
+            log.debug("开始下载")
+            const p = await this.autoUpdater.downloadUpdate()
+            broadcast("updater:download_start", {
+                path: p
+            })
+        })
         // 立即更新
         ipcMain.on("updater:quitandinstall", () => {
             autoUpdater.quitAndInstall()

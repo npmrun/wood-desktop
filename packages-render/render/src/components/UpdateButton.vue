@@ -16,11 +16,14 @@
                     <pre>{{ updateInfo }}</pre>
                 </p>
             </div>
-            <div class="border-t flex items-center !justify-end p-12px overflow-hidden gap-x-5" v-if="[EUpdateStatus.Avaliable].includes(curStatus)">
+            <div class="border-t flex items-center !justify-end p-12px overflow-hidden gap-x-5" v-if="[EUpdateStatus.Downloading, EUpdateStatus.Downloaded, EUpdateStatus.Avaliable].includes(curStatus)">
                 <progress v-if="[EUpdateStatus.Downloading, EUpdateStatus.Downloaded].includes(curStatus)" class="progress is-primary" style="margin-bottom: 0;" :value="downloadPercent" max="100">
                     {{ downloadPercent }}%
                 </progress>
-                <div class="buttons">
+                <div v-if="[EUpdateStatus.Downloaded].includes(curStatus)" class="buttons" @click="quitAndInstall">
+                    <button class="button is-success">安装</button>
+                </div>
+                <div v-if="[EUpdateStatus.Avaliable].includes(curStatus)" class="buttons" @click="startDownload">
                     <button class="button is-success">下载</button>
                 </div>
             </div>
@@ -31,7 +34,7 @@
 <script setup lang="ts">
 
 const updateStore = useUpdateStore()
-const { onCheck, EUpdateStatus } = updateStore
+const { onCheck, EUpdateStatus, startDownload, quitAndInstall } = updateStore
 const { updateInfo, isUpdating, UpdateStatus, downloadPercent, curStatus } = storeToRefs(updateStore)
 const showDialog = ref(false)
 const showDetail = ref(false)

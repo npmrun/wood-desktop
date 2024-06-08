@@ -6,7 +6,7 @@
       "InitCheckingUpdate": "init checking update",
       "CheckingUpdate": "start checking update",
       "Error": "checking update error",
-      "Avaliable": "checked new update v{version}, start download",
+      "Avaliable": "checked new update v{version}",
       "Notavaliable": "current version is newest. v{version}",
       "Downloading": "current download progress {percent}%",
       "Downloaded": "newest version download, click to install "
