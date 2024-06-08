@@ -23,7 +23,7 @@ jobs:
     strategy:
       matrix:
         # https://www.likecs.com/ask-314443.html
-        node-version: [16.16.0]
+        node-version: [18.17.1]
         os: [windows-2022, ubuntu-latest]
     # 步骤
     steps:
@@ -36,7 +36,7 @@ jobs:
         name: Install pnpm
         id: pnpm-install
         with:
-          version: 7.1.0
+          version: 8.7.6
       # 安装node
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
