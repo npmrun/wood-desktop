@@ -4,7 +4,7 @@
             <div class="w-120px border-r shadow text-size-14px">
                 <Menu v-model="activeTab" :top-list="TopMenu" :sys-list="SysMenu"></Menu>
             </div>
-            <div class="flex-1 w-0 relative overflow-auto scrollbar">
+            <div class="flex-1 w-0 relative overflow-auto">
                 <router-view v-slot="{ Component, route: route }">
                     <transition :name="getTransitionName(route)" mode="out-in" appear>
                         <keep-alive :include="cacheList">

@@ -68,7 +68,7 @@ export default class WindowManager {
             if (new RegExp(key).test(name)) {
                 opts && merge(info, opts)
                 info.name = name
-                if (!info.url) {
+                if (!info.ignoreEmptyUrl && !info.url) {
                     dialog.showErrorBox("错误", name + "窗口未提供url")
                     return
                 }

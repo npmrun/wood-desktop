@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Dialog from "@/components/Dialog/Dialog.vue"
 
 const props = defineProps<{
     visible: boolean

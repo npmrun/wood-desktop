@@ -21,6 +21,7 @@ import "vue3-toastify/dist/index.css"
 
 const app = createApp(App)
 app.use(Vue3Toasity, {
+    clearOnUrlChange: false,
     hideProgressBar: true,
     autoClose: 3000,
 })

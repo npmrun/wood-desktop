@@ -32,3 +32,4 @@ dist/package-lock.json
 dist/package.json
 files
 extra/app-opendir
+packages-native/**/build

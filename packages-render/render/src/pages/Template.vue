@@ -17,7 +17,7 @@ const cacheList = computed(() => store.cache)
             </router-link>
             <AdjustLine></AdjustLine>
         </div>
-        <div class="flex-1 w-0">
+        <div class="flex-1 w-0 relative">
             <router-view v-slot="{ Component, route }">
                 <!-- 缓存界面 -->
                 <keep-alive :include="cacheList">

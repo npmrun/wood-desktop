@@ -41,7 +41,6 @@ meta:
 
 <script lang="ts" setup>
 import Htab from '@/components/htab.vue';
-import Dialog from '@/components/Dialog/Dialog.vue';
 import { onBeforeRouteLeave, RouteLocationNormalized } from 'vue-router';
 
 const router = useRouter()

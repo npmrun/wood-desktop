@@ -1,0 +1,17 @@
+{
+    "name": "@rush/native-demo",
+    "version": "1.0.0",
+    "description": "use node-addon-api to call dll",
+    "main": "src/index.ts",
+    "scripts": {
+        "start": "ts-node src/index.ts",
+        "build": "node scripts/build.js && node-gyp configure && node-gyp build",
+        "rebuild": "electron-rebuild -f -w native"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "ts-node": "^10.9.1"
+    }
+}

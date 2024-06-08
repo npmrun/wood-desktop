@@ -7,7 +7,7 @@
             <transition :name="dialogAnimComputed" @after-leave="close()">
                 <div class="dialog__content"
                     :style="style"
-                    v-if="isShow" @click.stop>
+                    v-if="isShow" @click="clickContent($event)">
                     <slot></slot>
                 </div>
             </transition>
@@ -43,11 +43,13 @@ const props = withDefaults(defineProps<{
     show?: boolean
     style?: Record<string, string> | string
     inBox?: boolean
+    stopPropagation?: boolean
     animation?: boolean
     mode?: "center" | "bottom"
 }>(), {
     to: 'body',
     disabled: false,
+    stopPropagation: true,
     show: false,
     animation: true,
     inBox: false, // 对话框不全屏
@@ -56,6 +58,12 @@ const props = withDefaults(defineProps<{
 const emits = defineEmits<{
     (e: "update:show", isShow: boolean): void
 }>()
+
+function clickContent(e: Event){
+    if(props.stopPropagation) {
+        e.stopPropagation()
+    }
+}
 
 const isInDialog = inject(DialogToken, false)
 

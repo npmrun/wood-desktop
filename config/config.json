@@ -8,6 +8,7 @@
         "storagePath": "$storagePath$",
         "language": "zh",
         "common.theme": "auto",
+        "desktop:wallpaper": "",
         "editor.bg": "",
         "editor.logoType": "logo",
         "editor.fontFamily": "Cascadia Mono, Consolas, 'Courier New', monospace",

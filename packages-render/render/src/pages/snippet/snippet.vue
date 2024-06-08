@@ -138,6 +138,7 @@ async function handleCreate() {
         await _agent.call("sapi.snippet.snip.add", snip)
         curSnip.value = snip.key
         snippetList.value.push(snip)
+        count.value++
     }
 }
 
@@ -160,6 +161,7 @@ function handleSnipContextMenu() {
                     await _agent.call("sapi.snippet.snip.add", snip)
                     curSnip.value = snip.key
                     snippetList.value.push(snip)
+                    count.value++
                 }
             },
         },
@@ -171,6 +173,7 @@ function handleSnipContextMenu() {
                     await _agent.call("sapi.snippet.snip.delByFrom", openData.value?.key)
                     snippetList.value = []
                     toast("笔记本已清空")
+                    count.value++
                 }
             },
         },
@@ -187,6 +190,7 @@ function handleContextMenu(item: ISnip) {
                 await _agent.call("sapi.snippet.snip.del", item.key)
                 snippetList.value = snippetList.value.filter(v => v.key !== item.key)
                 toast("删除片段成功")
+                count.value++
             },
         },
         // {
@@ -216,6 +220,7 @@ function onDel(keys: INiuTreeKey[], state: any) {
     } else {
         snippetList.value = snippetList.value.filter(v => !keys.includes(v.from))
     }
+    count.value++
     toast("笔记本已清空并删除")
 }
 
@@ -253,6 +258,7 @@ async function onDropSnip(event: DragEvent, data: INiuTreeData, state: any) {
         if (state.openKey != undefined && data.key !== state.openKey) {
             snippetList.value = snippetList.value.filter(v => v.key !== d.key)
         }
+        count.value++
     }
 }
 
@@ -261,6 +267,7 @@ async function onClearSnip(key: INiuTreeKey, data: INiuTreeData, state: any) {
     if (key === state.openKey) {
         snippetList.value = []
     }
+    count.value++
     toast("笔记本已清空")
 }
 async function onCreateSnip(key: INiuTreeKey, data: INiuTreeData, state: any) {
@@ -278,7 +285,10 @@ async function onCreateSnip(key: INiuTreeKey, data: INiuTreeData, state: any) {
     state.activeKeys = [key]
     curSnip.value = k
     snippetList.value.push(snip)
+    count.value++
 }
+const count = ref(0)
+provide("snippetList", count)
 async function onLeftChange(key?: INiuTreeKey, data?: INiuTreeData) {
     openData.value = data
     const res = await _agent.call("sapi.snippet.snip.readData", key)
@@ -286,6 +296,7 @@ async function onLeftChange(key?: INiuTreeKey, data?: INiuTreeData) {
     if (curSnip.value && snippetList.value.length && !snippetList.value.map(v => v.key).includes(curSnip.value)) {
         curSnip.value = snippetList.value[0].key
     }
+    count.value++
 }
 </script>
 <style lang="scss" scoped>

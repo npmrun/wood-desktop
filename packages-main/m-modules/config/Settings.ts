@@ -25,7 +25,7 @@ Object.keys(_tempConfig).forEach(key => {
     }
 })
 
-const defaultConfig: IConfig = _tempConfig
+const defaultConfig: IConfig = cloneDeep(_tempConfig)
 
 function init(config: IConfig) {
     // 在配置初始化后执行
@@ -152,6 +152,9 @@ class _Settings {
             fs.moveSync(storagePath, p, { overwrite: true })
         }
         fs.writeFileSync(this.#pathFile, p, { encoding: "utf8" })
+    }
+    reset(key: keyof IConfig){
+        this.set(key, cloneDeep(_tempConfig[key]))
     }
     set(key: keyof IConfig | Partial<IConfig>, value?: any) {
         let oldMainConfig = Object.assign({}, this.#config)

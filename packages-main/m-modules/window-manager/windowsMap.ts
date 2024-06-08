@@ -69,6 +69,24 @@ export function getWindowsMap() {
                 },
             }
         },
+        "^hidden": {
+            overideWindowOpts: true,
+            confrimWindowClose: false,
+            ignoreEmptyUrl: true,
+            type: "info",
+            windowOpts: {
+                show: false,
+                frame: false,
+                focusable: false, // 窗口不能作为焦点被选中
+                transparent: true, // 使窗口透明
+                enableLargerThanScreen: true,
+                autoHideMenuBar: true,
+                webPreferences: {
+                    devTools: false,
+                    backgroundThrottling: false,
+                },
+            }
+        },
         "^about": {
             "url": getFileUrl("about.html"),
             overideWindowOpts: true,

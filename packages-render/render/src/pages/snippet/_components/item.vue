@@ -27,7 +27,8 @@
                     <input id="value" @click.passive.stop @contextmenu.prevent.stop v-focus="data"
                         @blur="onSubmit($event, data)" :value="data.title" />
                 </form>
-                <div class="ml-5px text-size-12px text-gray-400">{{ data.children?.length ? data.children?.length : '' }}
+                <div class="ml-5px text-size-12px text-gray-400"> {{ count }}
+                    <!-- {{ data.children?.length ? data.children?.length : '' }} -->
                 </div>
                 <svg-icon v-if="openKey === data.key" name="code-active" class="ml-5px"
                     style="width: 8px; height: 8px"></svg-icon>
@@ -179,6 +180,17 @@ const props = withDefaults(
         activeKeys: () => [],
     },
 )
+
+const count = ref(0)
+const snippetList = inject("snippetList", ref())
+watch(snippetList, async ()=>{
+    const res = await _agent.call("sapi.snippet.snip.readData", props.data.key)
+    count.value = res.length
+}, {
+    deep: true,
+    immediate: true
+})
+
 function judgeFile(filename: string) {
     if (!filename) return
     let ext = [

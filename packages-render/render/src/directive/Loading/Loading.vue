@@ -2,7 +2,13 @@
     <div class="loading">
         <div class="loading__mask"></div>
         <div class="loading__wrapper">
-            <div class="loading__text">{{ text }}</div>
+            <div class="loading__icon">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="loading__text" v-if="text">{{ text }}</div>
         </div>
     </div>
 </template>
@@ -13,10 +19,9 @@ const porps = withDefaults(
         text?: string
     }>(),
     {
-        text: "loading",
+        text: "",
     },
 )
-console.log(porps.text)
 </script>
 
 <style lang="scss" scoped>
@@ -35,7 +40,28 @@ console.log(porps.text)
         left: 50%;
         transform: translate3d(-50%, -50%, 0);
         text-align: center;
+        .loading__icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 100%;
+            background-color: #000;
+            margin: 0 auto;
+            animation: ball-scale infinite linear 0.75s;
+        }
+
+        @keyframes ball-scale {
+            0% {
+                transform: scale(0.1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
         .loading__text {
+            margin-top: 20px;
             color: #333;
         }
     }

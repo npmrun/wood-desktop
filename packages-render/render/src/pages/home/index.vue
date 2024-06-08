@@ -54,7 +54,6 @@ meta:
 import Left from "./_ui/left.vue"
 import { createHomeContext, IHomeData, useHomeContext } from "./_hook/Context"
 import Browser from "@/components/Browser/browser.vue"
-import Dialog from "@/components/Dialog/Dialog.vue"
 import { convert, findByKey, INiuTreeData } from "princess-ui";
 import { toast } from "vue3-toastify";
 import { assign, cloneDeep } from "lodash";
