@@ -3,7 +3,7 @@
         <transition :name="maskAnimComputed">
             <Mask is-render :inBox="inBox" :can-close="maskCanClose" v-model:show="isShow"></Mask>
         </transition>
-        <div class="dialog__wrapper" v-bind="attrs" :class="[mode, inBox?'inbox':'']" v-if="isShowWraper" @click.stop="isShow = false">
+        <div class="dialog__wrapper" v-bind="attrs" :class="[mode, inBox?'inbox':'']" v-if="isShowWraper" @click.stop="clickWrapper">
             <transition :name="dialogAnimComputed" @after-leave="close()">
                 <div class="dialog__content"
                     :style="style"
@@ -60,6 +60,12 @@ const props = withDefaults(defineProps<{
 const emits = defineEmits<{
     (e: "update:show", isShow: boolean): void
 }>()
+
+function clickWrapper() {
+    if(props.maskCanClose) {
+        isShow.value = false
+    }
+}
 
 function clickContent(e: Event){
     if(props.stopPropagation) {

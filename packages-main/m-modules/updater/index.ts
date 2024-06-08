@@ -85,6 +85,7 @@ class _UpdaterManage {
 
         // 更新下载中
         autoUpdater.on("download-progress", (info: ProgressInfo) => {
+            log.debug("当前下载进度:", info.percent)
             broadcast("updater:download_progress", {
                 percent: info.percent
             })
