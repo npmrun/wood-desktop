@@ -5,17 +5,17 @@ export const useUpdateStore = defineStore("update", () => {
 
     const downloadPercent = ref(0)
     // const curVersion = ref(_agent.info.version)
-    const updateInfo = ref()
+    const updateInfo = ref<any>({})
     const nextVersion = ref()
     enum EUpdateStatus {
-        IDLE,
-        InitCheckingUpdate,
-        CheckingUpdate,
-        Error,
-        Avaliable,
-        Notavaliable,
-        Downloading,
-        Downloaded,
+        IDLE = "IDLE",
+        InitCheckingUpdate = "InitCheckingUpdate",
+        CheckingUpdate = "CheckingUpdate",
+        Error = "Error",
+        Avaliable = "Avaliable",
+        Notavaliable = "Notavaliable",
+        Downloading = "Downloading",
+        Downloaded = "Downloaded",
     }
     const UpdateStatus = computed(
         () =>
@@ -33,51 +33,43 @@ export const useUpdateStore = defineStore("update", () => {
     let curStatus = ref<EUpdateStatus>(EUpdateStatus.IDLE)
 
     function onCheck() {
-        if (
-            [
-                EUpdateStatus.InitCheckingUpdate,
-                EUpdateStatus.CheckingUpdate,
-                EUpdateStatus.Avaliable,
-                EUpdateStatus.Downloading,
-            ].includes(curStatus.value)
-        ) {
-            toast.warn("正在更新，请稍后")
-            return
-        }
         if ([EUpdateStatus.IDLE, EUpdateStatus.Error, EUpdateStatus.Notavaliable].includes(curStatus.value)) {
             _agent.send("updater:check")
             curStatus.value = EUpdateStatus.InitCheckingUpdate
+            isUpdating.value = true
         }
     }
 
-    const isUpdating = computed(() => {
-        return [
-            EUpdateStatus.InitCheckingUpdate,
-            EUpdateStatus.CheckingUpdate,
-            EUpdateStatus.Avaliable,
-            EUpdateStatus.Downloading,
-        ].includes(curStatus.value)
-    })
+    const isUpdating = ref(false)
 
     _agent.on("checking-for-update", (_, res: any) => {
         curStatus.value = EUpdateStatus.CheckingUpdate
     })
     _agent.on("updater:error", (_, res: any) => {
         curStatus.value = EUpdateStatus.Error
+        isUpdating.value = false
         toast.error(`更新出错：${res.data}, 点击打开更新日志`, {
             onClick() {
                 _agent.call("openLogDir", "__update__.txt")
             },
         })
     })
+    function resetUpdate(){
+        if([EUpdateStatus.Avaliable, EUpdateStatus.Notavaliable, EUpdateStatus.Error].includes(curStatus.value)) {
+            curStatus.value = EUpdateStatus.IDLE
+            updateInfo.value = {}
+        }
+    }
     _agent.on("updater:avaliable", (_, res: any) => {
         curStatus.value = EUpdateStatus.Avaliable
+        isUpdating.value = false
         nextVersion.value = res.data.version
         updateInfo.value = res.data
     })
     _agent.on("updater:notavaliable", (_, res: any) => {
         curStatus.value = EUpdateStatus.Notavaliable
         nextVersion.value = res.data.version
+        isUpdating.value = false
         updateInfo.value = res.data
     })
     _agent.on("updater:download_progress", (_, res: any) => {
@@ -85,12 +77,19 @@ export const useUpdateStore = defineStore("update", () => {
         curStatus.value = EUpdateStatus.Downloading
     })
     _agent.on("updater:downloaded", (_, res: any) => {
+        toast.success("新版本下载完成，准备安装")
+        toast.success("点击查看安装包", {
+            delay: 300,
+            onClick(){
+                _agent.call("utils.showItemInFolder", res.downloadedFile)
+            }
+        })
         curStatus.value = EUpdateStatus.Downloaded
     })
-    _agent.on("updater:download_start", (p)=> {
+    _agent.on("updater:download_start", ()=> {
         downloadPercent.value = 0
         curStatus.value = EUpdateStatus.Downloading
-        logger.debug("当前下载路径：", p)
+        logger.debug("开始下载")
     })
     // onBeforeUnmount(() => {
     //     _agent.offAll("checking-for-update")
@@ -114,6 +113,7 @@ export const useUpdateStore = defineStore("update", () => {
     return {
         EUpdateStatus,
         isUpdating,
+        resetUpdate,
         startDownload,
         onCheck,
         quitAndInstall,

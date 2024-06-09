@@ -20,6 +20,8 @@
         "editor.logoType": "logo",
         "editor.fontFamily": "Cascadia Mono, Consolas, 'Courier New', monospace",
         "update.repo": "wood-desktop",
-        "update.owner": "npmrun"
+        "update.owner": "npmrun",
+        "update.allowDowngrade": false,
+        "update.allowPrerelease": false
     }
 }

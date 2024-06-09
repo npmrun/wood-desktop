@@ -12,7 +12,7 @@ const url = ref("https://www.nayuki.io/res/full-screen-clock-javascript/full-scr
                     class="button"
                     @click="
                         _agent.call(
-                            'wallpaper.oadWallpaper',
+                            'wallpaper.loadWallpaper',
                             url,
                         )
                     "

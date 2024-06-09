@@ -1,9 +1,10 @@
 import { ipcMain, app } from "electron"
 import { NsisUpdater, ProgressInfo, UpdateInfo } from "electron-updater"
 import { Settings } from "@rush/main-config"
-import { broadcast } from "@rush/main-tool"
+import { broadcast, isDev } from "@rush/main-tool"
+import path from "path"
 
-const enableDevUpdate = true // 开发时是否启用更新用来测试
+const enableDevUpdate = isDev// 开发时是否启用更新用来测试
 
 class _UpdaterManage {
     private constructor() {}
@@ -23,7 +24,7 @@ class _UpdaterManage {
         this.updateInfo = {
             provider: "github",
             owner: Settings.values("update.owner"),
-            repo: Settings.values("update.repo"),
+            repo: Settings.values("update.repo")
         }
     }
 
@@ -36,18 +37,24 @@ class _UpdaterManage {
             return
         }
 
-        Settings.onChange("update.owner", ()=>{
+        Settings.onChange("update.allowDowngrade", ()=>{
+            this.autoUpdater.allowDowngrade = Settings.values("update.allowDowngrade")
+        })
+        Settings.onChange("update.allowPrerelease", ()=>{
+            this.autoUpdater.allowPrerelease = Settings.values("update.allowPrerelease")
+        })
+        Settings.onChange(["update.owner", "update.repo"], ()=>{
             this.getUpdateInfo()
             this.autoUpdater.setFeedURL(this.updateInfo)
         })
-        Settings.onChange("update.repo", ()=>{
-            this.getUpdateInfo()
-            this.autoUpdater.setFeedURL(this.updateInfo)
-        })
-        
         this.autoUpdater = new NsisUpdater(this.updateInfo)
         this.autoUpdater.autoDownload = false // 不自动下载
         this.autoUpdater.forceDevUpdateConfig = enableDevUpdate
+        if(enableDevUpdate) {
+            this.autoUpdater.updateConfigPath = path.resolve(__root, "temp/dev.yml") 
+        }
+        this.autoUpdater.allowDowngrade = Settings.values("update.allowDowngrade")
+        this.autoUpdater.allowPrerelease = Settings.values("update.allowPrerelease")
         let autoUpdater = this.autoUpdater
         autoUpdater.fullChangelog = true
 
@@ -92,28 +99,26 @@ class _UpdaterManage {
         })
 
         // 更新下载完毕
-        autoUpdater.on("update-downloaded", () => {
-            log.debug("新版本下载完毕,点击安装")
-            broadcast("updater:downloaded")
+        autoUpdater.on("update-downloaded", (p) => {
+            log.debug("新版本下载完毕,点击安装", p)
+            broadcast("updater:downloaded", p)
         })
         ipcMain.on("start-download", async () => {
             log.debug("开始下载")
-            const p = await this.autoUpdater.downloadUpdate()
-            broadcast("updater:download_start", {
-                path: p
-            })
+            this.autoUpdater.downloadUpdate()
+            broadcast("updater:download_start")
         })
         // 立即更新
         ipcMain.on("updater:quitandinstall", () => {
             autoUpdater.quitAndInstall()
         })
 
-        ipcMain.on("updater:check", () => {
+        ipcMain.on("updater:check", async () => {
             log.debug("初始化检查更新")
             broadcast("checking-for-update")
             this.update()
         })
-        this.update()
+        // this.update()
     }
 
     async update() {

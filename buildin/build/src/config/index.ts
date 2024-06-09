@@ -42,6 +42,7 @@ export const mainWebpack = {
     devVariable: {
         // __static: `"${genPathRoot("public/static").replace(/\\/g, "\\\\")}"`,
         // __public: `"${genPathRoot("public").replace(/\\/g, "\\\\")}"`,
+        __root: `"${genPathRoot().replace(/\\/g, "\\\\")}"`,
         __buildAssets: `"${genPathRoot("build-assets").replace(/\\/g, "\\\\")}"`,
         __extra: `"${genPathRoot("extra").replace(/\\/g, "\\\\")}"`,
         __appStatic: `"${genPathRoot("dist/electron").replace(/\\/g, "\\\\")}"`,

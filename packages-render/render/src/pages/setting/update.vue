@@ -19,6 +19,27 @@
             </div>
         </div>
         <div class="mb-35px">
+            <div class="text-size-20px font-bold">升级</div>
+            <div class="text-gray-400 pt-8px">是否不同架构的升级</div>
+            <div v-if="isDev" class="text-red text-size-12px">开发时可以设置为True</div>
+            <div class="pt-8px">
+                <label class="checkbox">
+                    <input type="checkbox" v-model="configStore['update.allowDowngrade']" 
+                    @change="(e: any) => configStore.setConfig('update.allowDowngrade', configStore['update.allowDowngrade'])"/>
+                </label>
+            </div>
+        </div>
+        <div class="mb-35px">
+            <div class="text-size-20px font-bold">升级</div>
+            <div class="text-gray-400 pt-8px">是否能够升级到预构建版本</div>
+            <div class="pt-8px">
+                <label class="checkbox">
+                    <input type="checkbox" v-model="configStore['update.allowPrerelease']" 
+                    @change="(e: any) => configStore.setConfig('update.allowPrerelease', configStore['update.allowPrerelease'])"/>
+                </label>
+            </div>
+        </div>
+        <div class="mb-35px">
             <div class="text-size-20px font-bold">{{ $t('setting.update.version.title') }}</div>
             <div class="text-gray-400 pt-8px">
                 {{ $t('setting.update.version.desc') }}{{ version }}
@@ -36,5 +57,5 @@ import UpdateButton from "@/components/UpdateButton.vue"
 
 const configStore = useConfigStore()
 const version = _agent.info.version
-
+const isDev = import.meta.env.DEV
 </script>

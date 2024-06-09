@@ -3,12 +3,12 @@
         <transition :name="maskAnimComputed">
             <Mask is-render :inBox="inBox" :can-close="maskCanClose" v-model:show="isShow"></Mask>
         </transition>
-        <div class="dialog__wrapper" v-bind="attrs" :class="[mode, inBox?'inbox':'']" v-if="isShowWraper" @click.stop="clickWrapper">
+        <div class="dialog__wrapper" v-bind="attrs" :class="[mode, inBox?'inbox':'']" v-show="isShowWraper" @click.stop="clickWrapper">
             <transition :name="dialogAnimComputed" @after-leave="close()">
                 <div class="dialog__content"
                     :style="style"
-                    v-if="isShow" @click="clickContent($event)">
-                    <slot></slot>
+                    v-show="isShow" @click="clickContent($event)">
+                    <slot v-if="showContent"></slot>
                 </div>
             </transition>
         </div>
@@ -23,6 +23,8 @@ import { DialogToken } from './Token';
 defineOptions({
     inheritAttrs: false
 })
+
+const showContent = ref(true)
 
 const attrs= useAttrs()
 
@@ -45,6 +47,7 @@ const props = withDefaults(defineProps<{
     inBox?: boolean
     maskCanClose?: boolean
     stopPropagation?: boolean
+    destoryOnClose?: boolean
     animation?: boolean
     mode?: "center" | "bottom"
 }>(), {
@@ -52,6 +55,7 @@ const props = withDefaults(defineProps<{
     disabled: false,
     stopPropagation: true,
     maskCanClose: true,
+    destoryOnClose: false,
     show: false,
     animation: true,
     inBox: false, // 对话框不全屏
@@ -59,6 +63,7 @@ const props = withDefaults(defineProps<{
 })
 const emits = defineEmits<{
     (e: "update:show", isShow: boolean): void
+    (e: "close"): void
 }>()
 
 function clickWrapper() {
@@ -111,6 +116,7 @@ const isShow = ref(false)
 const isShowWraper = ref(false)
 
 function show() {
+    showContent.value = true
     isShowWraper.value = true
     setStyle(document.body, {
         overflow: "hidden"
@@ -130,6 +136,10 @@ function hide() {
 function close() {
     isShowWraper.value = false
     emits("update:show", false)
+    emits("close")
+    if(props.destoryOnClose) {
+        showContent.value = false
+    }
 }
 </script>
 

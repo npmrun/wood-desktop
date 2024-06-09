@@ -4,6 +4,8 @@ type IConfig = typeof import("./config.json")['default_config'] & {
     "desktop:wallpaper": string
     "update.repo"?: string // 更新地址
     "update.owner"?: string // 更新通道
+    "update.allowDowngrade": boolean,
+    "update.allowPrerelease": boolean
     "editor.bg": string // 更新通道
     "editor.logoType": "logo" | "bg" // 更新通道
     "editor.fontFamily": string // 更新通道

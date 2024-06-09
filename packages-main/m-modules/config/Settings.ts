@@ -27,10 +27,15 @@ Object.keys(_tempConfig).forEach(key => {
 
 const defaultConfig: IConfig = cloneDeep(_tempConfig)
 
+function isPath(str) {
+    // 使用正则表达式检查字符串是否以斜杠或盘符开头
+    return /^(?:\/|[a-zA-Z]:\\)/.test(str);
+}
+
 function init(config: IConfig) {
     // 在配置初始化后执行
     Object.keys(config).forEach(key => {
-        if (config[key] && path.isAbsolute(config[key])) {
+        if (config[key] && isPath(config[key]) && path.isAbsolute(config[key])) {
             fs.ensureDirSync(config[key])
         }
     })
@@ -220,7 +225,7 @@ class _Settings {
             this.#runCB(this.#config, oldMainConfig, changeKeys)
         }
     }
-    values(key: keyof IConfig) {
+    values<T extends keyof IConfig>(key: T): IConfig[T] {
         return this.#config[key]
     }
 }

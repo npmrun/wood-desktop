@@ -44,7 +44,7 @@ const state = reactive({
 })
 const searchParams = reactive({
     pageno: 1,
-    count: 28,
+    count: 30,
 })
 const fenNum = computed(() => {
     return Math.ceil(state.total / searchParams.count)
@@ -237,7 +237,7 @@ async function download() {
                             末页
                         </button>
                     </div>
-                    前往：<input class="input !w-80px" type="number" :value="searchParams.pageno" @blur="(e: Event) => searchParams.pageno = (e.target as any)!.value" />
+                    前往：<input class="input !w-80px" type="number" :value="searchParams.pageno" @blur="(e: Event) => searchParams.pageno = +(e.target as any)!.value" />
                     <button class="button" v-if="searchParams.pageno < fenNum" @click="handleClickPost">下一页</button>
                 </div>
                 <ul class="list-wrapper">

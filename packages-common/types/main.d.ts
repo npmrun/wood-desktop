@@ -10,6 +10,11 @@
 
 // declare const __static: string
 // declare const __public: string
+/**
+ * 只在开发时有用，表示根目录，仅用于开发时测试
+ * 注意在生产环境不要使用
+ */
+declare const __root: string
 declare const __appAsarDir: string
 declare const __appStatic: string
 declare const __extra: string
