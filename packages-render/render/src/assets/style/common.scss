@@ -133,11 +133,11 @@ body,
 }
 
 .scrollbar{
-  overflow: hidden;
-  padding-left: 10px;
-  padding-right: 10px;
-  &:hover{
-    overflow-y: scroll;
-    padding-right: 0;
-  }
+  overflow: auto;
+//   padding-left: 10px;
+//   padding-right: 10px;
+  // &:hover{
+    // overflow-y: scroll;
+//     padding-right: 0;
+  // }
 }

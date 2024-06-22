@@ -4,11 +4,13 @@ import { PopupMenu } from '@/bridge/PopupMenu'
 
 const props = withDefaults(defineProps<{
     collect?: boolean,
+    copyAll?: boolean,
     home?: string
     hide?: ("collect" | "clean" | "open" | "devtool" | "menu" | "left-menu")[]
     url?: string
 }>(), {
     collect: false,
+    copyAll: false,
     hide: () => ["left-menu"],
     url: '我的首页'
 })
@@ -72,16 +74,24 @@ const state = reactive<{
 onBeforeUnmount(() => {
     _agent.call("webview.destoryWebview", state.webContentsId)
 })
-
+let isReady = false
+let peddingFn: Function[] = []
 function toPage(url: string) {
-    let page = getURL(url)
-    if (webviewRef.value?.isLoading()) {
-        webviewRef.value?.stop()
+    const to = ()=>{
+        let page = getURL(url)
+        if (webviewRef.value?.isLoading()) {
+            webviewRef.value?.stop()
+        }
+        if (parse(state.curUrl).toString() !== parse(page).toString()) {
+            state.curUrl = page
+        } else if (parse(page).toString() !== parse(state.curWebviewUrl).toString()) {
+            webviewRef.value?.loadURL(page)
+        }
     }
-    if (parse(state.curUrl).toString() !== parse(page).toString()) {
-        state.curUrl = page
-    } else if (parse(page).toString() !== parse(state.curWebviewUrl).toString()) {
-        webviewRef.value?.loadURL(page)
+    if(!isReady) {
+        peddingFn.push(to)
+    } else {
+        to()
     }
 }
 
@@ -95,6 +105,11 @@ onMounted(() => {
             if (curWebContentsId !== state.webContentsId) {
                 state.webContentsId = curWebContentsId
                 _agent.call("webview.preventWebview", state.webContentsId)
+            }
+            isReady = true
+            if(!!peddingFn.length) {
+                peddingFn.forEach(cb=>cb())
+                peddingFn = []
             }
         })
         function updateInfo() {
@@ -271,6 +286,10 @@ function handleInputBlur() {
 
 function handleInputFocus(ev: any) {
     const el = ev.target as HTMLInputElement
+    if(props.copyAll) {
+        el.setSelectionRange(0, state.tempUrl.length)
+        return
+    }
     if (state.tempUrl.startsWith("http://") || state.tempUrl.startsWith("https://")) {
         el.setSelectionRange(state.tempUrl.indexOf("//") + 2, state.tempUrl.length)
     } else {

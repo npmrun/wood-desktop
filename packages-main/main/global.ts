@@ -3,7 +3,7 @@ import { Settings } from "@rush/main-config"
 import WindowManager from "@rush/main-window-manager"
 import ProcessManager from "@rush/main-process-manager"
 import LogManager from "@rush/main-log-manager"
-import { BrowserView, BrowserWindow, app, ipcMain, net, protocol } from "electron"
+import { BrowserView, BrowserWindow, app, ipcMain, net, protocol, session } from "electron"
 import { MessageManager } from "@rush/common-message-manager/main"
 import { UpdaterManage } from "@rush/main-updater"
 import { initCommands, initPrase } from "./parseCommand"
@@ -82,6 +82,15 @@ export async function initGlobal() {
         protocol.handle(`${config.app_scheme}-file`, (request) => {
             const absolutePath = path.resolve(Settings.values("storagePath"), "./file", request.url.slice(`${config.app_scheme}-file://`.length))
             return net.fetch('file://' + absolutePath)
+        })
+
+        const xxx_filter = {
+            urls: ["*://wp.birdpaper.com.cn/*"]
+        }
+        session.defaultSession.webRequest.onBeforeSendHeaders(xxx_filter, (details, callback)=> {
+            delete details.requestHeaders['Origin']
+            delete details.requestHeaders['Referer']
+            callback({requestHeaders: details.requestHeaders});
         })
     })
 

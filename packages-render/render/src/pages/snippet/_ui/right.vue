@@ -18,7 +18,7 @@
             <n-dynamic-tags v-model:value="currentNote.label" />
         </div> -->
         <div class="flex border-t" :class="[currentNote.files.length ? 'border-b' : '']">
-            <div class="group flex-1 pl-8px py-3px border-l border-r cursor-pointer flex max-w-200px"
+            <div class="group flex-1 pl-8px py-3px border-l border-r cursor-pointer flex max-w-200px items-center"
                 v-for="(item, index) in currentNote.files" :key="index" @click="clickFile(item, index)"
                 @contextmenu="contextmenuFile(item, index)" :style="{
                     backgroundColor: currentNote?.activeFileIndex === index ? '' : '#ebebeb87',
@@ -31,7 +31,7 @@
                     </form>
                 </div>
                 <div v-if="editTitleIndex == -1"
-                    class="ml-15px h-14px w-14px inline text-size-12px group-hover:inline hidden"
+                    class="ml-15px h-14px w-14px h-14px box-content inline text-size-12px group-hover:inline hidden"
                     @click.stop="onCopy(currentNote && currentNote.files[index])">
                     <svg-icon name="copy" class="h-1/1 w-1/1"></svg-icon>
                 </div>
@@ -42,7 +42,7 @@
         </div>
         <div class="flex-1 h-0">
             <CodeEditor :key="currentNote.activeFileIndex" v-if="
-                curLanugage != 'markdown' &&
+                curLanugage != 'markdown' && curLanugage != 'web' &&
                 currentNote &&
                 currentNote.activeFileIndex > -1 &&
                 currentNote.files[currentNote.activeFileIndex]
@@ -56,6 +56,12 @@
                 currentNote.files[currentNote.activeFileIndex] &&
                 curLanugage == 'markdown'
             " v-model="currentNote.files[currentNote.activeFileIndex].content" />
+            <Web :key="currentNote.activeFileIndex" class="h-1/1" v-if="
+                currentNote &&
+                currentNote.activeFileIndex > -1 &&
+                currentNote.files[currentNote.activeFileIndex] &&
+                curLanugage == 'web'
+            " v-model="currentNote.files[currentNote.activeFileIndex].content" />
         </div>
         <div class="py-5px flex text-gray-400 items-center px-10px border-l text-14px"
             :class="[curLanugage != 'markdown' ? 'border-t' : '']">
@@ -64,7 +70,7 @@
             </div>
             <div
                 v-if="currentNote && currentNote.activeFileIndex > -1 && currentNote.files[currentNote.activeFileIndex]">
-                words: {{ currentNote.files[currentNote.activeFileIndex].content.length }}
+                words: {{ currentNote.files[currentNote.activeFileIndex].content?.length ?? "0" }}
             </div>
         </div>
     </div>
@@ -75,6 +81,7 @@ import { judgeFile } from "@/components/CodeEditor/utils"
 import type { ISnip, ISnipCode } from "../type"
 import CodeEditor from "@/components/CodeEditor/code-editor.vue"
 import MdEditor from "@/components/MdEditor/MdEditor.vue"
+import Web from "./Web.vue"
 import { cloneDeep } from "lodash"
 // import Toastify from "toastify-js"
 
