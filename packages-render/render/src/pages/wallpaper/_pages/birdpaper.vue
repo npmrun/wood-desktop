@@ -154,7 +154,7 @@ async function download() {
         const item = activeImg.value
         const id = toast.loading("下载中")
         try {
-            const filePath = await _agent.call("utils.downloadFileToFolder", item.url, `${item.id}`, "jpg")
+            const filePath = await _agent.callLong("utils.downloadFileToFolder", item.url, `${item.id}`, "jpg")
             toast.update(id, {
                 type: "success",
                 isLoading: false,
@@ -190,7 +190,7 @@ async function download() {
                 <template v-for="(item, index) in cateList">
                     <div
                         class="my-10px mx-2 cursor-pointer"
-                        @click="active = index"
+                        @click="[active = index, searchParams.pageno = 1, searchParams.count = 30]"
                         :class="[active === index ? '' : 'filter-grayscale-100 text-gray-400']"
                     >
                         <img :src="item.icon" :alt="item.show_name" />
@@ -293,23 +293,23 @@ async function download() {
         width: calc(20% - 2rem / 5);
     }
     float: left;
-    margin-bottom: 0.5rem;
+    // margin-bottom: 0.5rem;
     cursor: pointer;
 }
 
 @media (max-width: 920px) {
     .list:not(:nth-child(3n + 1)) {
-        margin-left: 0.5rem;
+        // margin-left: 0.5rem;
     }
 }
 @media (min-width: 920px) and (max-width: 1280px) {
     .list:not(:nth-child(4n + 1)) {
-        margin-left: 0.5rem;
+        // margin-left: 0.5rem;
     }
 }
 @media (min-width: 1600px) {
     .list:not(:nth-child(5n + 1)) {
-        margin-left: 0.5rem;
+        // margin-left: 0.5rem;
     }
 }
 .cover {

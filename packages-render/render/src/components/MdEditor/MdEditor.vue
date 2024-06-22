@@ -23,7 +23,7 @@ onMounted(() => {
         height: '100%',
         preview: {
             markdown: {
-                // codeBlockPreview: false
+                codeBlockPreview: false
             }
         },
         mode: "wysiwyg",

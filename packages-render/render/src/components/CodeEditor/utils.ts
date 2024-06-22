@@ -9,6 +9,7 @@ export function judgeFile(filename: string) {
         { language: "typescript", ext: ".ts", index: -1 },
         { language: "markdown", ext: ".md", index: -1 },
         { language: "json", ext: ".json", index: -1 },
+        { language: "web", ext: ".web", index: -1 },
         { language: "dot", pre: ".", index: -1 },
     ]
     let cur

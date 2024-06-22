@@ -35,6 +35,7 @@ defineOptions({
 const app = reactive([
     { title: "图标生成器", path: "/tools/icons", color: "#a9c0ff", activeColor: "#2F66FF" },
     { title: "解析Chrome/Edge书签", path: "/tools/bookmarks", color: "#a9c0ff", activeColor: "#2F66FF" },
+    { title: "二维码美化", path: "/tools/qrcode", color: "#a9c0ff", activeColor: "#2F66FF" },
     // { title: "test", path: "/tools/test", color: "#dfaaca", activeColor: "#ea4aaa" },
 ])
 

@@ -34,7 +34,7 @@ image.src = props.src
     top: 0;
     width: 100%;
     height: 100%;
-    border: 1px solid black;
+    // border: 1px solid black;
     transform: translate3d(0, 0, 0);
     img {
         width: 100%;
