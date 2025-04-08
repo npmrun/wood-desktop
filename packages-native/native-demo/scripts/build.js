@@ -2,7 +2,7 @@ const fs = require("fs")
 const path = require("path")
 
 // 环境变量指定的输出目录
-const outputDir = "D:/@code/@project/electron-template/extra/build"; // process.env.OUTPUT_DIR || "build/Release"
+const outputDir = path.resolve(process.cwd(), "extra/build");  // process.env.OUTPUT_DIR || "build/Release"
 
 // 读取 binding.gyp 文件的路径
 const bindingGypPath = path.join(__dirname, "../binding.gyp")
